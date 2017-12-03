@@ -7,10 +7,19 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>All rights reserved - 2017</copyright>
-    <lastBuildDate>Sat, 02 Dec 2017 08:33:15 +0000</lastBuildDate>
+    <lastBuildDate>Sat, 02 Dec 2017 08:55:24 +0000</lastBuildDate>
     
 	<atom:link href="http://parsecsreach.com/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Spark and the Minor Planets Center data</title>
+      <link>http://parsecsreach.com/post/spark_and_mpc/</link>
+      <pubDate>Sat, 02 Dec 2017 08:55:24 +0000</pubDate>
+      
+      <guid>http://parsecsreach.com/post/spark_and_mpc/</guid>
+      <description>Introduction A few weeks ago I saw comments between @Sondy and @JLGalache talking about getting a list of asteroids with their date of discovery. The main data file lists the year of discovery but not the actual date. I thought there was a way to get this information by looking at the observation file and joining it to the main data file. Todo this I decided to use Apache Spark.</description>
+    </item>
     
     <item>
       <title>About Me</title>
@@ -18,7 +27,7 @@
       <pubDate>Sat, 02 Dec 2017 08:33:15 +0000</pubDate>
       
       <guid>http://parsecsreach.com/about/</guid>
-      <description>I am a software engineer. Currently work at the Satellite Applications Catapult in Harwell, Oxfordshire. It is a great place to work. I get to be involved in some really interesting projects that help make the work a better place. Unfortunatly not all of them I can talk about.
+      <description>I am a software engineer. Currently work at the Satellite Applications Catapult in Harwell, Oxfordshire. It is a great place to work. I get to be involved in some really interesting projects that help make the work a better place. Unfortunately not all of them I can talk about.
 I work with a wide range of tools. Mostly with a geographical or space side. Programming language wise I&amp;rsquo;m always happy to learn new things.</description>
     </item>
     
