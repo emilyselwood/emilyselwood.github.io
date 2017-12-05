@@ -1,0 +1,561 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+
+    
+    
+        
+        <meta name="twitter:card" content="summary_large_image"/>
+        <meta name="twitter:image" content="/img/fire2.jpg"/>
+    
+
+
+
+<meta name="twitter:title" content="Spark and the Minor Planet Center data part 2"/>
+<meta name="twitter:description" content=""/>
+<meta name="twitter:site" content="@wilselwood"/>
+
+
+
+  	<meta property="og:title" content="Spark and the Minor Planet Center data part 2 &middot; Parsecs Reach" />
+  	<meta property="og:site_name" content="Parsecs Reach" />
+  	<meta property="og:url" content="http://parsecsreach.com/post/spark_and_mpc_part_2/" />
+
+    
+       <meta property="og:image" content="/img/fire2.jpg"/>
+    
+
+    
+    <meta property="og:description" content="" />
+  	<meta property="og:type" content="article" />
+    <meta property="article:published_time" content="2017-12-03T15:39:22Z" />
+
+    
+    <meta property="article:tag" content="spark" />
+    
+    <meta property="article:tag" content="minor planet center" />
+    
+    <meta property="article:tag" content="asteroids" />
+    
+    
+
+    <title>Spark and the Minor Planet Center data part 2 &middot; Parsecs Reach</title>
+
+    
+    <meta name="description" content="In the last post we read the minor planet center orbit file. This was a JSON text file. This time we are going to look at a bit more complex file to process. If" />
+    
+
+    <meta name="HandheldFriendly" content="True" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <link rel="shortcut icon" href="/images/favicon.ico">
+	  <link rel="apple-touch-icon" href="/images/apple-touch-icon.png" />
+
+    <link rel="stylesheet" type="text/css" href="/css/screen.css" />
+    <link rel="stylesheet" type="text/css" href="/css/nav.css" />
+
+    
+
+    
+        <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.8.0/styles/default.min.css">
+        <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.8.0/highlight.min.js"></script>
+        
+        <script>hljs.initHighlightingOnLoad();</script>
+    
+
+    
+      
+          <link href="/index.xml" rel="alternate" type="application/rss+xml" title="Parsecs Reach" />
+      
+      
+    
+    <meta name="generator" content="Hugo 0.31.1" />
+
+    <link rel="canonical" href="http://parsecsreach.com/post/spark_and_mpc_part_2/" />
+
+    
+      
+    
+    <script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "publisher": {
+        "@type": "Organization",
+        "name": 
+    },
+    "author": {
+        "@type": "Person",
+        "name": ,
+        
+        "url": http://parsecsreach.com,
+        "sameAs": [
+            
+            
+             
+             
+             
+             
+             
+            
+        ],
+        "description": Software Engineer - Sort of full stack but not the normal stack
+        
+    },
+    "headline": Spark and the Minor Planet Center data part 2,
+    "name": Spark and the Minor Planet Center data part 2,
+    "wordCount": 2067,
+    "timeRequired": "PT10M",
+    "inLanguage": {
+      "@type": "Language",
+      "alternateName": en
+    },
+    "url": http://parsecsreach.com/post/spark_and_mpc_part_2/,
+    "datePublished": 2017-12-03T15:39Z,
+    "dateModified": 2017-12-03T15:39Z,
+    
+    "image": {
+        "@type": "ImageObject",
+        "url": http://parsecsreach.comimg/fire2.jpg,
+        "width": 3000,
+        "height": 1445
+    },
+    
+    "keywords": spark, minor planet center, asteroids,
+    "description": ,
+    "mainEntityOfPage": {
+        "@type": "WebPage",
+        "@id": http://parsecsreach.com/post/spark_and_mpc_part_2/
+    }
+}
+    </script>
+    
+
+
+    
+
+    
+
+      
+      <script async src="https://www.googletagmanager.com/gtag/js?id=UA-89365253-1"></script>
+      <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'UA-89365253-1');
+      </script>
+
+    
+
+    
+</head>
+<body class="nav-closed">
+
+  <div class="nav">
+    <h3 class="nav-title">Menu</h3>
+    <a href="#" class="nav-close">
+        <span class="hidden">Close</span>
+    </a>
+    <ul>
+        
+        
+            
+                
+                <li class="nav-opened" role="presentation">
+                    <a href="/">Home</a>
+                </li>
+            
+                
+                <li class="nav-opened" role="presentation">
+                    <a href="/about">About me</a>
+                </li>
+            
+        
+        
+          
+        
+          
+             
+            <li><a href="/tags/asteroids"># asteroids ( 2 )</a></li>  
+             
+            <li><a href="/tags/introduction"># introduction ( 1 )</a></li>  
+             
+            <li><a href="/tags/minor-planet-center"># minor-planet-center ( 2 )</a></li>  
+             
+            <li><a href="/tags/spark"># spark ( 2 )</a></li>  
+            
+          
+        
+    </ul>
+
+    
+        <a class="subscribe-button icon-feed" href="/index.xml">Subscribe</a>
+    
+</div>
+<span class="nav-cover"></span>
+
+
+ <div class="site-wrapper">
+
+
+
+  
+  <header class="main-header post-head" style="background-image: url(/img/fire2.jpg)">
+  
+  <nav class="main-nav overlay clearfix">
+
+
+  
+  
+      <a class="menu-button" href="#"><span class="burger">&#9776;</span><span class="word">Menu</span></a>
+  
+  </nav>
+</header>
+
+
+
+<main class="content" role="main">
+
+
+
+
+  <article class="post post">
+
+    <header class="post-header">
+        <h1 class="post-title">Spark and the Minor Planet Center data part 2</h1>
+        <small></small>
+
+        <section class="post-meta">
+        
+          <time class="post-date" datetime="2017-12-03T15:39:22Z">
+            Dec 3, 2017
+          </time>
+        
+         
+          <span class="post-tag small"><a href="http://parsecsreach.com/tags/spark/">#spark</a></span>
+         
+          <span class="post-tag small"><a href="http://parsecsreach.com/tags/minor-planet-center/">#minor planet center</a></span>
+         
+          <span class="post-tag small"><a href="http://parsecsreach.com/tags/asteroids/">#asteroids</a></span>
+         
+        </section>
+    </header>
+
+    <section class="post-content">
+      
+
+<p>In the <a href="/post/spark_and_mpc">last post</a> we read the minor planet center orbit file. This was a JSON text file. This time we are going to look at a bit more complex file to process. If you haven&rsquo;t read the first post in this series I recommend starting there before reading this.</p>
+
+<p>In this post we are going to be looking at the Observation file. There are two parts to this file. One is for the numbered objects and other other for the un-numbered objects. Due to the original idea for this project we are going to work with the un-numbered file today.</p>
+
+<h1 id="assumptions">Assumptions</h1>
+
+<p>You have been through the previous post in this series and understood it. You have a project already set up and able to read and process the orbit file.</p>
+
+<h1 id="setup">Setup</h1>
+
+<p>The data file we are after can be found on the <a href="http://www.minorplanetcenter.net/iau/ECS/MPCAT-OBS/MPCAT-OBS.html">mpcat-obs page</a> under the link for the un-numbered minor planets. Download it. Then while it is downloading open up the project you created following along from the last post.</p>
+
+<h1 id="development">Development</h1>
+
+<p>First lets add another variable so we don&rsquo;t have to remember which argument is which.</p>
+
+<pre><code class="language-scala">val observationPath = args(1)
+</code></pre>
+
+<p>Now to get on to reading the file. In some ways this one is easier and some ways more complex. The data we are looking at here is a fixed width format. This means that there is nothing to separate the columns just that they always start in the same place no matter how long the data contained in them gets.</p>
+
+<p>Unfortunately there is not a built in function to deal with this easily. So we will have to read the file line by line and then split it up our selves. Actually we will cheat a little bit and only pull out the bits we need so as not to waste time doing work we don&rsquo;t need to do.</p>
+
+<pre><code class="language-scala">  val obs = spark.read.text(observationPath)
+</code></pre>
+
+<p>Like with the JSON reader from the previous post it is very easy to read a text file in spark sql. This time we don&rsquo;t even need any options. This will create a data frame which contains each line from the file in a column called &ldquo;value&rdquo;</p>
+
+<p>The first step is always to check the data looks how you expect it to look. Use the <code>.show()</code> function to have a look at the first few rows and get a feel for how the data looks. To make our lives easier however there is some <a href="http://www.minorplanetcenter.net/iau/info/ObsFormat.html">documentation available</a> The column formats are defined in fortran format, I am pretty sure this is because that is what is used to generate the files. However it&rsquo;s a pretty simple format.</p>
+
+<p>A Means ascii and then the number following it is the number of characters allowed. e.g</p>
+
+<pre><code class="language-text">Columns     Format   Use
+    1 -  5       A5     Minor planet number
+    6 - 12       A7     Provisional or temporary designation
+   13            A1     Discovery asterisk
+</code></pre>
+
+<p>The columns are numbered from 1 rather than 0 as an array would be. Which is another thing to remember. The first thing we need to do is extract an id column. Similar to what we did with the json file. In a future post we will use this to join the two files together.</p>
+
+<p>We can use the substring function to do this. Because we are using the un-numbered file we need to be looking for the provisional to temporary designation column for the ID. We could use both and coalesce but as we know what data we are putting in we might as well keep things simple.</p>
+
+<pre><code class="language-scala">  .withColumn(&quot;id&quot;, substring(col(&quot;value&quot;), 6, 7))
+</code></pre>
+
+<p>Now the next wrinkle is that the designations are what they call packed. This means that there is a range of different meanings to the data. There is an explanation in the <a href="http://www.minorplanetcenter.net/iau/info/PackedDes.html">MPC documentation</a>. This code is best put into a function that can be tested separately.</p>
+
+<p>Create a new function. There are three main cases we need to deal with.</p>
+
+<ul>
+<li>If all the characters in the string are numbers.</li>
+<li>If the third character is a number.</li>
+<li>Any thing else.</li>
+</ul>
+
+<p>Your function should look something like this:</p>
+
+<pre><code class="language-scala">  def unpackIdFunc(in : String) : String = {
+    if (isAllDigits(in.substring(1))) {
+      trimZeroFunc(unpackNumbered(in))
+    } else if (in(2) &gt;= '0' &amp;&amp; in(2) &lt;= '9') {
+      numericId(in)
+    } else {
+      twoCharCode(in)
+    }
+  }
+</code></pre>
+
+<p>So this function takes in a string and performs out three tests before deciding how to format the result. The first detection of if its an integer is a simple function <code>isAllDigits()</code>. I&rsquo;m going to leave it, along with the <code>trimZeroFunc()</code>, as an exercise for the reader.</p>
+
+<p>The Next is the <code>unpackNumbered</code> function. This looks like this:</p>
+
+<pre><code class="language-scala">  def unpackNumbered(in : String) : String = {
+    if (in(0) &gt;= '0' &amp;&amp; in(0) &lt;= '9') {
+      in
+    } else {
+      val numeric = in.substring(1)
+      val expanded = if (in(0) &gt;= 'a' &amp;&amp; in(0) &lt;= 'z') {
+        in(0) - 'a' + 36
+      } else {
+        in(0) - 'A' + 10
+      }
+
+      expanded.toString + numeric
+    }
+  }
+</code></pre>
+
+<p>The really simple path in this function is if the first character of the string is a number. In which case we don&rsquo;t have to do anything here. If it is not a number then we need to convert the first character into a number and then append the rest of the input string. The first character uses a range from 0-9 then A-Z followed by a-z to encode numbers 0 to 61. This helps save a bit of space in the files and keeps things in a reasonable order with out having to add an extra leading zero on to the numbers (and change the column lengths) every time too many asteroids are found.</p>
+
+<p>Next up is the <code>numericId()</code> function. This one needs to pull some bits from different places and arrange them correctly.</p>
+
+<pre><code class="language-scala">  def numericId(in : String) : String = {
+    val year = unpackNumbered(in.substring(0, 3))
+    val number = trimZeroFunc(unpackNumbered(in.substring(4, 6)))
+    if (number == &quot;&quot; || number == &quot;00&quot;) {
+      year + &quot; &quot; + in(3) + in(6)
+    } else {
+      year + &quot; &quot; + in(3) + in(6) + number
+    }
+  }
+</code></pre>
+
+<p>The format consists of the year, a space, the forth character in the string, the seventh character in the string and then a packed number between the two. You can see this reuses the <code>unpackNumbered()</code> function from above.</p>
+
+<p>Last we have the <code>twoCharCode()</code> function. This one is very simple after the last one. Here we just have to unpack a number and then join it up with two characters and some spacers.</p>
+
+<pre><code class="language-scala">  def twoCharCode(in : String) : String = {
+    val number = unpackNumbered(in.substring(3))
+    number + &quot; &quot; + in(0) + &quot;-&quot; + in(1)
+  }
+</code></pre>
+
+<p>Now we have a function that will unpack the different types of id we might find in the observation file. I recommend using the examples given in the MPC documentation to create some test cases. Put them in <code>src/test/&lt;your package name&gt;</code> and you will be able to run them with <code>./gradlew test</code> or the correct button in your ide. If you have got this wrong you will get very strange results later.</p>
+
+<p>We need to turn this function <code>unpackIdFunc</code> into a user defined function (udf) so that spark knows how to use it. It will need to work out how to send the function to other computers and so on. Thankfully it does a lot of magic behind the scenes so we just need to define it.</p>
+
+<pre><code class="language-scala">val unpackId = udf(unpackIdFunc _)
+</code></pre>
+
+<p>The underscore here just means that the first parameter to the udf should be passed through to the <code>unpackIdFunc</code> function. Now we can use it in our program. Change the line we created earlier to extract the id column to call the unpackId udf.</p>
+
+<pre><code class="language-scala">  .withColumn(&quot;id&quot;, unpackId(substring(col(&quot;value&quot;), 6, 7)))
+</code></pre>
+
+<p>Nesting functions like this is very powerful and useful. You can often save your self from creating lots of temporary columns by doing this. Though it can sometimes be harder to work out what is going on.</p>
+
+<p>Our original use case was to be able to find the full date of the first observation of an object. So the next thing we need to extract is the date and time of the observation. This starts in column 16 and is 16 characters long. We will also need to create a function to convert the date from a string into an actual date object.</p>
+
+<p>The date format is a little bit weird. The Year, month and day are pretty reasonable. The first four characters are the year, the next two the month and the next two are the day. The rest of the string however is the part of the day divided into 10000 chunks. So we need to work out how many seconds we have if we take the number of seconds in a day and divide it by 10000. Then we can multiply that number by the last part of the string. Take a look at the code below it will hopefully make a little more sense.</p>
+
+<pre><code class="language-scala">  def dateFunc(in : String): Long = {
+    val year = in.substring(0, 4).toInt
+    val month = in.substring(5, 7).toInt
+    val day = in.substring(8, 10).toInt
+
+    val part = in.substring(11).replaceAll(&quot; &quot;, &quot;0&quot;).toInt
+    val seconds = Math.round(((24*60*60) * 0.00001) * part)
+
+    LocalDate.of(year, month, day).atStartOfDay()
+      .plus(seconds, ChronoUnit.SECONDS)
+      .toInstant(ZoneOffset.UTC)
+      .getEpochSecond
+  }
+</code></pre>
+
+<p>I&rsquo;ve used the java 8 date functions as they are a significant improvement over the older API. The bit to watch out for is to make sure you set the time zone to utc. Finally we return it in epoch seconds as spark doesn&rsquo;t know how to handle dates very well. It is just a lot easier to deal with the date a long. Now turn the <code>dateFunc</code> into a udf like we did with the <code>unpackIdFunc</code></p>
+
+<pre><code class="language-scala"> val dateConvert = udf(ObsUtils.dateFunc _)
+</code></pre>
+
+<p>Then add another column to our data frame.</p>
+
+<pre><code class="language-scala">  .withColumn(&quot;ts&quot;, dateConvert(substring(col(&quot;value&quot;), 16, 16)))
+</code></pre>
+
+<p>We now have the columns we need so we can try and find the minimum time stamp for each id. To do this we need to first group by the id column and then find the minimum of the ts column. We will need to use the <code>.groupBy()</code> and <code>col</code> functions for the first part. Rather inconsistently the <code>.min()</code> function does not need its column name wrapped in a col call. What we end up with should look like this:</p>
+
+<pre><code class="language-scala">val obs = spark.read.text(observationPath)
+      .withColumn(&quot;id&quot;, unpackId(substring(col(&quot;value&quot;), idStart, idLen)))
+      .withColumn(&quot;ts&quot;, dateConvert(substring(col(&quot;value&quot;), 16, 16)))
+      .groupBy(col(&quot;id&quot;))
+      .min(&quot;ts&quot;)
+</code></pre>
+
+<p>There are other aggregation functions available as you would expect. There is a <code>max</code>, <code>avg</code>, and <code>sum</code> to get you started. It is also possible to create your own.</p>
+
+<p>Now you can add a <code>obs.show(5)</code> call below it to have a look at the results you have. You should see two columns that look something like below</p>
+
+<pre><code class="language-text">+-------+-----------+
+|     id|    min(ts)|
++-------+-----------+
+|1908 OD|-1938820667|
+|1914 KA|-1755298440|
+|1927 UA|-1331164308|
+|1931 RS|-1208486322|
+|1933 DC|-1163208817|
++-------+-----------+
+only showing top 5 rows
+</code></pre>
+
+<p>The dates are not massively useful like this. Converting them back in to a human readable string requires another user defined function.</p>
+
+<pre><code class="language-scala">   def formatDateFunc(in : Long) : String = {
+    LocalDateTime.ofEpochSecond(in, 0, ZoneOffset.UTC).format(DateTimeFormatter.ISO_LOCAL_DATE_TIME)
+  }
+</code></pre>
+
+<p>This uses the built in ISO8601 date formatter. We could use any thing but might as well use the built in standard. Turn it into a UDF as usual.</p>
+
+<pre><code class="language-scala">  val formatDate = udf(ObsUtils.formatDateFunc _)
+</code></pre>
+
+<p>Last we need to use this to format the ts column. We can use the <code>.withColumn()</code> function like before. But this time we are also going to use the <code>.select()</code> function to remove the min(ts) column that we don&rsquo;t need any more. This can be very useful if you only need a few columns in a large data set. Also note that we had to call the ts column min(ts) now as it has had its name changed by the min function.</p>
+
+<pre><code class="language-scala">  .withColumn(&quot;date&quot;, formatDate(col(&quot;min(ts)&quot;)))
+  .select(&quot;id&quot;, &quot;date&quot;)
+</code></pre>
+
+<p>If you now run <code>obs.show(5)</code> you should get something like</p>
+
+<pre><code class="language-text">+-------+-------------------+
+|     id|               date|
++-------+-------------------+
+|1908 OD|1908-07-24T22:42:13|
+|1914 KA|1914-05-19T01:06:00|
+|1927 UA|1927-10-27T00:08:12|
+|1931 RS|1931-09-15T21:21:18|
+|1933 DC|1933-02-20T22:26:23|
++-------+-------------------+
+only showing top 5 rows
+</code></pre>
+
+<h1 id="conclusion">Conclusion</h1>
+
+<p>In this post we have learnt to read a text file, pull the bits out of the lines that we need, create user defined functions to handle more complex processing of columns, group by columns, perform aggregations, and select columns. This will hopefully leave you in pretty good stead for processing data.  We will join up these two data sets in the next post.</p>
+
+<p>If you found this interesting or you have any questions please let me know on twitter.</p>
+
+    </section>
+
+
+  <footer class="post-footer">
+
+
+    
+
+
+
+
+
+
+
+
+<figure class="author-image">
+    <a class="img" href="http://parsecsreach.com" style="background-image: url(/img/profilePic.jpg)"><span class="hidden">Wil Selwood's Picture</span></a>
+</figure>
+
+
+<section class="author">
+  <h4><a href="http://parsecsreach.com">Wil Selwood</a></h4>
+  
+  <p>Software Engineer - Sort of full stack but not the normal stack</p>
+  
+  <div class="author-meta">
+    <span class="author-location icon-location">Oxfordshire, UK</span>
+    <span class="author-link icon-link"><a href="http://parsecsreach.com">http://parsecsreach.com</a></span>
+  </div>
+</section>
+
+
+
+
+    
+<section class="share">
+  <h4>Share this post</h4>
+  <a class="icon-twitter" style="font-size: 1.4em" href="https://twitter.com/share?text=Spark%20and%20the%20Minor%20Planet%20Center%20data%20part%202&nbsp;-&nbsp;Parsecs%20Reach&amp;url=http%3a%2f%2fparsecsreach.com%2fpost%2fspark_and_mpc_part_2%2f"
+      onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
+      <span class="hidden">Twitter</span>
+  </a>
+  <a class="icon-facebook" style="font-size: 1.4em" href="https://www.facebook.com/sharer/sharer.php?u=http%3a%2f%2fparsecsreach.com%2fpost%2fspark_and_mpc_part_2%2f"
+      onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;">
+      <span class="hidden">Facebook</span>
+  </a>
+  <a class="icon-google-plus" style="font-size: 1.4em" href="https://plus.google.com/share?url=http%3a%2f%2fparsecsreach.com%2fpost%2fspark_and_mpc_part_2%2f"
+     onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;">
+      <span class="hidden">Google+</span>
+  </a>
+</section>
+
+
+
+    
+
+
+
+
+
+  </footer>
+</article>
+
+</main>
+
+
+  <aside class="read-next">
+  
+  
+      <a class="read-next-story prev" style="background-image: url(/img/fire.jpg)" href="/post/spark_and_mpc/">
+          <section class="post">
+              <h2>Spark and the Minor Planet Center data</h2>
+          </section>
+      </a>
+  
+</aside>
+
+
+
+    <footer class="site-footer clearfix">
+        <section class="copyright"><a href="">Parsecs Reach</a> All rights reserved - 2017</section>
+        
+        <section class="poweredby">Proudly generated by <a class="icon-hugo" href="http://gohugo.io">HUGO</a>, with <a class="icon-theme" href="https://github.com/vjeantet/hugo-theme-casper">Casper</a> theme</section>
+        
+    </footer>
+    </div>
+    <script type="text/javascript" src="/js/jquery.js"></script>
+    <script type="text/javascript" src="/js/jquery.fitvids.js"></script>
+    <script type="text/javascript" src="/js/index.js"></script>
+    
+</body>
+</html>
+

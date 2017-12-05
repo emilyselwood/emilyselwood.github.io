@@ -7,10 +7,20 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>All rights reserved - 2017</copyright>
-    <lastBuildDate>Sat, 02 Dec 2017 08:55:24 +0000</lastBuildDate>
+    <lastBuildDate>Sun, 03 Dec 2017 15:39:22 +0000</lastBuildDate>
     
 	<atom:link href="http://parsecsreach.com/tags/asteroids/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Spark and the Minor Planet Center data part 2</title>
+      <link>http://parsecsreach.com/post/spark_and_mpc_part_2/</link>
+      <pubDate>Sun, 03 Dec 2017 15:39:22 +0000</pubDate>
+      
+      <guid>http://parsecsreach.com/post/spark_and_mpc_part_2/</guid>
+      <description>In the last post we read the minor planet center orbit file. This was a JSON text file. This time we are going to look at a bit more complex file to process. If you haven&amp;rsquo;t read the first post in this series I recommend starting there before reading this.
+In this post we are going to be looking at the Observation file. There are two parts to this file.</description>
+    </item>
     
     <item>
       <title>Spark and the Minor Planet Center data</title>
