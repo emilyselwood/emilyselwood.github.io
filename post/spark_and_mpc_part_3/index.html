@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+
+    
+    
+        
+        <meta name="twitter:card" content="summary_large_image"/>
+        <meta name="twitter:image" content="/img/fire3.jpg"/>
+    
+
+
+
+<meta name="twitter:title" content="Spark and the Minor Planet Center data part 3"/>
+<meta name="twitter:description" content=""/>
+<meta name="twitter:site" content="@wilselwood"/>
+
+
+
+  	<meta property="og:title" content="Spark and the Minor Planet Center data part 3 &middot; Parsecs Reach" />
+  	<meta property="og:site_name" content="Parsecs Reach" />
+  	<meta property="og:url" content="http://parsecsreach.com/post/spark_and_mpc_part_3/" />
+
+    
+       <meta property="og:image" content="/img/fire3.jpg"/>
+    
+
+    
+    <meta property="og:description" content="" />
+  	<meta property="og:type" content="article" />
+    <meta property="article:published_time" content="2017-12-05T19:39:29Z" />
+
+    
+    <meta property="article:tag" content="spark" />
+    
+    <meta property="article:tag" content="minor planet center" />
+    
+    <meta property="article:tag" content="asteroids" />
+    
+    
+
+    <title>Spark and the Minor Planet Center data part 3 &middot; Parsecs Reach</title>
+
+    
+    <meta name="description" content="In the last post we read the minor planet center observation file. This was a fixed width text file. We only pulled a couple of columns out of it, but we learnt" />
+    
+
+    <meta name="HandheldFriendly" content="True" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <link rel="shortcut icon" href="/images/favicon.ico">
+	  <link rel="apple-touch-icon" href="/images/apple-touch-icon.png" />
+
+    <link rel="stylesheet" type="text/css" href="/css/screen.css" />
+    <link rel="stylesheet" type="text/css" href="/css/nav.css" />
+
+    
+
+    
+        <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.8.0/styles/default.min.css">
+        <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.8.0/highlight.min.js"></script>
+        
+        <script>hljs.initHighlightingOnLoad();</script>
+    
+
+    
+      
+          <link href="/index.xml" rel="alternate" type="application/rss+xml" title="Parsecs Reach" />
+      
+      
+    
+    <meta name="generator" content="Hugo 0.31.1" />
+
+    <link rel="canonical" href="http://parsecsreach.com/post/spark_and_mpc_part_3/" />
+
+    
+      
+    
+    <script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "publisher": {
+        "@type": "Organization",
+        "name": 
+    },
+    "author": {
+        "@type": "Person",
+        "name": ,
+        
+        "url": http://parsecsreach.com,
+        "sameAs": [
+            
+            
+             
+             
+             
+             
+             
+            
+        ],
+        "description": Software Engineer - Sort of full stack but not the normal stack
+        
+    },
+    "headline": Spark and the Minor Planet Center data part 3,
+    "name": Spark and the Minor Planet Center data part 3,
+    "wordCount": 1045,
+    "timeRequired": "PT5M",
+    "inLanguage": {
+      "@type": "Language",
+      "alternateName": en
+    },
+    "url": http://parsecsreach.com/post/spark_and_mpc_part_3/,
+    "datePublished": 2017-12-05T19:39Z,
+    "dateModified": 2017-12-05T19:39Z,
+    
+    "image": {
+        "@type": "ImageObject",
+        "url": http://parsecsreach.comimg/fire3.jpg,
+        "width": 3000,
+        "height": 1445
+    },
+    
+    "keywords": spark, minor planet center, asteroids,
+    "description": ,
+    "mainEntityOfPage": {
+        "@type": "WebPage",
+        "@id": http://parsecsreach.com/post/spark_and_mpc_part_3/
+    }
+}
+    </script>
+    
+
+
+    
+
+    
+
+      
+      <script async src="https://www.googletagmanager.com/gtag/js?id=UA-89365253-1"></script>
+      <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'UA-89365253-1');
+      </script>
+
+    
+
+    
+</head>
+<body class="nav-closed">
+
+  <div class="nav">
+    <h3 class="nav-title">Menu</h3>
+    <a href="#" class="nav-close">
+        <span class="hidden">Close</span>
+    </a>
+    <ul>
+        
+        
+            
+                
+                <li class="nav-opened" role="presentation">
+                    <a href="/">Home</a>
+                </li>
+            
+                
+                <li class="nav-opened" role="presentation">
+                    <a href="/about">About me</a>
+                </li>
+            
+        
+        
+          
+        
+          
+             
+            <li><a href="/tags/asteroids"># asteroids ( 3 )</a></li>  
+             
+            <li><a href="/tags/introduction"># introduction ( 1 )</a></li>  
+             
+            <li><a href="/tags/minor-planet-center"># minor-planet-center ( 3 )</a></li>  
+             
+            <li><a href="/tags/spark"># spark ( 3 )</a></li>  
+            
+          
+        
+    </ul>
+
+    
+        <a class="subscribe-button icon-feed" href="/index.xml">Subscribe</a>
+    
+</div>
+<span class="nav-cover"></span>
+
+
+ <div class="site-wrapper">
+
+
+
+  
+  <header class="main-header post-head" style="background-image: url(/img/fire3.jpg)">
+  
+  <nav class="main-nav overlay clearfix">
+
+
+  
+  
+      <a class="menu-button" href="#"><span class="burger">&#9776;</span><span class="word">Menu</span></a>
+  
+  </nav>
+</header>
+
+
+
+<main class="content" role="main">
+
+
+
+
+  <article class="post post">
+
+    <header class="post-header">
+        <h1 class="post-title">Spark and the Minor Planet Center data part 3</h1>
+        <small></small>
+
+        <section class="post-meta">
+        
+          <time class="post-date" datetime="2017-12-05T19:39:29Z">
+            Dec 5, 2017
+          </time>
+        
+         
+          <span class="post-tag small"><a href="http://parsecsreach.com/tags/spark/">#spark</a></span>
+         
+          <span class="post-tag small"><a href="http://parsecsreach.com/tags/minor-planet-center/">#minor planet center</a></span>
+         
+          <span class="post-tag small"><a href="http://parsecsreach.com/tags/asteroids/">#asteroids</a></span>
+         
+        </section>
+    </header>
+
+    <section class="post-content">
+      
+
+<p>In the <a href="/post/spark_and_mpc_part_2">last post</a> we read the minor planet center observation file. This was a fixed width text file. We only pulled a couple of columns out of it, but we learnt to use User Defined Functions, groupBy and select. In the <a href="/post/spark_and_mpc">first post</a> of this series we covered reading a json file which contained information about all the asteroids we know about.</p>
+
+<p>This time we are going to join the two data sets together and finally solve our original problem, which was to find the full date of the earliest observation of each un-numbered object. The json file we first looked at contained the year but not days and months. The observation file has the full date down to smaller than minutes accuracy, but it does not have the orbital parameters.</p>
+
+<p>So we need to join the two files up to get our results.</p>
+
+<h1 id="assumptions">Assumptions</h1>
+
+<p>You have been through the previous posts in this series and understood them. You have a project already set up and able to read and process the orbit and observation files.</p>
+
+<h1 id="setup">Setup</h1>
+
+<p>As you should already have the project and the two required data files you are already set up.</p>
+
+<h1 id="development">Development</h1>
+
+<p>Thankfully Spark SQL makes this bit really easy. the <code>.join()</code> function on a data set allows you do all the kinds of joins you could do in a database. For this we need a simple inner join, which is the default option so you won&rsquo;t see us having to define it in the code below.</p>
+
+<pre><code class="language-scala">val joined = orbRec.join(obs, Seq(&quot;id&quot;, &quot;id&quot;))
+</code></pre>
+
+<p>There is not a lot of difference in which way around you do this from the results point of view. There may be differences in performance but that will depend on your data set. In this case with the minor planets data it doesn&rsquo;t really matter which way around we do it. If you now add a <code>joined.show(2)</code> line you will be able to see the columns from both data sets are now next to each other.</p>
+
+<p>There are several ways to tell Spark SQL that you want to match the two id columns up. <code>Seq(&quot;id&quot;, &quot;id&quot;)</code> is probably the simplest but you can also do something like <code>obs.col(&quot;id&quot;).equalTo(orbRec.col(&quot;id&quot;))</code> This is really useful if you want to use something that is not a simple equals when joining.</p>
+
+<p>Now we don&rsquo;t really want all those columns in the output so we can add a <code>.select()</code> call to clean things up a bit.</p>
+
+<pre><code class="language-scala">  .select(
+    obs.col(&quot;id&quot;),
+    col(&quot;Name&quot;),
+    col(&quot;date&quot;),
+    col(&quot;a&quot;),
+    col(&quot;e&quot;),
+    col(&quot;i&quot;),
+    col(&quot;Epoch&quot;),
+    col(&quot;H&quot;),
+    col(&quot;G&quot;),
+    col(&quot;Node&quot;),
+    col(&quot;Peri&quot;)
+  )
+</code></pre>
+
+<p>Unfortunately for me at this point things went bang. I got an exception about the query plan being too big. My first attempt at fixing this was adding a <code>.select()</code> call to the orbRec processing chain to trim down the number of columns. This didn&rsquo;t work. In fact I think it made things worse. The query plan is now longer.</p>
+
+<p>The solution is to add checkpoints. Checkpoints allow spark sql to split the query plan in to bits. The checkpoints are written to disk and persistent. This is also useful if you need to reuse a data frame multiple times but it is expensive to compute.</p>
+
+<p>The first thing we need to do is define where to put the checkpoint files. Just under where we create the <code>SparkSession</code> we need to add</p>
+
+<pre><code class="language-scala">spark.sparkContext.setCheckpointDir(&quot;/tmp/&quot;)
+</code></pre>
+
+<p>This will cause spark to store its checkpoint data in <code>/tmp</code> you may want to put it somewhere different depending on what you are running on. Now we just need to tell spark where to checkpoint. This is done with the <code>.checkpoint()</code> function. I tend to find it best to checkpoint before both sides of a join and any time you are going to reuse a data frame.</p>
+
+<p>We simply need to add the call to <code>.checkpoint()</code> at the end of the two chains we defined for <code>orbRec</code> and <code>obs</code>. Now when we run <code>joined.show(2)</code> we should get something like</p>
+
+<pre><code class="language-text">+---------+----+-------------------+---------+---------+-------+---------+----+----+---------+---------+
+|       id|Name|               date|        a|        e|      i|    Epoch|   H|   G|     Node|     Peri|
++---------+----+-------------------+---------+---------+-------+---------+----+----+---------+---------+
+|1995 SR42|null|1995-09-20T09:21:27|2.3527416|0.1811627|2.01897|2449980.5|19.0|0.15|117.61112|171.74016|
+|  1996 LW|null|1996-06-09T07:21:53|2.1578017|0.2848271|7.64274|2450240.5|19.5|0.15|194.61088| 128.2009|
++---------+----+-------------------+---------+---------+-------+---------+----+----+---------+---------+
+only showing top 2 rows
+</code></pre>
+
+<p>Now the only thing left to do is write the data back out to disk. Here we will run into one of the interesting design problems of running spark locally.</p>
+
+<p>Saving data as a csv file is as easy as reading a file. You just need a <code>write</code> rather than a <code>read</code></p>
+
+<pre><code class="language-scala">  joined.write.mode(SaveMode.Overwrite).csv(&quot;output&quot;)
+</code></pre>
+
+<p>Note the lack of file extension on the target name. This is because <code>output</code> will be a folder and not a file. Under the hood spark will split the data frame into partitions. These are basically groups of rows that will all be on the same machine in a clustered environment. In our environment every thing is on the one machine, however in a cluster you would get one <code>output</code> directory on each machine with the partitions that were on that machine written out.</p>
+
+<p>After running the program, inside the <code>output</code> folder you will find a large number of files. There will be a <code>_SUCCESS</code> file created when every thing has finished. There will be one <code>part-*.csv</code> file and one <code>.part-*.csv.crc</code> file per partition in your data. The file ending in .crc is a checksum allowing you to verify that the data has written correctly if you need it. The files ending in .csv will be all the data you asked Spark SQL to write out.</p>
+
+<p>The last step is to join every thing up. I find this easiest to do from the command line. (I&rsquo;m on a linux machine with bash)</p>
+
+<pre><code class="language-bash">cat output/part-*.csv &gt; output.csv
+</code></pre>
+
+<p>This will generate an output.csv file which is all the parts joined together. Note that you will not be able to control the order of the rows using this.</p>
+
+<p>And there we go. We now have the orbital elements for all the un-numbered objects with the date of their first observation. In this part we have learnt how to join to data frames together and how to output data. This part has been a bit shorter than the others but joins every thing together. (Pun intended)</p>
+
+<p>You can find all the code for this <a href="https://github.com/wselwood/orbitdates">project on my github</a></p>
+
+<p>I hope this is useful to you. If you have any questions please let me know on twitter.</p>
+
+    </section>
+
+
+  <footer class="post-footer">
+
+
+    
+
+
+
+
+
+
+
+
+<figure class="author-image">
+    <a class="img" href="http://parsecsreach.com" style="background-image: url(/img/profilePic.jpg)"><span class="hidden">Wil Selwood's Picture</span></a>
+</figure>
+
+
+<section class="author">
+  <h4><a href="http://parsecsreach.com">Wil Selwood</a></h4>
+  
+  <p>Software Engineer - Sort of full stack but not the normal stack</p>
+  
+  <div class="author-meta">
+    <span class="author-location icon-location">Oxfordshire, UK</span>
+    <span class="author-link icon-link"><a href="http://parsecsreach.com">http://parsecsreach.com</a></span>
+  </div>
+</section>
+
+
+
+
+    
+<section class="share">
+  <h4>Share this post</h4>
+  <a class="icon-twitter" style="font-size: 1.4em" href="https://twitter.com/share?text=Spark%20and%20the%20Minor%20Planet%20Center%20data%20part%203&nbsp;-&nbsp;Parsecs%20Reach&amp;url=http%3a%2f%2fparsecsreach.com%2fpost%2fspark_and_mpc_part_3%2f"
+      onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
+      <span class="hidden">Twitter</span>
+  </a>
+  <a class="icon-facebook" style="font-size: 1.4em" href="https://www.facebook.com/sharer/sharer.php?u=http%3a%2f%2fparsecsreach.com%2fpost%2fspark_and_mpc_part_3%2f"
+      onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;">
+      <span class="hidden">Facebook</span>
+  </a>
+  <a class="icon-google-plus" style="font-size: 1.4em" href="https://plus.google.com/share?url=http%3a%2f%2fparsecsreach.com%2fpost%2fspark_and_mpc_part_3%2f"
+     onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;">
+      <span class="hidden">Google+</span>
+  </a>
+</section>
+
+
+
+    
+
+
+
+
+
+  </footer>
+</article>
+
+</main>
+
+
+  <aside class="read-next">
+  
+  
+      <a class="read-next-story prev" style="background-image: url(/img/fire2.jpg)" href="/post/spark_and_mpc_part_2/">
+          <section class="post">
+              <h2>Spark and the Minor Planet Center data part 2</h2>
+          </section>
+      </a>
+  
+</aside>
+
+
+
+    <footer class="site-footer clearfix">
+        <section class="copyright"><a href="">Parsecs Reach</a> All rights reserved - 2017</section>
+        
+        <section class="poweredby">Proudly generated by <a class="icon-hugo" href="http://gohugo.io">HUGO</a>, with <a class="icon-theme" href="https://github.com/vjeantet/hugo-theme-casper">Casper</a> theme</section>
+        
+    </footer>
+    </div>
+    <script type="text/javascript" src="/js/jquery.js"></script>
+    <script type="text/javascript" src="/js/jquery.fitvids.js"></script>
+    <script type="text/javascript" src="/js/index.js"></script>
+    
+</body>
+</html>
+

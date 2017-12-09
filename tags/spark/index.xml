@@ -7,10 +7,20 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>All rights reserved - 2017</copyright>
-    <lastBuildDate>Sun, 03 Dec 2017 15:39:22 +0000</lastBuildDate>
+    <lastBuildDate>Tue, 05 Dec 2017 19:39:29 +0000</lastBuildDate>
     
 	<atom:link href="http://parsecsreach.com/tags/spark/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Spark and the Minor Planet Center data part 3</title>
+      <link>http://parsecsreach.com/post/spark_and_mpc_part_3/</link>
+      <pubDate>Tue, 05 Dec 2017 19:39:29 +0000</pubDate>
+      
+      <guid>http://parsecsreach.com/post/spark_and_mpc_part_3/</guid>
+      <description>In the last post we read the minor planet center observation file. This was a fixed width text file. We only pulled a couple of columns out of it, but we learnt to use User Defined Functions, groupBy and select. In the first post of this series we covered reading a json file which contained information about all the asteroids we know about.
+This time we are going to join the two data sets together and finally solve our original problem, which was to find the full date of the earliest observation of each un-numbered object.</description>
+    </item>
     
     <item>
       <title>Spark and the Minor Planet Center data part 2</title>
