@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Raster on Parsecs Reach</title>
+    <link>http://parsecsreach.com/tags/raster/</link>
+    <description>Recent content in Raster on Parsecs Reach</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>All rights reserved - 2017</copyright>
+    <lastBuildDate>Fri, 26 Jan 2018 21:58:30 +0000</lastBuildDate>
+    
+	<atom:link href="http://parsecsreach.com/tags/raster/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Finding flatroofs with QGIS</title>
+      <link>http://parsecsreach.com/post/flatroofs_with_qgis/</link>
+      <pubDate>Fri, 26 Jan 2018 21:58:30 +0000</pubDate>
+      
+      <guid>http://parsecsreach.com/post/flatroofs_with_qgis/</guid>
+      <description>A little while ago I attended the Climathon kic event/hackathon in bristol at my old university. The event was to come up with solutions that could help with pollution in bristol. There were not a lot of people who turned up so we formed a single team. The idea we came up with was to create an incentive for people with flat roofs to put plants on them. This meant we needed to be able to find flat roofs in the city.</description>
+    </item>
+    
+  </channel>
+</rss>

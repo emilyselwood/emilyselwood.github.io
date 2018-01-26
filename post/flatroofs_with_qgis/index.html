@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+
+    
+    
+        
+        <meta name="twitter:card" content="summary_large_image"/>
+        <meta name="twitter:image" content="/img/dem.png"/>
+    
+
+
+
+<meta name="twitter:title" content="Finding flatroofs with QGIS"/>
+<meta name="twitter:description" content=""/>
+<meta name="twitter:site" content="@wilselwood"/>
+
+
+
+  	<meta property="og:title" content="Finding flatroofs with QGIS &middot; Parsecs Reach" />
+  	<meta property="og:site_name" content="Parsecs Reach" />
+  	<meta property="og:url" content="http://parsecsreach.com/post/flatroofs_with_qgis/" />
+
+    
+       <meta property="og:image" content="/img/dem.png"/>
+    
+
+    
+    <meta property="og:description" content="" />
+  	<meta property="og:type" content="article" />
+    <meta property="article:published_time" content="2018-01-26T21:58:30Z" />
+
+    
+    <meta property="article:tag" content="qgis" />
+    
+    <meta property="article:tag" content="raster" />
+    
+    <meta property="article:tag" content="geography" />
+    
+    
+
+    <title>Finding flatroofs with QGIS &middot; Parsecs Reach</title>
+
+    
+    <meta name="description" content="A little while ago I attended the Climathon kic event/hackathon in bristol at my old university. The event was to come up with solutions that could help with po" />
+    
+
+    <meta name="HandheldFriendly" content="True" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <link rel="shortcut icon" href="/images/favicon.ico">
+	  <link rel="apple-touch-icon" href="/images/apple-touch-icon.png" />
+
+    <link rel="stylesheet" type="text/css" href="/css/screen.css" />
+    <link rel="stylesheet" type="text/css" href="/css/nav.css" />
+
+    
+
+    
+        <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.8.0/styles/default.min.css">
+        <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.8.0/highlight.min.js"></script>
+        
+        <script>hljs.initHighlightingOnLoad();</script>
+    
+
+    
+      
+          <link href="/index.xml" rel="alternate" type="application/rss+xml" title="Parsecs Reach" />
+      
+      
+    
+    <meta name="generator" content="Hugo 0.34" />
+
+    <link rel="canonical" href="http://parsecsreach.com/post/flatroofs_with_qgis/" />
+
+    
+      
+    
+    <script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "publisher": {
+        "@type": "Organization",
+        "name": 
+    },
+    "author": {
+        "@type": "Person",
+        "name": ,
+        
+        "url": http://parsecsreach.com,
+        "sameAs": [
+            
+            
+             
+             
+             
+             
+             
+            
+        ],
+        "description": Software Engineer - Sort of full stack but not the normal stack
+        
+    },
+    "headline": Finding flatroofs with QGIS,
+    "name": Finding flatroofs with QGIS,
+    "wordCount": 1946,
+    "timeRequired": "PT10M",
+    "inLanguage": {
+      "@type": "Language",
+      "alternateName": en
+    },
+    "url": http://parsecsreach.com/post/flatroofs_with_qgis/,
+    "datePublished": 2018-01-26T21:58Z,
+    "dateModified": 2018-01-26T21:58Z,
+    
+    "image": {
+        "@type": "ImageObject",
+        "url": http://parsecsreach.comimg/dem.png,
+        "width": 3000,
+        "height": 1445
+    },
+    
+    "keywords": qgis, raster, geography,
+    "description": ,
+    "mainEntityOfPage": {
+        "@type": "WebPage",
+        "@id": http://parsecsreach.com/post/flatroofs_with_qgis/
+    }
+}
+    </script>
+    
+
+
+    
+
+    
+
+      
+      <script async src="https://www.googletagmanager.com/gtag/js?id=UA-89365253-1"></script>
+      <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'UA-89365253-1');
+      </script>
+
+    
+
+    
+</head>
+<body class="nav-closed">
+
+  <div class="nav">
+    <h3 class="nav-title">Menu</h3>
+    <a href="#" class="nav-close">
+        <span class="hidden">Close</span>
+    </a>
+    <ul>
+        
+        
+            
+                
+                <li class="nav-opened" role="presentation">
+                    <a href="/">Home</a>
+                </li>
+            
+                
+                <li class="nav-opened" role="presentation">
+                    <a href="/about">About me</a>
+                </li>
+            
+        
+        
+          
+        
+          
+             
+            <li><a href="/tags/asteroids"># asteroids ( 3 )</a></li>  
+             
+            <li><a href="/tags/geography"># geography ( 1 )</a></li>  
+             
+            <li><a href="/tags/introduction"># introduction ( 1 )</a></li>  
+             
+            <li><a href="/tags/minor-planet-center"># minor-planet-center ( 3 )</a></li>  
+             
+            <li><a href="/tags/qgis"># qgis ( 1 )</a></li>  
+             
+            <li><a href="/tags/raster"># raster ( 1 )</a></li>  
+             
+            <li><a href="/tags/spark"># spark ( 3 )</a></li>  
+            
+          
+        
+    </ul>
+
+    
+        <a class="subscribe-button icon-feed" href="/index.xml">Subscribe</a>
+    
+</div>
+<span class="nav-cover"></span>
+
+
+ <div class="site-wrapper">
+
+
+
+  
+  <header class="main-header post-head" style="background-image: url(/img/dem.png)">
+  
+  <nav class="main-nav overlay clearfix">
+
+
+  
+  
+      <a class="menu-button" href="#"><span class="burger">&#9776;</span><span class="word">Menu</span></a>
+  
+  </nav>
+</header>
+
+
+
+<main class="content" role="main">
+
+
+
+
+  <article class="post post">
+
+    <header class="post-header">
+        <h1 class="post-title">Finding flatroofs with QGIS</h1>
+        <small></small>
+
+        <section class="post-meta">
+        
+          <time class="post-date" datetime="2018-01-26T21:58:30Z">
+            Jan 26, 2018
+          </time>
+        
+         
+          <span class="post-tag small"><a href="http://parsecsreach.com/tags/qgis/">#qgis</a></span>
+         
+          <span class="post-tag small"><a href="http://parsecsreach.com/tags/raster/">#raster</a></span>
+         
+          <span class="post-tag small"><a href="http://parsecsreach.com/tags/geography/">#geography</a></span>
+         
+        </section>
+    </header>
+
+    <section class="post-content">
+      
+
+<p>A little while ago I attended the Climathon kic event/hackathon in bristol at my old university. The event was to come up with solutions that could help with pollution in bristol. There were not a lot of people who turned up so we formed a single team. The idea we came up with was to create an incentive for people with flat roofs to put plants on them. This meant we needed to be able to find flat roofs in the city. There were suggestions that we could do this with machine learning and looking at satellite images, but I thought we could do this with the Free LIDAR data provided by the environment agency and a few steps of processing.</p>
+
+<h1 id="assumptions">Assumptions</h1>
+
+<p>You have a computer with <a href="https://www.qgis.org/en/site/">QGIS</a> <a href="https://www.qgis.org/en/site/forusers/index.html">installed</a> You have a few hundred meg to a gigabyte of free storage.</p>
+
+<h1 id="background">Background</h1>
+
+<p>There are two sets of data that we are going to need for this. One is the DSM and the other DTM. DSM stands for Digital Surface Model. DTM stands for Digital Terrain Model. These data sets are generated by an aircraft flying over an area with a laser system on the back. This laser is used to measure the distance from the plane to the ground around. This is then processed to build a height model of the world. The DSM is what the laser measured. It includes all the buildings, trees, lamp posts and other things that stick up from the ground. The DTM is further processed to remove these things and leave only the ground.</p>
+
+<h1 id="downloading-the-data">Downloading the data</h1>
+
+<p>The <a href="http://environment.data.gov.uk/ds/survey/index.jsp#/survey">environment agency data website</a> takes a little bit of getting used to but mostly makes sense eventually. You scroll the map and then click on the area you are interested in. This will bring up information at the bottom of the screen. There are two sets 2 meter and 1 meter. We want the 1 meter, as it will give us a better result, though the data will be bigger. The data for each square is split into four parts. North West, North East, South West, South East. If you are interested in a smaller area you can just download the bits you need. For some reason the only way to tell which one you are downloading is the address of the download on the right hand side of the table.</p>
+
+<p>Click the link and download the file. The extract the zip files somewhere. Make sure that each zip file is extracted to its own directory. E.g:</p>
+
+<pre><code class="language-text">data/
+  dsm/
+    LIDAR-DSM-1M-ST67nw/
+      ...
+  dtm/
+    LIDAR-DTM-1M-ST67nw/
+      ...
+</code></pre>
+
+<h1 id="processing">Processing</h1>
+
+<p>Now to start loading things up in QGIS. The first thing to do is join up the images so they are one image and not lots of small chunks. This will just mean we have to do less work later. Go to the <code>Raster</code> menu then <code>Miscellaneous</code> and <code>Merge</code>. This will pop up a window that looks like this:</p>
+
+<p><img src="/img/flatroofs/screenshot_merge.png" alt="Merge dialog" /></p>
+
+<p>The first thing to do is tick the box for input directories instead of files. This will allow you to select a directory rather than each file individually. Select one of the DSM directories you extracted. Set the output file to a tif. I tend to make it the same name as the folder I selected so I know which one is which if I&rsquo;m doing more than one.</p>
+
+<p>We didn&rsquo;t need to set anything else, so press the <code>Ok</code> button. When it is done it will open it in the viewer. You will see a black and white image something like this:</p>
+
+<p><img src="/img/flatroofs/merge_result.png" alt="Merge Result" /></p>
+
+<p>The next step is to re-project this image. The British government uses its own coordinate system. If we want to use this with other things its a lot easier if we convert it to a more common projection. Map projections are a very involved topic that is way beyond the scope of this post. If your interested there are many good resources out there. If you just want to get something done carry on reading. Go to the <code>Raster &gt; Projections &gt; Warp (Reproject)</code> This will bring up a dialog that looks like this:</p>
+
+<p><img src="/img/flatroofs/screenshot_warp.png" alt="Merge dialog" /></p>
+
+<p>Tick the box next to the <code>Target SRS</code> entry, then press the select button. There should be a big list of possible projections. Find the one labelled <code>WGS 84</code> or <code>EPSG 4326</code> On the warp dialog fill in an output name. I usually append <code>_warp</code> or <code>_repo</code> to the name. Press <code>OK</code> and it should load a new image over the top of the old one. This is one of those things that will not appear to be any different if every thing went well. However it will make things easier later.</p>
+
+<p>Next repeat the process for the DTM. Merge the images together and warp them into WGS 84 projection.</p>
+
+<p>Now we have two merged and warped images.</p>
+
+<p>The next step is to subtract the two images. This will leave us with all the things that stick up from the ground. To do this we need to use the Raster Calculator Tool. Select <code>Raster &gt; Raster Calculator</code> from the menu.</p>
+
+<p><img src="/img/flatroofs/screenshot_raster_calc.png" alt="Raster Calculator" /></p>
+
+<p>This screen is really very powerful but also intimidating to start with. Upper left are all the images you have loaded up in QGis so far. On the upper right is the output format options. The important one is the file name (You have to select one or nothing will happen) also make sure that the output CRS lists WGS 84.</p>
+
+<p>The bottom section is a formula editor. This works a lot like an excel formula but rather than applying to cells it will apply to every pixel in the images.</p>
+
+<p>What we need to do here is take the DTM away from the DSM. If you double click on a band name in the box on the upper left it will add it to the calculation. So double click on the DSM Image. Click on the minus button in the collection of operators. Finally Double click on the DTM Image.</p>
+
+<p>Hopefully if every thing went well it will say <code>Expression Valid</code> underneath the formula editor. Pick an output file name and press <code>ok</code>.</p>
+
+<p>You should now have an image with a black background and gray and white buildings showing.</p>
+
+<p><img src="/img/flatroofs/screenshot_dsm-dtm.png" alt="DSM - DTM" /></p>
+
+<p>This gives us a pretty good idea of buildings. Some filtering by object size would probably give a good set of building outlines at this point. However we want to find flat roofs. So we need a couple more steps.</p>
+
+<p>The next thing is to work out how sloped each pixel is. Thankfully QGIS makes this very easy. There is a handy set of tools built in for handling DEM (Digital Elevation Model) data sets. Which this is one of. Select <code>Raster &gt; Analysis &gt; DEM (Terrain Models)</code> from the menu.</p>
+
+<p><img src="/img/flatroofs/screenshot_dem.png" alt="DEM" /></p>
+
+<p>As usual pick an output file name. Make sure you don&rsquo;t overwrite the source image here. We will need it later. Also make sure the correct <code>Input file</code> is selected if you have more than one open. We need the subtracted image we just generated here.</p>
+
+<p>In the mode drop down select <code>Slope</code> then press <code>OK</code></p>
+
+<p>If you zoom in you should find lots of white lines around the walls of buildings (vertical slopes) and black between buildings. Some of the buildings will be black in the middle too. These are the ones we want to find.</p>
+
+<p><img src="/img/flatroofs/screenshot_slope.png" alt="Slope" /></p>
+
+<p>Next we want to find all the places that are off the ground and not sloped. To do this we use the Raster Calculator again. This time we want to create a boolean (zero or one) image where the dsm-dtm image is greater than 3 and the slope image is less than 20 (its in degrees)</p>
+
+<p><img src="/img/flatroofs/screenshot_raster_calc2.png" alt="Slope" /></p>
+
+<p>The formula is:</p>
+
+<p><code>&quot;LIDAR-1M-ST67NW-DSM-DTM@1&quot; &gt; 3  AND &quot;LIDAR-1M-ST67NW-SLOPE@1&quot; &lt; 20</code></p>
+
+<p>The thresholds for this can be changed if you find they don&rsquo;t quite work for your area. I was working with Bristol. This will create a purely black and white image. Some bits will be quite speckled with some blobs. If you change the enabled layers in the layers panel you can probably start to work out what somethings are. The thin lines are often the peaks of pitched roofs. Dense Speckles are often trees.</p>
+
+<p><img src="/img/flatroofs/screenshot_flat.png" alt="Flat areas off the ground" /></p>
+
+<p>To be able to use this we are going to have to clean up the data a lot. Todo that we can use the Sieve tool. Go to <code>Raster &gt; Analysis &gt; Sieve</code></p>
+
+<p><img src="/img/flatroofs/screenshot_sieve.png" alt="Slope" /></p>
+
+<p>Make sure the right input file is selected then pick an output file. Tick the box next to threshold and enter 25. Again this is changeable. I found this to be a reasonable size that avoided too many long roof peaks showing up in the results. Have a play and see how things come out for your area.</p>
+
+<p>Press ok. You may be lucky here and have a nice image right off the bat here. However when I did this QGIS picked some very odd values for the colour range so I ended up with an entirely black screen. This is very easy to fix. Double click on the layer in the layer panel and you should get properties for that layer appearing. Go to the style section. It should be set to single band gray and there will be min and max boxes. Set the min to 0 and the max to 1.</p>
+
+<p><img src="/img/flatroofs/screenshot_layer_options.png" alt="Layer Properties" /></p>
+
+<p>Now we have a map of all the flat roofs in the area. The last thing that will be useful is to convert this into a vector format. This will be easier to do further things with, like overlay on google maps etc. This time we need the polygonize tool. This is under <code>Raster &gt; Conversion &gt; Polygonize (Raster to Vector)</code></p>
+
+<p><img src="/img/flatroofs/screenshot_polygonise.png" alt="Polygonize" /></p>
+
+<p>Select the right input file and pick an output file name. This defaults to esri shape files (kind of ugly but will do for now) so don&rsquo;t put an extenson on the output file name. Press <code>OK</code> to start the process. Be aware this can take a while.</p>
+
+<p>When it finishes your map will probably turn a random colour. Mine went pink. For some reason a polygon is also drawn around the outside of the image. This is very easy to get rid of however. Right click on the layer and select the <code>Toggle Editing</code> option. Then switch to the <code>Identify Features</code> tool. It should be in the top bar and look like a mouse cursor pointing at an information bubble.</p>
+
+<p>Select somewhere on the map that is background and not another feature. A box should appear on the right. You may need to resize it a bit to be able to see both columns (there should be two) The feature selected should have DN 0 in its labels if it is the border polygon.</p>
+
+<p>In the tool bars at the top there should be a delete button. It looks like a dustbin. When you click it the background of your area should go white again. Now you just need to save your changes and disable editing again. To save the changes to a layer right click on it and select the <code>Save changes</code> option. Then <code>Toggle Editing</code> again to make sure you don&rsquo;t do any thing you don&rsquo;t mean to.</p>
+
+<h1 id="conclusion">Conclusion</h1>
+
+<p>This turned into quite a lot longer post than I planned however it covers a lot of useful things with the QGIS tools. We learnt to use the Raster Calculator, Re-project an image, merge images, sieve an image, and use some of the DEM tools. Finally we also converted an image into polygons.</p>
+
+<p>These are all very useful tools and hopefully you learnt something from this. If you found this interesting or you have any questions please let me know on twitter.</p>
+
+    </section>
+
+
+  <footer class="post-footer">
+
+
+    
+
+
+
+
+
+
+
+
+<figure class="author-image">
+    <a class="img" href="http://parsecsreach.com" style="background-image: url(/img/profilePic.jpg)"><span class="hidden">Wil Selwood's Picture</span></a>
+</figure>
+
+
+<section class="author">
+  <h4><a href="http://parsecsreach.com">Wil Selwood</a></h4>
+  
+  <p>Software Engineer - Sort of full stack but not the normal stack</p>
+  
+  <div class="author-meta">
+    <span class="author-location icon-location">Oxfordshire, UK</span>
+    <span class="author-link icon-link"><a href="http://parsecsreach.com">http://parsecsreach.com</a></span>
+  </div>
+</section>
+
+
+
+
+    
+<section class="share">
+  <h4>Share this post</h4>
+  <a class="icon-twitter" style="font-size: 1.4em" href="https://twitter.com/share?text=Finding%20flatroofs%20with%20QGIS&nbsp;-&nbsp;Parsecs%20Reach&amp;url=http%3a%2f%2fparsecsreach.com%2fpost%2fflatroofs_with_qgis%2f"
+      onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
+      <span class="hidden">Twitter</span>
+  </a>
+  <a class="icon-facebook" style="font-size: 1.4em" href="https://www.facebook.com/sharer/sharer.php?u=http%3a%2f%2fparsecsreach.com%2fpost%2fflatroofs_with_qgis%2f"
+      onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;">
+      <span class="hidden">Facebook</span>
+  </a>
+  <a class="icon-google-plus" style="font-size: 1.4em" href="https://plus.google.com/share?url=http%3a%2f%2fparsecsreach.com%2fpost%2fflatroofs_with_qgis%2f"
+     onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;">
+      <span class="hidden">Google+</span>
+  </a>
+</section>
+
+
+
+    
+
+
+
+
+
+  </footer>
+</article>
+
+</main>
+
+
+  <aside class="read-next">
+  
+  
+      <a class="read-next-story prev" style="background-image: url(/img/fire3.jpg)" href="/post/spark_and_mpc_part_3/">
+          <section class="post">
+              <h2>Spark and the Minor Planet Center data part 3</h2>
+          </section>
+      </a>
+  
+</aside>
+
+
+
+    <footer class="site-footer clearfix">
+        <section class="copyright"><a href="">Parsecs Reach</a> All rights reserved - 2017</section>
+        
+        <section class="poweredby">Proudly generated by <a class="icon-hugo" href="http://gohugo.io">HUGO</a>, with <a class="icon-theme" href="https://github.com/vjeantet/hugo-theme-casper">Casper</a> theme</section>
+        
+    </footer>
+    </div>
+    <script type="text/javascript" src="/js/jquery.js"></script>
+    <script type="text/javascript" src="/js/jquery.fitvids.js"></script>
+    <script type="text/javascript" src="/js/index.js"></script>
+    
+</body>
+</html>
+

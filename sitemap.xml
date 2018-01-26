@@ -3,6 +3,11 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
+    <loc>http://parsecsreach.com/post/flatroofs_with_qgis/</loc>
+    <lastmod>2018-01-26T21:58:30+00:00</lastmod>
+  </url>
+  
+  <url>
     <loc>http://parsecsreach.com/post/spark_and_mpc_part_3/</loc>
     <lastmod>2017-12-05T19:39:29+00:00</lastmod>
   </url>
@@ -39,6 +44,12 @@
   </url>
   
   <url>
+    <loc>http://parsecsreach.com/tags/geography/</loc>
+    <lastmod>2018-01-26T21:58:30+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
     <loc>http://parsecsreach.com/tags/introduction/</loc>
     <lastmod>2017-12-02T08:01:19+00:00</lastmod>
     <priority>0</priority>
@@ -52,13 +63,25 @@
   
   <url>
     <loc>http://parsecsreach.com/</loc>
-    <lastmod>2017-12-05T19:39:29+00:00</lastmod>
+    <lastmod>2018-01-26T21:58:30+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
     <loc>http://parsecsreach.com/post/</loc>
-    <lastmod>2017-12-05T19:39:29+00:00</lastmod>
+    <lastmod>2018-01-26T21:58:30+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://parsecsreach.com/tags/qgis/</loc>
+    <lastmod>2018-01-26T21:58:30+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://parsecsreach.com/tags/raster/</loc>
+    <lastmod>2018-01-26T21:58:30+00:00</lastmod>
     <priority>0</priority>
   </url>
   
