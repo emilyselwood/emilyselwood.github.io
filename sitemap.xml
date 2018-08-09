@@ -3,6 +3,11 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
+    <loc>http://parsecsreach.com/post/wsl_dot_files/</loc>
+    <lastmod>2018-08-09T08:25:13+01:00</lastmod>
+  </url>
+  
+  <url>
     <loc>http://parsecsreach.com/post/flatroofs_with_qgis/</loc>
     <lastmod>2018-01-26T21:58:30+00:00</lastmod>
   </url>
@@ -44,6 +49,12 @@
   </url>
   
   <url>
+    <loc>http://parsecsreach.com/tags/dotfiles/</loc>
+    <lastmod>2018-08-09T08:25:13+01:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
     <loc>http://parsecsreach.com/tags/geography/</loc>
     <lastmod>2018-01-26T21:58:30+00:00</lastmod>
     <priority>0</priority>
@@ -63,13 +74,13 @@
   
   <url>
     <loc>http://parsecsreach.com/</loc>
-    <lastmod>2018-01-26T21:58:30+00:00</lastmod>
+    <lastmod>2018-08-09T08:25:13+01:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
     <loc>http://parsecsreach.com/post/</loc>
-    <lastmod>2018-01-26T21:58:30+00:00</lastmod>
+    <lastmod>2018-08-09T08:25:13+01:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -94,6 +105,18 @@
   <url>
     <loc>http://parsecsreach.com/tags/</loc>
     <lastmod>2017-12-05T19:39:29+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://parsecsreach.com/tags/windows-subsystem-for-linux/</loc>
+    <lastmod>2018-08-09T08:25:13+01:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://parsecsreach.com/tags/wsl/</loc>
+    <lastmod>2018-08-09T08:25:13+01:00</lastmod>
     <priority>0</priority>
   </url>
   

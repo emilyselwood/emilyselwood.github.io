@@ -22,6 +22,15 @@
     </item>
     
     <item>
+      <title>Dotfiles</title>
+      <link>http://parsecsreach.com/tags/dotfiles/</link>
+      <pubDate>Thu, 09 Aug 2018 08:25:13 +0100</pubDate>
+      
+      <guid>http://parsecsreach.com/tags/dotfiles/</guid>
+      <description></description>
+    </item>
+    
+    <item>
       <title>Geography</title>
       <link>http://parsecsreach.com/tags/geography/</link>
       <pubDate>Fri, 26 Jan 2018 21:58:30 +0000</pubDate>
@@ -72,6 +81,24 @@
       <pubDate>Tue, 05 Dec 2017 19:39:29 +0000</pubDate>
       
       <guid>http://parsecsreach.com/tags/spark/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Windows Subsystem for Linux</title>
+      <link>http://parsecsreach.com/tags/windows-subsystem-for-linux/</link>
+      <pubDate>Thu, 09 Aug 2018 08:25:13 +0100</pubDate>
+      
+      <guid>http://parsecsreach.com/tags/windows-subsystem-for-linux/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Wsl</title>
+      <link>http://parsecsreach.com/tags/wsl/</link>
+      <pubDate>Thu, 09 Aug 2018 08:25:13 +0100</pubDate>
+      
+      <guid>http://parsecsreach.com/tags/wsl/</guid>
       <description></description>
     </item>
     

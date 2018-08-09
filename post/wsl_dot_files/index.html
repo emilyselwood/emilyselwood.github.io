@@ -1,0 +1,538 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+
+    
+    
+        
+        <meta name="twitter:card" content="summary_large_image"/>
+        <meta name="twitter:image" content="/img/mountains.jpg"/>
+    
+
+
+
+<meta name="twitter:title" content="Windows Subsystem for Linux Dot files"/>
+<meta name="twitter:description" content=""/>
+<meta name="twitter:site" content="@wilselwood"/>
+
+
+
+  	<meta property="og:title" content="Windows Subsystem for Linux Dot files &middot; Parsecs Reach" />
+  	<meta property="og:site_name" content="Parsecs Reach" />
+  	<meta property="og:url" content="http://parsecsreach.com/post/wsl_dot_files/" />
+
+    
+       <meta property="og:image" content="/img/mountains.jpg"/>
+    
+
+    
+    <meta property="og:description" content="" />
+  	<meta property="og:type" content="article" />
+    <meta property="article:published_time" content="2018-08-09T08:25:13&#43;01:00" />
+
+    
+    <meta property="article:tag" content="Windows Subsystem for Linux" />
+    
+    <meta property="article:tag" content="wsl" />
+    
+    <meta property="article:tag" content="dotfiles" />
+    
+    
+
+    <title>Windows Subsystem for Linux Dot files &middot; Parsecs Reach</title>
+
+    
+    <meta name="description" content="I&amp;rsquo;ve been using the Windows Subsystem for Linux (WSL) for a while at work. It&amp;rsquo;s been something of a radical improvement over cygwin for most of my u" />
+    
+
+    <meta name="HandheldFriendly" content="True" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <link rel="shortcut icon" href="/images/favicon.ico">
+	  <link rel="apple-touch-icon" href="/images/apple-touch-icon.png" />
+
+    <link rel="stylesheet" type="text/css" href="/css/screen.css" />
+    <link rel="stylesheet" type="text/css" href="/css/nav.css" />
+
+    
+
+    
+        <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.8.0/styles/default.min.css">
+        <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.8.0/highlight.min.js"></script>
+        
+        <script>hljs.initHighlightingOnLoad();</script>
+    
+
+    
+      
+          <link href="/index.xml" rel="alternate" type="application/rss+xml" title="Parsecs Reach" />
+      
+      
+    
+    <meta name="generator" content="Hugo 0.46" />
+
+    <link rel="canonical" href="http://parsecsreach.com/post/wsl_dot_files/" />
+
+    
+      
+    
+    <script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "publisher": {
+        "@type": "Organization",
+        "name": 
+    },
+    "author": {
+        "@type": "Person",
+        "name": ,
+        
+        "url": http://parsecsreach.com,
+        "sameAs": [
+            
+            
+             
+             
+             
+             
+             
+            
+        ],
+        "description": Software Engineer - Sort of full stack but not the normal stack
+        
+    },
+    "headline": Windows Subsystem for Linux Dot files,
+    "name": Windows Subsystem for Linux Dot files,
+    "wordCount": 1450,
+    "timeRequired": "PT7M",
+    "inLanguage": {
+      "@type": "Language",
+      "alternateName": en
+    },
+    "url": http://parsecsreach.com/post/wsl_dot_files/,
+    "datePublished": 2018-08-09T08:25Z,
+    "dateModified": 2018-08-09T08:25Z,
+    
+    "image": {
+        "@type": "ImageObject",
+        "url": http://parsecsreach.comimg/mountains.jpg,
+        "width": 3000,
+        "height": 1445
+    },
+    
+    "keywords": Windows Subsystem for Linux, wsl, dotfiles,
+    "description": ,
+    "mainEntityOfPage": {
+        "@type": "WebPage",
+        "@id": http://parsecsreach.com/post/wsl_dot_files/
+    }
+}
+    </script>
+    
+
+
+    
+
+    
+
+      
+      <script async src="https://www.googletagmanager.com/gtag/js?id=UA-89365253-1"></script>
+      <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'UA-89365253-1');
+      </script>
+
+    
+
+    
+</head>
+<body class="nav-closed">
+
+  <div class="nav">
+    <h3 class="nav-title">Menu</h3>
+    <a href="#" class="nav-close">
+        <span class="hidden">Close</span>
+    </a>
+    <ul>
+        
+        
+            
+                
+                <li class="nav-opened" role="presentation">
+                    <a href="/">Home</a>
+                </li>
+            
+                
+                <li class="nav-opened" role="presentation">
+                    <a href="/about">About me</a>
+                </li>
+            
+        
+        
+          
+        
+          
+             
+            <li><a href="/tags/asteroids"># asteroids ( 3 )</a></li>  
+             
+            <li><a href="/tags/dotfiles"># dotfiles ( 1 )</a></li>  
+             
+            <li><a href="/tags/geography"># geography ( 1 )</a></li>  
+             
+            <li><a href="/tags/introduction"># introduction ( 1 )</a></li>  
+             
+            <li><a href="/tags/minor-planet-center"># minor-planet-center ( 3 )</a></li>  
+             
+            <li><a href="/tags/qgis"># qgis ( 1 )</a></li>  
+             
+            <li><a href="/tags/raster"># raster ( 1 )</a></li>  
+             
+            <li><a href="/tags/spark"># spark ( 3 )</a></li>  
+             
+            <li><a href="/tags/windows-subsystem-for-linux"># windows-subsystem-for-linux ( 1 )</a></li>  
+             
+            <li><a href="/tags/wsl"># wsl ( 1 )</a></li>  
+            
+          
+        
+    </ul>
+
+    
+        <a class="subscribe-button icon-feed" href="/index.xml">Subscribe</a>
+    
+</div>
+<span class="nav-cover"></span>
+
+
+ <div class="site-wrapper">
+
+
+
+  
+  <header class="main-header post-head" style="background-image: url(/img/mountains.jpg)">
+  
+  <nav class="main-nav overlay clearfix">
+
+
+  
+  
+      <a class="menu-button" href="#"><span class="burger">&#9776;</span><span class="word">Menu</span></a>
+  
+  </nav>
+</header>
+
+
+
+<main class="content" role="main">
+
+
+
+
+  <article class="post post">
+
+    <header class="post-header">
+        <h1 class="post-title">Windows Subsystem for Linux Dot files</h1>
+        <small></small>
+
+        <section class="post-meta">
+        
+          <time class="post-date" datetime="2018-08-09T08:25:13&#43;01:00">
+            Aug 9, 2018
+          </time>
+        
+         
+          <span class="post-tag small"><a href="http://parsecsreach.com/tags/windows-subsystem-for-linux/">#Windows Subsystem for Linux</a></span>
+         
+          <span class="post-tag small"><a href="http://parsecsreach.com/tags/wsl/">#wsl</a></span>
+         
+          <span class="post-tag small"><a href="http://parsecsreach.com/tags/dotfiles/">#dotfiles</a></span>
+         
+        </section>
+    </header>
+
+    <section class="post-content">
+      
+
+<p>I&rsquo;ve been using the Windows Subsystem for Linux (WSL) for a while at work. It&rsquo;s been something of a radical improvement over cygwin for most of my use cases. A couple of weeks ago my installation got borked by the work Antivirus (AV) system. So I&rsquo;ve created an automated script to set up my environment just how I currently like it.</p>
+
+<p>Before we start lets get one thing out the way. Windows is a perfectly fine development environment. I won&rsquo;t be tolerating any comments of just use a mac or just install linux. This is not always possible with a corporate machine. If this is of no help to you stop reading and go look at something else.</p>
+
+<h1 id="assumptions">Assumptions</h1>
+
+<p>You have Ubuntu for windows already installed but not yet configured</p>
+
+<h1 id="process">Process</h1>
+
+<p>Step one was to create a directory to keep my initial environment in. Later we will turn it into a git repo as this sort of thing should not be kept on your machine. The times you need it most are when your machine has died and you need to build a new one.</p>
+
+<pre><code class="language-bash">mkdir -p /mnt/c/git/dotfiles/bin
+cd /mnt/c/git/dotfiles
+</code></pre>
+
+<p>Next is to create the skeleton of the script that will do all the work for us in future. In the bin folder create a script called <code>setup.sh</code></p>
+
+<pre><code class="language-bash">#!/bin/sh
+
+# This needs to be run with sudo
+
+apt update
+apt upgrade -y
+
+</code></pre>
+
+<p>This updates all the existing packages.</p>
+
+<p>Next we need to install the new things that we want. Add the following underneath:</p>
+
+<pre><code class="language-bash">apt install -y $(cat ../pkglist.txt)
+</code></pre>
+
+<p>This installs everything listed in a file one level up called <code>pkglist.txt</code> lets go and create that now. The following is mine:</p>
+
+<pre><code class="language-text">build-essential
+git
+ssh
+vim
+tmux
+make
+wget
+curl
+zip
+python3
+python3-pip
+xdg-utils
+dos2unix
+jq
+html-xml-utils
+</code></pre>
+
+<p>Next we will create a directory in our home folder called bin to house all the executable things we need for our user:</p>
+
+<pre><code class="language-bash">mkdir -p ~/bin
+chown wselwood: ~/bin
+</code></pre>
+
+<p>We need to change the owner of the bin folder as we are currently running as root</p>
+
+<p>Now my work environment is very mixed. I work in a mixture of almost even parts Scala/Java, Go, and Python. I install python 3 the pkglist.txt already so that is easy enough. Next we will tackle java</p>
+
+<h2 id="java">Java</h2>
+
+<p>There are plenty of guides about installing java on a ubuntu system out there. <a href="https://www.digitalocean.com/community/tutorials/how-to-install-java-with-apt-get-on-ubuntu-16-04">Digital Ocean</a> have a good one that I usually follow. It boils down to adding a line to the <code>setup.sh</code> file and one entry in the <code>pgklist.txt</code></p>
+
+<p>The <code>setup.sh</code> should now look like this</p>
+
+<pre><code class="language-bash">#!/bin/sh
+
+# This needs to be run with sudo
+add-apt-repository ppa:webupd8team/java
+apt update
+apt upgrade -y
+
+apt install -y $(cat ../pkglist.txt)
+</code></pre>
+
+<p>Then add <code>oracle-java8-installer</code> to the <code>pgklist.txt</code> file.</p>
+
+<p>Almost done. One last little trick to make our Java life easier. If we sym-link our WSL <code>~/.m2</code> folder to our windows <code>.m2</code> folder we can avoid having two sets of libraries and very strange problems if we do <code>mvn install</code> at any point. Add the following to the bottom of your <code>setup.sh</code></p>
+
+<pre><code class="language-bash">ln -s /mnt/c/Users/Wil.Selwood/.m2/ ~/.m2/
+</code></pre>
+
+<p>Next on to go</p>
+
+<h2 id="go">Go</h2>
+
+<p>Unfortunately at the time of writing the version of Go in the ubuntu package manager is way out of date so we need to go and get the latest version our selves. For this we are going to use a few tricks to make sure we always download the latest version.</p>
+
+<p>First off installing go its self. Unfortunately there isn&rsquo;t a handy URL I could find that always points to the latest stable build. There is a link on the <a href="https://golang.org/dl">download</a> page but it changes with each version. So we are going to use the <code>html-xml-utils</code> package of tools to do some nasty (but better than pure regex) command line foo to get hold of the url from that page. Using chrome inspect the download link we are after. It should have a class of <code>downloadBox</code> So we can use that to find the one we need</p>
+
+<ol>
+<li>Get hold of the page. We will use curl (cat url from my understanding) pass it a URL and it returns the text content to stdout.</li>
+<li>Normalise the html into valid XML</li>
+<li>Extract the links with a class of downloadBox</li>
+<li>Find the link that says its for linux-amd64</li>
+<li>Extract the link from that line.</li>
+</ol>
+
+<p>The following line does this and stores the resulting text in a variable for us to download later:</p>
+
+<pre><code class="language-sh">go_url=$(curl --silent &quot;https://golang.org/dl/&quot; | hxnormalize -x | hxselect -s '\n' -i 'a.downloadBox' | grep linux-amd64 | grep -Po 'http[^\&quot;]+')
+</code></pre>
+
+<p>Thats a bit long and unpleasant but it does the job. Now that we have the download url we can download, extract, and link to our path</p>
+
+<pre><code class="language-sh">wget $go_url -O ~/go-linux.tar.gz
+tar xzf ~/go-linux.tar.gz -C ~/
+ln -s ~/go/bin/go ~/bin/go
+ln -s ~/go/bin/godoc ~/bin/godoc
+ln -s ~/go/bin/gofmt ~/bin/gofmt
+</code></pre>
+
+<p>That should get us go installed. I&rsquo;ve a few projects that use dep for package management so we need to install that too. This is a little bit easier as dep has its releases in github which provides an api to download them so we can use the <code>jq</code> command line tool to extract the url we need from the json response.</p>
+
+<ol>
+<li>Send the query to the github API</li>
+<li>Extract the asset that has a name ending with linux-amd64 and pull out the browser_download_url</li>
+</ol>
+
+<pre><code class="language-bash">dep_url=$(curl --silent &quot;https://api.github.com/repos/golang/dep/releases/latest&quot; | jq -r '.assets[] | select(.name | endswith(&quot;linux-amd64&quot;)).browser_download_url')
+</code></pre>
+
+<p>Now we just need to download that url and make it executable</p>
+
+<pre><code class="language-bash">wget $dep_url -O ~/bin/dep
+chmod +x ~/bin/dep
+</code></pre>
+
+<p>There we go. That should be go set up and ready to work.</p>
+
+<p>Now on to some quality of life changes</p>
+
+<h1 id="quality-of-life">Quality of life</h1>
+
+<h2 id="vim-and-git-default-configuration">vim and git default configuration</h2>
+
+<p>I have a copy of my <code>.vimrc</code> and <code>.gitconfig</code> files stored in the dotfiles directory so we need to copy those over to our home directory. The following mess of characters copies everything from the directory above that starts with a dot to our home directory. Note there is no -r flag on the cp command so it will not copy the .git folder that exists in our project.</p>
+
+<pre><code class="language-bash">cp ../.* ~/
+</code></pre>
+
+<p>My configuration for vim and git are not too complex. I am colour blind and find the default colour schemes of both programs hard to read. So I change them in this config.</p>
+
+<h2 id="bash">bash</h2>
+
+<p>I use <a href="https://github.com/mrzool/bash-sensible">mrzool&rsquo;s Sensible bash</a> as a starting point here. Along with a <code>.bashrc</code> file that I have had for so long I&rsquo;m not sure where it came from.</p>
+
+<p>Drop the <code>sensible.bash</code> file into the bin directory and the entry to source it to your <code>.bashrc</code> file. There are instructions in the git repo.</p>
+
+<p>I also add an entry to make <code>~/bin</code> and <code>~/.local/bin</code> be part of the path.</p>
+
+<p>Next I like to enable <code>xdg-open</code> to start a web browser. I find this really useful to include at the end of long build processes to open a browser to the server I have just launched so that I get pulled back from what ever I went off to do while the build ran.</p>
+
+<p>The first step is to create a sym-link that points to your windows browser executable. Chrome in my case.</p>
+
+<pre><code class="language-bash">ln -s /mnt/c/Program\ Files\ \(x86\)/Google/Chrome/Application/chrome.exe /usr/bin/chrome
+</code></pre>
+
+<p>Then in your <code>.bashrc</code> file add <code>export BROSWER=chrome</code> and you should now be able to type <code>xdg-open https://google.com</code> and it will pop open a new chrome tab for you.</p>
+
+<p>The last thing I have added to my <code>.bashrc</code> file is a thing that starts my ssh agent the first time I open a shell. This actually works way better under WSL than it did under cygwin as it lasts until you logout rather than as long as a single shell is left open. You may not want to do this depending on how paranoid you are about security. However it does mean that I don&rsquo;t have to type in my ssh key password several hundred times a day.</p>
+
+<pre><code class="language-sh">export SSH_AUTH_SOCK=$HOME/.ssh-socket
+
+ssh-add -l ? /dev/null 2&gt;&amp;1
+if [ $? = 2 ]; then
+  rm -rf $SSH_AUTH_SOCK
+  ssh-agent -a $SSH_AUTH_SOCK &gt;| /tmp/.ssh-script
+  source /tmp/.ssh-script
+  echo $SSH_AGENT_PID &gt;| ~/.ssh-agent-pid
+  rm /tmp/.ssh-script
+
+  ssh-add
+fi
+</code></pre>
+
+<p>And there we will leave the changes. Now all that we need to do is commit this to a remote repo somewhere. You can find mine on <a href="https://github.com/wselwood/dotfiles">github</a> There are a few tweaks in there I don&rsquo;t mention here as they are only todo with the way I my disk is layed out.</p>
+
+<p>I hope you have found this useful and have some ideas for your own environment. If you have any questions or comments please let me know on <a href="https://twitter.com/wilselwood">twitter</a> I&rsquo;d love to see your suggestions and little things you have found that makes your life a bit easier.</p>
+
+    </section>
+
+
+  <footer class="post-footer">
+
+
+    
+
+
+
+
+
+
+
+
+<figure class="author-image">
+    <a class="img" href="http://parsecsreach.com" style="background-image: url(/img/profilePic.jpg)"><span class="hidden">Wil Selwood's Picture</span></a>
+</figure>
+
+
+<section class="author">
+  <h4><a href="http://parsecsreach.com">Wil Selwood</a></h4>
+  
+  <p>Software Engineer - Sort of full stack but not the normal stack</p>
+  
+  <div class="author-meta">
+    <span class="author-location icon-location">Oxfordshire, UK</span>
+    <span class="author-link icon-link"><a href="http://parsecsreach.com">http://parsecsreach.com</a></span>
+  </div>
+</section>
+
+
+
+
+    
+<section class="share">
+  <h4>Share this post</h4>
+  <a class="icon-twitter" style="font-size: 1.4em" href="https://twitter.com/share?text=Windows%20Subsystem%20for%20Linux%20Dot%20files&nbsp;-&nbsp;Parsecs%20Reach&amp;url=http%3a%2f%2fparsecsreach.com%2fpost%2fwsl_dot_files%2f"
+      onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
+      <span class="hidden">Twitter</span>
+  </a>
+  <a class="icon-facebook" style="font-size: 1.4em" href="https://www.facebook.com/sharer/sharer.php?u=http%3a%2f%2fparsecsreach.com%2fpost%2fwsl_dot_files%2f"
+      onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;">
+      <span class="hidden">Facebook</span>
+  </a>
+  <a class="icon-google-plus" style="font-size: 1.4em" href="https://plus.google.com/share?url=http%3a%2f%2fparsecsreach.com%2fpost%2fwsl_dot_files%2f"
+     onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;">
+      <span class="hidden">Google+</span>
+  </a>
+</section>
+
+
+
+    
+
+
+
+
+
+  </footer>
+</article>
+
+</main>
+
+
+  <aside class="read-next">
+  
+  
+      <a class="read-next-story prev" style="background-image: url(/img/dem.png)" href="/post/flatroofs_with_qgis/">
+          <section class="post">
+              <h2>Finding flatroofs with QGIS</h2>
+          </section>
+      </a>
+  
+</aside>
+
+
+
+    <footer class="site-footer clearfix">
+        <section class="copyright"><a href="">Parsecs Reach</a> All rights reserved - 2017</section>
+        
+        <section class="poweredby">Proudly generated by <a class="icon-hugo" href="http://gohugo.io">HUGO</a>, with <a class="icon-theme" href="https://github.com/vjeantet/hugo-theme-casper">Casper</a> theme</section>
+        
+    </footer>
+    </div>
+    <script type="text/javascript" src="/js/jquery.js"></script>
+    <script type="text/javascript" src="/js/jquery.fitvids.js"></script>
+    <script type="text/javascript" src="/js/index.js"></script>
+    
+</body>
+</html>
+
