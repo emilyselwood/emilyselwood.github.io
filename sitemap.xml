@@ -3,6 +3,11 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
+    <loc>http://parsecsreach.com/post/golangresparse/</loc>
+    <lastmod>2018-12-08T13:28:33+00:00</lastmod>
+  </url>
+  
+  <url>
     <loc>http://parsecsreach.com/post/wsl_dot_files/</loc>
     <lastmod>2018-08-09T08:25:13+01:00</lastmod>
   </url>
@@ -61,6 +66,18 @@
   </url>
   
   <url>
+    <loc>http://parsecsreach.com/tags/go/</loc>
+    <lastmod>2018-12-08T13:28:33+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://parsecsreach.com/tags/golang/</loc>
+    <lastmod>2018-12-08T13:28:33+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
     <loc>http://parsecsreach.com/tags/introduction/</loc>
     <lastmod>2017-12-02T08:01:19+00:00</lastmod>
     <priority>0</priority>
@@ -74,13 +91,13 @@
   
   <url>
     <loc>http://parsecsreach.com/</loc>
-    <lastmod>2018-08-09T08:25:13+01:00</lastmod>
+    <lastmod>2018-12-08T13:28:33+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
     <loc>http://parsecsreach.com/post/</loc>
-    <lastmod>2018-08-09T08:25:13+01:00</lastmod>
+    <lastmod>2018-12-08T13:28:33+00:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -93,6 +110,12 @@
   <url>
     <loc>http://parsecsreach.com/tags/raster/</loc>
     <lastmod>2018-01-26T21:58:30+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://parsecsreach.com/tags/resparse/</loc>
+    <lastmod>2018-12-08T13:28:33+00:00</lastmod>
     <priority>0</priority>
   </url>
   

@@ -7,10 +7,19 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>All rights reserved - 2017</copyright>
-    <lastBuildDate>Thu, 09 Aug 2018 08:25:13 +0100</lastBuildDate>
+    <lastBuildDate>Sat, 08 Dec 2018 13:28:33 +0000</lastBuildDate>
     
 	<atom:link href="http://parsecsreach.com/post/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Golang Resparse</title>
+      <link>http://parsecsreach.com/post/golangresparse/</link>
+      <pubDate>Sat, 08 Dec 2018 13:28:33 +0000</pubDate>
+      
+      <guid>http://parsecsreach.com/post/golangresparse/</guid>
+      <description>A little while ago I found my self needing to be able to parse screen resolutions when generating some images in a golang program. I created a library to do this and had a bit of fun optimising it. The result is open source on github. It is a very simple library with a single function but I thought it might be interesting to walk you through the process.</description>
+    </item>
     
     <item>
       <title>Windows Subsystem for Linux Dot files</title>
