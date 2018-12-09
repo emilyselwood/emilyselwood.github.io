@@ -107,7 +107,7 @@
     },
     "headline": Golang Resparse,
     "name": Golang Resparse,
-    "wordCount": 2387,
+    "wordCount": 2386,
     "timeRequired": "PT12M",
     "inLanguage": {
       "@type": "Language",
@@ -234,7 +234,7 @@
 
 <p>A little while ago I found my self needing to be able to parse screen resolutions when generating some images in a golang program. I created a library to do this and had a bit of fun optimising it. The result is open source on <a href="https://github.com/wselwood/resparse">github</a>. It is a very simple library with a single function but I thought it might be interesting to walk you through the process.</p>
 
-<p>What we need to build is a function needs to take a string like &ldquo;1080p&rdquo;, &ldquo;800x600&rdquo;, or &ldquo;4K&rdquo; and return a width and height value. There should also be an error in the return type just in case we can&rsquo;t parse the string.</p>
+<p>What we need to build is a function that takes a string like &ldquo;1080p&rdquo;, &ldquo;800x600&rdquo;, or &ldquo;4K&rdquo; and returns a width and height value. There should also be an error in the return type just in case we can&rsquo;t parse the string.</p>
 
 <p>This is going to be a very basic walkthrough of what I did so if you know a bit of go you probably can skip this one. Or skip to the sections on benchmarking and optimization.</p>
 
