@@ -7,10 +7,21 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>All rights reserved - 2019</copyright>
-    <lastBuildDate>Sat, 08 Dec 2018 13:28:33 +0000</lastBuildDate>
+    <lastBuildDate>Fri, 06 Sep 2019 17:00:00 +0000</lastBuildDate>
     
 	<atom:link href="http://parsecsreach.com/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Announcing a new me</title>
+      <link>http://parsecsreach.com/post/its_me/</link>
+      <pubDate>Fri, 06 Sep 2019 17:00:00 +0000</pubDate>
+      
+      <guid>http://parsecsreach.com/post/its_me/</guid>
+      <description>Hi. My name is Emily. No I&amp;rsquo;ve not taken over this blog for the day. I&amp;rsquo;m still the same author but a while ago I came to realize I&amp;rsquo;m a woman so my old name didn&amp;rsquo;t fit any more.
+Don&amp;rsquo;t panic I&amp;rsquo;m still doing mostly the same things as before. Just with less background noise in my head so things are a lot better.
+Family, friends, and colleagues reading this Waves.</description>
+    </item>
     
     <item>
       <title>Golang Resparse</title>
