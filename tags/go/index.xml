@@ -1,24 +1,21 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
   <channel>
-    <title>Go on Parsecs Reach</title>
-    <link>http://parsecsreach.com/tags/go/</link>
-    <description>Recent content in Go on Parsecs Reach</description>
+    <title>go on Parsecs Reach</title>
+    <link>https://parsecsreach.org/tags/go/</link>
+    <description>Recent content in go on Parsecs Reach</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <copyright>All rights reserved - 2019</copyright>
-    <lastBuildDate>Sat, 08 Dec 2018 13:28:33 +0000</lastBuildDate>
-    
-	<atom:link href="http://parsecsreach.com/tags/go/index.xml" rel="self" type="application/rss+xml" />
-    
-    
+    <copyright>All rights reserved - 2022</copyright>
+    <lastBuildDate>Sat, 08 Dec 2018 13:28:33 +0000</lastBuildDate><atom:link href="https://parsecsreach.org/tags/go/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Golang Resparse</title>
-      <link>http://parsecsreach.com/post/golangresparse/</link>
+      <link>https://parsecsreach.org/post/golangresparse/</link>
       <pubDate>Sat, 08 Dec 2018 13:28:33 +0000</pubDate>
       
-      <guid>http://parsecsreach.com/post/golangresparse/</guid>
-      <description>A little while ago I found my self needing to be able to parse screen resolutions when generating some images in a golang program. I created a library to do this and had a bit of fun optimising it. The result is open source on github. It is a very simple library with a single function but I thought it might be interesting to walk you through the process.</description>
+      <guid>https://parsecsreach.org/post/golangresparse/</guid>
+      <description>A little while ago I found my self needing to be able to parse screen resolutions when generating some images in a golang program. I created a library to do this and had a bit of fun optimising it. The result is open source on github. It is a very simple library with a single function but I thought it might be interesting to walk you through the process.
+What we need to build is a function that takes a string like &amp;ldquo;1080p&amp;rdquo;, &amp;ldquo;800x600&amp;rdquo;, or &amp;ldquo;4K&amp;rdquo; and returns a width and height value.</description>
     </item>
     
   </channel>

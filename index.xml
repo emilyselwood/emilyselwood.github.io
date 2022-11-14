@@ -1,23 +1,19 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
   <channel>
     <title>Parsecs Reach</title>
-    <link>http://parsecsreach.com/</link>
+    <link>https://parsecsreach.org/</link>
     <description>Recent content on Parsecs Reach</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <copyright>All rights reserved - 2019</copyright>
-    <lastBuildDate>Fri, 06 Sep 2019 17:00:00 +0000</lastBuildDate>
-    
-	<atom:link href="http://parsecsreach.com/index.xml" rel="self" type="application/rss+xml" />
-    
-    
+    <copyright>All rights reserved - 2022</copyright>
+    <lastBuildDate>Fri, 06 Sep 2019 17:00:00 +0000</lastBuildDate><atom:link href="https://parsecsreach.org/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Announcing a new me</title>
-      <link>http://parsecsreach.com/post/its_me/</link>
+      <link>https://parsecsreach.org/post/its_me/</link>
       <pubDate>Fri, 06 Sep 2019 17:00:00 +0000</pubDate>
       
-      <guid>http://parsecsreach.com/post/its_me/</guid>
+      <guid>https://parsecsreach.org/post/its_me/</guid>
       <description>Hi. My name is Emily. No I&amp;rsquo;ve not taken over this blog for the day. I&amp;rsquo;m still the same author but a while ago I came to realize I&amp;rsquo;m a woman so my old name didn&amp;rsquo;t fit any more.
 Don&amp;rsquo;t panic I&amp;rsquo;m still doing mostly the same things as before. Just with less background noise in my head so things are a lot better.
 Family, friends, and colleagues reading this Waves.</description>
@@ -25,78 +21,79 @@ Family, friends, and colleagues reading this Waves.</description>
     
     <item>
       <title>Golang Resparse</title>
-      <link>http://parsecsreach.com/post/golangresparse/</link>
+      <link>https://parsecsreach.org/post/golangresparse/</link>
       <pubDate>Sat, 08 Dec 2018 13:28:33 +0000</pubDate>
       
-      <guid>http://parsecsreach.com/post/golangresparse/</guid>
-      <description>A little while ago I found my self needing to be able to parse screen resolutions when generating some images in a golang program. I created a library to do this and had a bit of fun optimising it. The result is open source on github. It is a very simple library with a single function but I thought it might be interesting to walk you through the process.</description>
+      <guid>https://parsecsreach.org/post/golangresparse/</guid>
+      <description>A little while ago I found my self needing to be able to parse screen resolutions when generating some images in a golang program. I created a library to do this and had a bit of fun optimising it. The result is open source on github. It is a very simple library with a single function but I thought it might be interesting to walk you through the process.
+What we need to build is a function that takes a string like &amp;ldquo;1080p&amp;rdquo;, &amp;ldquo;800x600&amp;rdquo;, or &amp;ldquo;4K&amp;rdquo; and returns a width and height value.</description>
     </item>
     
     <item>
       <title>Windows Subsystem for Linux Dot files</title>
-      <link>http://parsecsreach.com/post/wsl_dot_files/</link>
+      <link>https://parsecsreach.org/post/wsl_dot_files/</link>
       <pubDate>Thu, 09 Aug 2018 08:25:13 +0100</pubDate>
       
-      <guid>http://parsecsreach.com/post/wsl_dot_files/</guid>
+      <guid>https://parsecsreach.org/post/wsl_dot_files/</guid>
       <description>I&amp;rsquo;ve been using the Windows Subsystem for Linux (WSL) for a while at work. It&amp;rsquo;s been something of a radical improvement over cygwin for most of my use cases. A couple of weeks ago my installation got borked by the work Antivirus (AV) system. So I&amp;rsquo;ve created an automated script to set up my environment just how I currently like it.
 Before we start lets get one thing out the way.</description>
     </item>
     
     <item>
       <title>Finding flatroofs with QGIS</title>
-      <link>http://parsecsreach.com/post/flatroofs_with_qgis/</link>
+      <link>https://parsecsreach.org/post/flatroofs_with_qgis/</link>
       <pubDate>Fri, 26 Jan 2018 21:58:30 +0000</pubDate>
       
-      <guid>http://parsecsreach.com/post/flatroofs_with_qgis/</guid>
+      <guid>https://parsecsreach.org/post/flatroofs_with_qgis/</guid>
       <description>A little while ago I attended the Climathon kic event/hackathon in Bristol at my old university. The event was to come up with solutions that could help with pollution in the city. There were not a lot of people who turned up so we formed a single team. The idea we came up with was to create an incentive for people with flat roofs to put plants on them. This meant we needed to be able to find flat roofs in the city.</description>
     </item>
     
     <item>
       <title>Spark and the Minor Planet Center data part 3</title>
-      <link>http://parsecsreach.com/post/spark_and_mpc_part_3/</link>
+      <link>https://parsecsreach.org/post/spark_and_mpc_part_3/</link>
       <pubDate>Tue, 05 Dec 2017 19:39:29 +0000</pubDate>
       
-      <guid>http://parsecsreach.com/post/spark_and_mpc_part_3/</guid>
+      <guid>https://parsecsreach.org/post/spark_and_mpc_part_3/</guid>
       <description>In the last post we read the minor planet center observation file. This was a fixed width text file. We only pulled a couple of columns out of it, but we learnt to use User Defined Functions, groupBy and select. In the first post of this series we covered reading a json file which contained information about all the asteroids we know about.
 This time we are going to join the two data sets together and finally solve our original problem, which was to find the full date of the earliest observation of each un-numbered object.</description>
     </item>
     
     <item>
       <title>Spark and the Minor Planet Center data part 2</title>
-      <link>http://parsecsreach.com/post/spark_and_mpc_part_2/</link>
+      <link>https://parsecsreach.org/post/spark_and_mpc_part_2/</link>
       <pubDate>Sun, 03 Dec 2017 15:39:22 +0000</pubDate>
       
-      <guid>http://parsecsreach.com/post/spark_and_mpc_part_2/</guid>
+      <guid>https://parsecsreach.org/post/spark_and_mpc_part_2/</guid>
       <description>In the last post we read the minor planet center orbit file. This was a JSON text file. This time we are going to look at a bit more complex file to process. If you haven&amp;rsquo;t read the first post in this series I recommend starting there before reading this.
-In this post we are going to be looking at the Observation file. There are two parts to this file.</description>
+In this post we are going to be looking at the Observation file. There are two parts to this file. One is for the numbered objects and other other for the un-numbered objects.</description>
     </item>
     
     <item>
       <title>Spark and the Minor Planet Center data</title>
-      <link>http://parsecsreach.com/post/spark_and_mpc/</link>
+      <link>https://parsecsreach.org/post/spark_and_mpc/</link>
       <pubDate>Sat, 02 Dec 2017 08:55:24 +0000</pubDate>
       
-      <guid>http://parsecsreach.com/post/spark_and_mpc/</guid>
-      <description>Introduction A few weeks ago I saw comments between @Sondy and @JLGalache talking about getting a list of asteroids with their date of discovery. The main data file lists the year of discovery but not the actual date. I thought there was a way to get this information by looking at the observation file and joining it to the main data file. Todo this I decided to use Apache Spark.</description>
+      <guid>https://parsecsreach.org/post/spark_and_mpc/</guid>
+      <description>Introduction A few weeks ago I saw comments between @Sondy and @JLGalache talking about getting a list of asteroids with their date of discovery. The main data file lists the year of discovery but not the actual date. I thought there was a way to get this information by looking at the observation file and joining it to the main data file. Todo this I decided to use Apache Spark. In this post I&amp;rsquo;ll go through setting up the spark environment and reading the json object file.</description>
     </item>
     
     <item>
       <title>About Me</title>
-      <link>http://parsecsreach.com/about/</link>
+      <link>https://parsecsreach.org/about/</link>
       <pubDate>Sat, 02 Dec 2017 08:33:15 +0000</pubDate>
       
-      <guid>http://parsecsreach.com/about/</guid>
+      <guid>https://parsecsreach.org/about/</guid>
       <description>I am a software engineer. Currently work at the Satellite Applications Catapult in Harwell, Oxfordshire. It is a great place to work. I get to be involved in some really interesting projects that help make the work a better place. Unfortunately not all of them I can talk about.
 I work with a wide range of tools. Mostly with a geographical or space side. Programming language wise I&amp;rsquo;m always happy to learn new things.</description>
     </item>
     
     <item>
       <title>Introduction</title>
-      <link>http://parsecsreach.com/post/introduction/</link>
+      <link>https://parsecsreach.org/post/introduction/</link>
       <pubDate>Sat, 02 Dec 2017 08:01:19 +0000</pubDate>
       
-      <guid>http://parsecsreach.com/post/introduction/</guid>
-      <description>Hello World I&amp;rsquo;m Wil Selwood. Every so often I get the urge to try and start a blog again. Here is iteration 235.
+      <guid>https://parsecsreach.org/post/introduction/</guid>
+      <description>Hello World I&amp;rsquo;m Emily Selwood. Every so often I get the urge to try and start a blog again. Here is iteration 235.
 What do I do? I build systems for a living. Mostly data processing but I&amp;rsquo;ll happily get my hands dirty doing anything that needs to get done. I&amp;rsquo;ve worked many things from Unity and C# to C, Groovy, Go, Javascript, and Big data things like Accumulo and Spark.</description>
     </item>
     

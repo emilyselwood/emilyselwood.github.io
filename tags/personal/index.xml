@@ -1,23 +1,19 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
   <channel>
-    <title>Personal on Parsecs Reach</title>
-    <link>http://parsecsreach.com/tags/personal/</link>
-    <description>Recent content in Personal on Parsecs Reach</description>
+    <title>personal on Parsecs Reach</title>
+    <link>https://parsecsreach.org/tags/personal/</link>
+    <description>Recent content in personal on Parsecs Reach</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <copyright>All rights reserved - 2019</copyright>
-    <lastBuildDate>Fri, 06 Sep 2019 17:00:00 +0000</lastBuildDate>
-    
-	<atom:link href="http://parsecsreach.com/tags/personal/index.xml" rel="self" type="application/rss+xml" />
-    
-    
+    <copyright>All rights reserved - 2022</copyright>
+    <lastBuildDate>Fri, 06 Sep 2019 17:00:00 +0000</lastBuildDate><atom:link href="https://parsecsreach.org/tags/personal/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Announcing a new me</title>
-      <link>http://parsecsreach.com/post/its_me/</link>
+      <link>https://parsecsreach.org/post/its_me/</link>
       <pubDate>Fri, 06 Sep 2019 17:00:00 +0000</pubDate>
       
-      <guid>http://parsecsreach.com/post/its_me/</guid>
+      <guid>https://parsecsreach.org/post/its_me/</guid>
       <description>Hi. My name is Emily. No I&amp;rsquo;ve not taken over this blog for the day. I&amp;rsquo;m still the same author but a while ago I came to realize I&amp;rsquo;m a woman so my old name didn&amp;rsquo;t fit any more.
 Don&amp;rsquo;t panic I&amp;rsquo;m still doing mostly the same things as before. Just with less background noise in my head so things are a lot better.
 Family, friends, and colleagues reading this Waves.</description>

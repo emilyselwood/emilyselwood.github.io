@@ -1,552 +1,449 @@
 <!DOCTYPE html>
-<html lang="en-us">
-<head>
+<html lang="en" dir="auto">
 
-    <meta charset="utf-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>Spark and the Minor Planet Center data part 2 | Parsecs Reach</title>
+<meta name="keywords" content="spark, minor planet center, asteroids">
+<meta name="description" content="In the last post we read the minor planet center orbit file. This was a JSON text file. This time we are going to look at a bit more complex file to process. If you haven&rsquo;t read the first post in this series I recommend starting there before reading this.
+In this post we are going to be looking at the Observation file. There are two parts to this file. One is for the numbered objects and other other for the un-numbered objects.">
+<meta name="author" content="Emily Selwood">
+<link rel="canonical" href="https://parsecsreach.org/post/spark_and_mpc_part_2/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.bc1149f4a72aa4858d3a9f71462f75e5884ffe8073ea9d6d5761d5663d651e20.css" integrity="sha256-vBFJ9KcqpIWNOp9xRi915YhP/oBz6p1tV2HVZj1lHiA=" rel="preload stylesheet" as="style">
+<script defer crossorigin="anonymous" src="/assets/js/highlight.f413e19d0714851f6474e7ee9632408e58ac146fbdbe62747134bea2fa3415e0.js" integrity="sha256-9BPhnQcUhR9kdOfuljJAjlisFG&#43;9vmJ0cTS&#43;ovo0FeA="
+    onload="hljs.initHighlightingOnLoad();"></script>
+<link rel="icon" href="https://parsecsreach.org/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="https://parsecsreach.org/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://parsecsreach.org/favicon-32x32.png">
+<link rel="apple-touch-icon" href="https://parsecsreach.org/apple-touch-icon.png">
+<link rel="mask-icon" href="https://parsecsreach.org/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
 
-    
-    
-        
-        <meta name="twitter:card" content="summary_large_image"/>
-        <meta name="twitter:image" content="/img/fire2.jpg"/>
-    
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --hljs-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+            }
 
+            .list {
+                background: var(--theme);
+            }
 
+            .list:not(.dark)::-webkit-scrollbar-track {
+                background: 0 0;
+            }
 
+            .list:not(.dark)::-webkit-scrollbar-thumb {
+                border-color: var(--theme);
+            }
+        }
+
+    </style>
+</noscript><meta property="og:title" content="Spark and the Minor Planet Center data part 2" />
+<meta property="og:description" content="In the last post we read the minor planet center orbit file. This was a JSON text file. This time we are going to look at a bit more complex file to process. If you haven&rsquo;t read the first post in this series I recommend starting there before reading this.
+In this post we are going to be looking at the Observation file. There are two parts to this file. One is for the numbered objects and other other for the un-numbered objects." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://parsecsreach.org/post/spark_and_mpc_part_2/" /><meta property="article:section" content="post" />
+<meta property="article:published_time" content="2017-12-03T15:39:22+00:00" />
+<meta property="article:modified_time" content="2017-12-03T15:39:22+00:00" />
+
+<meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="Spark and the Minor Planet Center data part 2"/>
-<meta name="twitter:description" content=""/>
-<meta name="twitter:site" content="@wilselwood"/>
+<meta name="twitter:description" content="In the last post we read the minor planet center orbit file. This was a JSON text file. This time we are going to look at a bit more complex file to process. If you haven&rsquo;t read the first post in this series I recommend starting there before reading this.
+In this post we are going to be looking at the Observation file. There are two parts to this file. One is for the numbered objects and other other for the un-numbered objects."/>
 
 
-
-  	<meta property="og:title" content="Spark and the Minor Planet Center data part 2 &middot; Parsecs Reach" />
-  	<meta property="og:site_name" content="Parsecs Reach" />
-  	<meta property="og:url" content="http://parsecsreach.com/post/spark_and_mpc_part_2/" />
-
-    
-       <meta property="og:image" content="/img/fire2.jpg"/>
-    
-
-    
-    <meta property="og:description" content="" />
-  	<meta property="og:type" content="article" />
-    <meta property="article:published_time" content="2017-12-03T15:39:22Z" />
-
-    
-    <meta property="article:tag" content="spark" />
-    
-    <meta property="article:tag" content="minor planet center" />
-    
-    <meta property="article:tag" content="asteroids" />
-    
-    
-
-    <title>Spark and the Minor Planet Center data part 2 &middot; Parsecs Reach</title>
-
-    
-    <meta name="description" content="In the last post we read the minor planet center orbit file. This was a JSON text file. This time we are going to look at a bit more complex file to process. If" />
-    
-
-    <meta name="HandheldFriendly" content="True" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
-    <link rel="shortcut icon" href="/images/favicon.ico">
-	  <link rel="apple-touch-icon" href="/images/apple-touch-icon.png" />
-
-    <link rel="stylesheet" type="text/css" href="/css/screen.css" />
-    <link rel="stylesheet" type="text/css" href="/css/nav.css" />
-
-    
-
-    
-        <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.8.0/styles/default.min.css">
-        <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.8.0/highlight.min.js"></script>
-        
-        <script>hljs.initHighlightingOnLoad();</script>
-    
-
-    
-      
-          <link href="/index.xml" rel="alternate" type="application/rss+xml" title="Parsecs Reach" />
-      
-      
-    
-    <meta name="generator" content="Hugo 0.52" />
-
-    <link rel="canonical" href="http://parsecsreach.com/post/spark_and_mpc_part_2/" />
-
-    
-      
-    
-    <script type="application/ld+json">
+<script type="application/ld+json">
 {
-    "@context": "https://schema.org",
-    "@type": "Article",
-    "publisher": {
-        "@type": "Organization",
-        "name": 
-    },
-    "author": {
-        "@type": "Person",
-        "name": ,
-        
-        "url": http://parsecsreach.com,
-        "sameAs": [
-            
-            
-             
-             
-             
-             
-             
-            
-        ],
-        "description": Software Engineer - Sort of full stack but not the normal stack
-        
-    },
-    "headline": Spark and the Minor Planet Center data part 2,
-    "name": Spark and the Minor Planet Center data part 2,
-    "wordCount": 2067,
-    "timeRequired": "PT10M",
-    "inLanguage": {
-      "@type": "Language",
-      "alternateName": en
-    },
-    "url": http://parsecsreach.com/post/spark_and_mpc_part_2/,
-    "datePublished": 2017-12-03T15:39Z,
-    "dateModified": 2017-12-03T15:39Z,
-    
-    "image": {
-        "@type": "ImageObject",
-        "url": http://parsecsreach.comimg/fire2.jpg,
-        "width": 3000,
-        "height": 1445
-    },
-    
-    "keywords": spark, minor planet center, asteroids,
-    "description": ,
-    "mainEntityOfPage": {
-        "@type": "WebPage",
-        "@id": http://parsecsreach.com/post/spark_and_mpc_part_2/
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "Posts",
+      "item": "https://parsecsreach.org/post/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  3 ,
+      "name": "Spark and the Minor Planet Center data part 2",
+      "item": "https://parsecsreach.org/post/spark_and_mpc_part_2/"
     }
+  ]
 }
-    </script>
-    
-
-
-    
-
-    
-    <script>
-      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-      })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-
-      ga('create', 'UA-89365253-1', 'auto');
-      ga('send', 'pageview');
-
-    </script>
-    
-
-    
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "Spark and the Minor Planet Center data part 2",
+  "name": "Spark and the Minor Planet Center data part 2",
+  "description": "In the last post we read the minor planet center orbit file. This was a JSON text file. This time we are going to look at a bit more complex file to process. If you haven\u0026rsquo;t read the first post in this series I recommend starting there before reading this.\nIn this post we are going to be looking at the Observation file. There are two parts to this file. One is for the numbered objects and other other for the un-numbered objects.",
+  "keywords": [
+    "spark", "minor planet center", "asteroids"
+  ],
+  "articleBody": "In the last post we read the minor planet center orbit file. This was a JSON text file. This time we are going to look at a bit more complex file to process. If you haven’t read the first post in this series I recommend starting there before reading this.\nIn this post we are going to be looking at the Observation file. There are two parts to this file. One is for the numbered objects and other other for the un-numbered objects. Due to the original idea for this project we are going to work with the un-numbered file today.\nAssumptions You have been through the previous post in this series and understood it. You have a project already set up and able to read and process the orbit file.\nSetup The data file we are after can be found on the mpcat-obs page under the link for the un-numbered minor planets. Download it. Then while it is downloading open up the project you created following along from the last post.\nDevelopment First lets add another variable so we don’t have to remember which argument is which.\nval observationPath = args(1) Now to get on to reading the file. In some ways this one is easier and some ways more complex. The data we are looking at here is a fixed width format. This means that there is nothing to separate the columns just that they always start in the same place no matter how long the data contained in them gets.\nUnfortunately there is not a built in function to deal with this easily. So we will have to read the file line by line and then split it up our selves. Actually we will cheat a little bit and only pull out the bits we need so as not to waste time doing work we don’t need to do.\nval obs = spark.read.text(observationPath) Like with the JSON reader from the previous post it is very easy to read a text file in spark sql. This time we don’t even need any options. This will create a data frame which contains each line from the file in a column called “value”\nThe first step is always to check the data looks how you expect it to look. Use the .show() function to have a look at the first few rows and get a feel for how the data looks. To make our lives easier however there is some documentation available The column formats are defined in fortran format, I am pretty sure this is because that is what is used to generate the files. However it’s a pretty simple format.\nA Means ascii and then the number following it is the number of characters allowed. e.g\nColumns Format Use 1 - 5 A5 Minor planet number 6 - 12 A7 Provisional or temporary designation 13 A1 Discovery asterisk The columns are numbered from 1 rather than 0 as an array would be. Which is another thing to remember. The first thing we need to do is extract an id column. Similar to what we did with the json file. In a future post we will use this to join the two files together.\nWe can use the substring function to do this. Because we are using the un-numbered file we need to be looking for the provisional to temporary designation column for the ID. We could use both and coalesce but as we know what data we are putting in we might as well keep things simple.\n.withColumn(\"id\", substring(col(\"value\"), 6, 7)) Now the next wrinkle is that the designations are what they call packed. This means that there is a range of different meanings to the data. There is an explanation in the MPC documentation. This code is best put into a function that can be tested separately.\nCreate a new function. There are three main cases we need to deal with.\nIf all the characters in the string are numbers. If the third character is a number. Any thing else. Your function should look something like this:\ndef unpackIdFunc(in : String) : String = { if (isAllDigits(in.substring(1))) { trimZeroFunc(unpackNumbered(in)) } else if (in(2) \u003e= '0' \u0026\u0026 in(2) \u003c= '9') { numericId(in) } else { twoCharCode(in) } } So this function takes in a string and performs out three tests before deciding how to format the result. The first detection of if its an integer is a simple function isAllDigits(). I’m going to leave it, along with the trimZeroFunc(), as an exercise for the reader.\nThe Next is the unpackNumbered function. This looks like this:\ndef unpackNumbered(in : String) : String = { if (in(0) \u003e= '0' \u0026\u0026 in(0) \u003c= '9') { in } else { val numeric = in.substring(1) val expanded = if (in(0) \u003e= 'a' \u0026\u0026 in(0) \u003c= 'z') { in(0) - 'a' + 36 } else { in(0) - 'A' + 10 } expanded.toString + numeric } } The really simple path in this function is if the first character of the string is a number. In which case we don’t have to do anything here. If it is not a number then we need to convert the first character into a number and then append the rest of the input string. The first character uses a range from 0-9 then A-Z followed by a-z to encode numbers 0 to 61. This helps save a bit of space in the files and keeps things in a reasonable order with out having to add an extra leading zero on to the numbers (and change the column lengths) every time too many asteroids are found.\nNext up is the numericId() function. This one needs to pull some bits from different places and arrange them correctly.\ndef numericId(in : String) : String = { val year = unpackNumbered(in.substring(0, 3)) val number = trimZeroFunc(unpackNumbered(in.substring(4, 6))) if (number == \"\" || number == \"00\") { year + \" \" + in(3) + in(6) } else { year + \" \" + in(3) + in(6) + number } } The format consists of the year, a space, the forth character in the string, the seventh character in the string and then a packed number between the two. You can see this reuses the unpackNumbered() function from above.\nLast we have the twoCharCode() function. This one is very simple after the last one. Here we just have to unpack a number and then join it up with two characters and some spacers.\ndef twoCharCode(in : String) : String = { val number = unpackNumbered(in.substring(3)) number + \" \" + in(0) + \"-\" + in(1) } Now we have a function that will unpack the different types of id we might find in the observation file. I recommend using the examples given in the MPC documentation to create some test cases. Put them in src/test/ and you will be able to run them with ./gradlew test or the correct button in your ide. If you have got this wrong you will get very strange results later.\nWe need to turn this function unpackIdFunc into a user defined function (udf) so that spark knows how to use it. It will need to work out how to send the function to other computers and so on. Thankfully it does a lot of magic behind the scenes so we just need to define it.\nval unpackId = udf(unpackIdFunc _) The underscore here just means that the first parameter to the udf should be passed through to the unpackIdFunc function. Now we can use it in our program. Change the line we created earlier to extract the id column to call the unpackId udf.\n.withColumn(\"id\", unpackId(substring(col(\"value\"), 6, 7))) Nesting functions like this is very powerful and useful. You can often save your self from creating lots of temporary columns by doing this. Though it can sometimes be harder to work out what is going on.\nOur original use case was to be able to find the full date of the first observation of an object. So the next thing we need to extract is the date and time of the observation. This starts in column 16 and is 16 characters long. We will also need to create a function to convert the date from a string into an actual date object.\nThe date format is a little bit weird. The Year, month and day are pretty reasonable. The first four characters are the year, the next two the month and the next two are the day. The rest of the string however is the part of the day divided into 10000 chunks. So we need to work out how many seconds we have if we take the number of seconds in a day and divide it by 10000. Then we can multiply that number by the last part of the string. Take a look at the code below it will hopefully make a little more sense.\ndef dateFunc(in : String): Long = { val year = in.substring(0, 4).toInt val month = in.substring(5, 7).toInt val day = in.substring(8, 10).toInt val part = in.substring(11).replaceAll(\" \", \"0\").toInt val seconds = Math.round(((24*60*60) * 0.00001) * part) LocalDate.of(year, month, day).atStartOfDay() .plus(seconds, ChronoUnit.SECONDS) .toInstant(ZoneOffset.UTC) .getEpochSecond } I’ve used the java 8 date functions as they are a significant improvement over the older API. The bit to watch out for is to make sure you set the time zone to utc. Finally we return it in epoch seconds as spark doesn’t know how to handle dates very well. It is just a lot easier to deal with the date a long. Now turn the dateFunc into a udf like we did with the unpackIdFunc\nval dateConvert = udf(ObsUtils.dateFunc _) Then add another column to our data frame.\n.withColumn(\"ts\", dateConvert(substring(col(\"value\"), 16, 16))) We now have the columns we need so we can try and find the minimum time stamp for each id. To do this we need to first group by the id column and then find the minimum of the ts column. We will need to use the .groupBy() and col functions for the first part. Rather inconsistently the .min() function does not need its column name wrapped in a col call. What we end up with should look like this:\nval obs = spark.read.text(observationPath) .withColumn(\"id\", unpackId(substring(col(\"value\"), idStart, idLen))) .withColumn(\"ts\", dateConvert(substring(col(\"value\"), 16, 16))) .groupBy(col(\"id\")) .min(\"ts\") There are other aggregation functions available as you would expect. There is a max, avg, and sum to get you started. It is also possible to create your own.\nNow you can add a obs.show(5) call below it to have a look at the results you have. You should see two columns that look something like below\n+-------+-----------+ | id| min(ts)| +-------+-----------+ |1908 OD|-1938820667| |1914 KA|-1755298440| |1927 UA|-1331164308| |1931 RS|-1208486322| |1933 DC|-1163208817| +-------+-----------+ only showing top 5 rows The dates are not massively useful like this. Converting them back in to a human readable string requires another user defined function.\ndef formatDateFunc(in : Long) : String = { LocalDateTime.ofEpochSecond(in, 0, ZoneOffset.UTC).format(DateTimeFormatter.ISO_LOCAL_DATE_TIME) } This uses the built in ISO8601 date formatter. We could use any thing but might as well use the built in standard. Turn it into a UDF as usual.\nval formatDate = udf(ObsUtils.formatDateFunc _) Last we need to use this to format the ts column. We can use the .withColumn() function like before. But this time we are also going to use the .select() function to remove the min(ts) column that we don’t need any more. This can be very useful if you only need a few columns in a large data set. Also note that we had to call the ts column min(ts) now as it has had its name changed by the min function.\n.withColumn(\"date\", formatDate(col(\"min(ts)\"))) .select(\"id\", \"date\") If you now run obs.show(5) you should get something like\n+-------+-------------------+ | id| date| +-------+-------------------+ |1908 OD|1908-07-24T22:42:13| |1914 KA|1914-05-19T01:06:00| |1927 UA|1927-10-27T00:08:12| |1931 RS|1931-09-15T21:21:18| |1933 DC|1933-02-20T22:26:23| +-------+-------------------+ only showing top 5 rows Conclusion In this post we have learnt to read a text file, pull the bits out of the lines that we need, create user defined functions to handle more complex processing of columns, group by columns, perform aggregations, and select columns. This will hopefully leave you in pretty good stead for processing data. We will join up these two data sets in the next post.\nIf you found this interesting or you have any questions please let me know on twitter.\n",
+  "wordCount" : "2067",
+  "inLanguage": "en",
+  "datePublished": "2017-12-03T15:39:22Z",
+  "dateModified": "2017-12-03T15:39:22Z",
+  "author":{
+    "@type": "Person",
+    "name": "Emily Selwood"
+  },
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://parsecsreach.org/post/spark_and_mpc_part_2/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Parsecs Reach",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://parsecsreach.org/favicon.ico"
+    }
+  }
+}
+</script>
 </head>
-<body class="nav-closed">
 
-  <div class="nav">
-    <h3 class="nav-title">Menu</h3>
-    <a href="#" class="nav-close">
-        <span class="hidden">Close</span>
-    </a>
-    <ul>
-        
-        
-        
-            
-            <li class="nav-opened" role="presentation">
-            	<a href="/">Home</a>
+<body class="" id="top">
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.body.classList.add('dark');
+    } else if (localStorage.getItem("pref-theme") === "light") {
+        document.body.classList.remove('dark')
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.body.classList.add('dark');
+    }
+
+</script>
+
+<header class="header">
+    <nav class="nav">
+        <div class="logo">
+            <a href="https://parsecsreach.org" accesskey="h" title="Parsecs Reach (Alt + H)">Parsecs Reach</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" accesskey="t" title="(Alt + T)">
+                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <ul id="menu">
+            <li>
+                <a rel="" href="https://parsecsreach.org/orbviewer"  target="_blank" title="Orb Viewer">
+                    <span>Orb Viewer</span>
+                    
+                </a>
             </li>
-        
-            
-            <li class="nav-opened" role="presentation">
-            	<a href="/about">About me</a>
+            <li>
+                <a rel="me" href="https://tech.lgbt/@emily_s"  target="_blank" title="@emily_s@tech.lgbt">
+                    <span>@emily_s@tech.lgbt</span>
+                    
+                </a>
             </li>
-        
-        
-    </ul>
-
-    
-    <a class="subscribe-button icon-feed" href="/index.xml">Subscribe</a>
-    
-</div>
-<span class="nav-cover"></span>
-
-
- <div class="site-wrapper">
-
-
-
-  
-  <header class="main-header post-head" style="background-image: url(/img/fire2.jpg)">
-  
-  <nav class="main-nav overlay clearfix">
-
-
-  
-  
-      <a class="menu-button" href="#"><span class="burger">&#9776;</span><span class="word">Menu</span></a>
-  
-  </nav>
+            <li>
+                <a rel="" href="https://github.com/emilyselwood"  target="_blank" title="GitHub">
+                    <span>GitHub</span>
+                    
+                </a>
+            </li>
+            <li>
+                <a rel="" href="https://parsecsreach.org/about"  target="_self" title="About me">
+                    <span>About me</span>
+                    
+                </a>
+            </li>
+            <li>
+                <a rel="" href="https://parsecsreach.org/"  target="_self" title="Home">
+                    <span>Home</span>
+                    
+                </a>
+            </li>
+        </ul>
+    </nav>
 </header>
+<main class="main">
 
+<article class="post-single">
+  <header class="post-header">
+    
+    <h1 class="post-title">
+      Spark and the Minor Planet Center data part 2
+    </h1>
+    <div class="post-meta"><span title='2017-12-03 15:39:22 +0000 UTC'>2017 December 3</span>&nbsp;·&nbsp;Emily Selwood
 
-
-<main class="content" role="main">
-
-
-
-
-  <article class="post post">
-
-    <header class="post-header">
-        <h1 class="post-title">Spark and the Minor Planet Center data part 2</h1>
-        <small></small>
-
-        <section class="post-meta">
-        
-          <time class="post-date" datetime="2017-12-03T15:39:22Z">
-            Dec 3, 2017
-          </time>
-        
-         
-          <span class="post-tag small"><a href="http://parsecsreach.com/tags/spark/">#spark</a></span>
-         
-          <span class="post-tag small"><a href="http://parsecsreach.com/tags/minor-planet-center/">#minor planet center</a></span>
-         
-          <span class="post-tag small"><a href="http://parsecsreach.com/tags/asteroids/">#asteroids</a></span>
-         
-        </section>
-    </header>
-
-    <section class="post-content">
-      
-
-<p>In the <a href="/post/spark_and_mpc">last post</a> we read the minor planet center orbit file. This was a JSON text file. This time we are going to look at a bit more complex file to process. If you haven&rsquo;t read the first post in this series I recommend starting there before reading this.</p>
-
+</div>
+  </header> 
+  <div class="post-content"><p>In the <a href="/post/spark_and_mpc">last post</a> we read the minor planet center orbit file. This was a JSON text file. This time we are going to look at a bit more complex file to process. If you haven&rsquo;t read the first post in this series I recommend starting there before reading this.</p>
 <p>In this post we are going to be looking at the Observation file. There are two parts to this file. One is for the numbered objects and other other for the un-numbered objects. Due to the original idea for this project we are going to work with the un-numbered file today.</p>
-
-<h1 id="assumptions">Assumptions</h1>
-
+<h1 id="assumptions">Assumptions<a hidden class="anchor" aria-hidden="true" href="#assumptions">#</a></h1>
 <p>You have been through the previous post in this series and understood it. You have a project already set up and able to read and process the orbit file.</p>
-
-<h1 id="setup">Setup</h1>
-
+<h1 id="setup">Setup<a hidden class="anchor" aria-hidden="true" href="#setup">#</a></h1>
 <p>The data file we are after can be found on the <a href="http://www.minorplanetcenter.net/iau/ECS/MPCAT-OBS/MPCAT-OBS.html">mpcat-obs page</a> under the link for the un-numbered minor planets. Download it. Then while it is downloading open up the project you created following along from the last post.</p>
-
-<h1 id="development">Development</h1>
-
+<h1 id="development">Development<a hidden class="anchor" aria-hidden="true" href="#development">#</a></h1>
 <p>First lets add another variable so we don&rsquo;t have to remember which argument is which.</p>
-
-<pre><code class="language-scala">val observationPath = args(1)
-</code></pre>
-
-<p>Now to get on to reading the file. In some ways this one is easier and some ways more complex. The data we are looking at here is a fixed width format. This means that there is nothing to separate the columns just that they always start in the same place no matter how long the data contained in them gets.</p>
-
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-scala" data-lang="scala"><span style="display:flex;"><span><span style="color:#66d9ef">val</span> observationPath <span style="color:#66d9ef">=</span> args<span style="color:#f92672">(</span><span style="color:#ae81ff">1</span><span style="color:#f92672">)</span>
+</span></span></code></pre></div><p>Now to get on to reading the file. In some ways this one is easier and some ways more complex. The data we are looking at here is a fixed width format. This means that there is nothing to separate the columns just that they always start in the same place no matter how long the data contained in them gets.</p>
 <p>Unfortunately there is not a built in function to deal with this easily. So we will have to read the file line by line and then split it up our selves. Actually we will cheat a little bit and only pull out the bits we need so as not to waste time doing work we don&rsquo;t need to do.</p>
-
-<pre><code class="language-scala">  val obs = spark.read.text(observationPath)
-</code></pre>
-
-<p>Like with the JSON reader from the previous post it is very easy to read a text file in spark sql. This time we don&rsquo;t even need any options. This will create a data frame which contains each line from the file in a column called &ldquo;value&rdquo;</p>
-
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-scala" data-lang="scala"><span style="display:flex;"><span>  <span style="color:#66d9ef">val</span> obs <span style="color:#66d9ef">=</span> spark<span style="color:#f92672">.</span>read<span style="color:#f92672">.</span>text<span style="color:#f92672">(</span>observationPath<span style="color:#f92672">)</span>
+</span></span></code></pre></div><p>Like with the JSON reader from the previous post it is very easy to read a text file in spark sql. This time we don&rsquo;t even need any options. This will create a data frame which contains each line from the file in a column called &ldquo;value&rdquo;</p>
 <p>The first step is always to check the data looks how you expect it to look. Use the <code>.show()</code> function to have a look at the first few rows and get a feel for how the data looks. To make our lives easier however there is some <a href="http://www.minorplanetcenter.net/iau/info/ObsFormat.html">documentation available</a> The column formats are defined in fortran format, I am pretty sure this is because that is what is used to generate the files. However it&rsquo;s a pretty simple format.</p>
-
 <p>A Means ascii and then the number following it is the number of characters allowed. e.g</p>
-
-<pre><code class="language-text">Columns     Format   Use
-    1 -  5       A5     Minor planet number
-    6 - 12       A7     Provisional or temporary designation
-   13            A1     Discovery asterisk
-</code></pre>
-
-<p>The columns are numbered from 1 rather than 0 as an array would be. Which is another thing to remember. The first thing we need to do is extract an id column. Similar to what we did with the json file. In a future post we will use this to join the two files together.</p>
-
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>Columns     Format   Use
+</span></span><span style="display:flex;"><span>    1 -  5       A5     Minor planet number
+</span></span><span style="display:flex;"><span>    6 - 12       A7     Provisional or temporary designation
+</span></span><span style="display:flex;"><span>   13            A1     Discovery asterisk
+</span></span></code></pre></div><p>The columns are numbered from 1 rather than 0 as an array would be. Which is another thing to remember. The first thing we need to do is extract an id column. Similar to what we did with the json file. In a future post we will use this to join the two files together.</p>
 <p>We can use the substring function to do this. Because we are using the un-numbered file we need to be looking for the provisional to temporary designation column for the ID. We could use both and coalesce but as we know what data we are putting in we might as well keep things simple.</p>
-
-<pre><code class="language-scala">  .withColumn(&quot;id&quot;, substring(col(&quot;value&quot;), 6, 7))
-</code></pre>
-
-<p>Now the next wrinkle is that the designations are what they call packed. This means that there is a range of different meanings to the data. There is an explanation in the <a href="http://www.minorplanetcenter.net/iau/info/PackedDes.html">MPC documentation</a>. This code is best put into a function that can be tested separately.</p>
-
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-scala" data-lang="scala"><span style="display:flex;"><span>  <span style="color:#f92672">.</span>withColumn<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;id&#34;</span><span style="color:#f92672">,</span> substring<span style="color:#f92672">(</span>col<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;value&#34;</span><span style="color:#f92672">),</span> <span style="color:#ae81ff">6</span><span style="color:#f92672">,</span> <span style="color:#ae81ff">7</span><span style="color:#f92672">))</span>
+</span></span></code></pre></div><p>Now the next wrinkle is that the designations are what they call packed. This means that there is a range of different meanings to the data. There is an explanation in the <a href="http://www.minorplanetcenter.net/iau/info/PackedDes.html">MPC documentation</a>. This code is best put into a function that can be tested separately.</p>
 <p>Create a new function. There are three main cases we need to deal with.</p>
-
 <ul>
 <li>If all the characters in the string are numbers.</li>
 <li>If the third character is a number.</li>
 <li>Any thing else.</li>
 </ul>
-
 <p>Your function should look something like this:</p>
-
-<pre><code class="language-scala">  def unpackIdFunc(in : String) : String = {
-    if (isAllDigits(in.substring(1))) {
-      trimZeroFunc(unpackNumbered(in))
-    } else if (in(2) &gt;= '0' &amp;&amp; in(2) &lt;= '9') {
-      numericId(in)
-    } else {
-      twoCharCode(in)
-    }
-  }
-</code></pre>
-
-<p>So this function takes in a string and performs out three tests before deciding how to format the result. The first detection of if its an integer is a simple function <code>isAllDigits()</code>. I&rsquo;m going to leave it, along with the <code>trimZeroFunc()</code>, as an exercise for the reader.</p>
-
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-scala" data-lang="scala"><span style="display:flex;"><span>  <span style="color:#66d9ef">def</span> unpackIdFunc<span style="color:#f92672">(</span>in <span style="color:#66d9ef">:</span> <span style="color:#66d9ef">String</span><span style="color:#f92672">)</span> <span style="color:#66d9ef">:</span> <span style="color:#66d9ef">String</span> <span style="color:#f92672">=</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>isAllDigits<span style="color:#f92672">(</span>in<span style="color:#f92672">.</span>substring<span style="color:#f92672">(</span><span style="color:#ae81ff">1</span><span style="color:#f92672">)))</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>      trimZeroFunc<span style="color:#f92672">(</span>unpackNumbered<span style="color:#f92672">(</span>in<span style="color:#f92672">))</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">}</span> <span style="color:#66d9ef">else</span> <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>in<span style="color:#f92672">(</span><span style="color:#ae81ff">2</span><span style="color:#f92672">)</span> <span style="color:#f92672">&gt;=</span> <span style="color:#e6db74">&#39;0&#39;</span> <span style="color:#f92672">&amp;&amp;</span> in<span style="color:#f92672">(</span><span style="color:#ae81ff">2</span><span style="color:#f92672">)</span> <span style="color:#f92672">&lt;=</span> <span style="color:#e6db74">&#39;9&#39;</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>      numericId<span style="color:#f92672">(</span>in<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">}</span> <span style="color:#66d9ef">else</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>      twoCharCode<span style="color:#f92672">(</span>in<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">}</span>
+</span></span></code></pre></div><p>So this function takes in a string and performs out three tests before deciding how to format the result. The first detection of if its an integer is a simple function <code>isAllDigits()</code>. I&rsquo;m going to leave it, along with the <code>trimZeroFunc()</code>, as an exercise for the reader.</p>
 <p>The Next is the <code>unpackNumbered</code> function. This looks like this:</p>
-
-<pre><code class="language-scala">  def unpackNumbered(in : String) : String = {
-    if (in(0) &gt;= '0' &amp;&amp; in(0) &lt;= '9') {
-      in
-    } else {
-      val numeric = in.substring(1)
-      val expanded = if (in(0) &gt;= 'a' &amp;&amp; in(0) &lt;= 'z') {
-        in(0) - 'a' + 36
-      } else {
-        in(0) - 'A' + 10
-      }
-
-      expanded.toString + numeric
-    }
-  }
-</code></pre>
-
-<p>The really simple path in this function is if the first character of the string is a number. In which case we don&rsquo;t have to do anything here. If it is not a number then we need to convert the first character into a number and then append the rest of the input string. The first character uses a range from 0-9 then A-Z followed by a-z to encode numbers 0 to 61. This helps save a bit of space in the files and keeps things in a reasonable order with out having to add an extra leading zero on to the numbers (and change the column lengths) every time too many asteroids are found.</p>
-
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-scala" data-lang="scala"><span style="display:flex;"><span>  <span style="color:#66d9ef">def</span> unpackNumbered<span style="color:#f92672">(</span>in <span style="color:#66d9ef">:</span> <span style="color:#66d9ef">String</span><span style="color:#f92672">)</span> <span style="color:#66d9ef">:</span> <span style="color:#66d9ef">String</span> <span style="color:#f92672">=</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>in<span style="color:#f92672">(</span><span style="color:#ae81ff">0</span><span style="color:#f92672">)</span> <span style="color:#f92672">&gt;=</span> <span style="color:#e6db74">&#39;0&#39;</span> <span style="color:#f92672">&amp;&amp;</span> in<span style="color:#f92672">(</span><span style="color:#ae81ff">0</span><span style="color:#f92672">)</span> <span style="color:#f92672">&lt;=</span> <span style="color:#e6db74">&#39;9&#39;</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>      in
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">}</span> <span style="color:#66d9ef">else</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">val</span> numeric <span style="color:#66d9ef">=</span> in<span style="color:#f92672">.</span>substring<span style="color:#f92672">(</span><span style="color:#ae81ff">1</span><span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">val</span> expanded <span style="color:#66d9ef">=</span> <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>in<span style="color:#f92672">(</span><span style="color:#ae81ff">0</span><span style="color:#f92672">)</span> <span style="color:#f92672">&gt;=</span> <span style="color:#e6db74">&#39;a&#39;</span> <span style="color:#f92672">&amp;&amp;</span> in<span style="color:#f92672">(</span><span style="color:#ae81ff">0</span><span style="color:#f92672">)</span> <span style="color:#f92672">&lt;=</span> <span style="color:#e6db74">&#39;z&#39;</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>        in<span style="color:#f92672">(</span><span style="color:#ae81ff">0</span><span style="color:#f92672">)</span> <span style="color:#f92672">-</span> <span style="color:#e6db74">&#39;a&#39;</span> <span style="color:#f92672">+</span> <span style="color:#ae81ff">36</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">}</span> <span style="color:#66d9ef">else</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>        in<span style="color:#f92672">(</span><span style="color:#ae81ff">0</span><span style="color:#f92672">)</span> <span style="color:#f92672">-</span> <span style="color:#e6db74">&#39;A&#39;</span> <span style="color:#f92672">+</span> <span style="color:#ae81ff">10</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>      expanded<span style="color:#f92672">.</span>toString <span style="color:#f92672">+</span> numeric
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">}</span>
+</span></span></code></pre></div><p>The really simple path in this function is if the first character of the string is a number. In which case we don&rsquo;t have to do anything here. If it is not a number then we need to convert the first character into a number and then append the rest of the input string. The first character uses a range from 0-9 then A-Z followed by a-z to encode numbers 0 to 61. This helps save a bit of space in the files and keeps things in a reasonable order with out having to add an extra leading zero on to the numbers (and change the column lengths) every time too many asteroids are found.</p>
 <p>Next up is the <code>numericId()</code> function. This one needs to pull some bits from different places and arrange them correctly.</p>
-
-<pre><code class="language-scala">  def numericId(in : String) : String = {
-    val year = unpackNumbered(in.substring(0, 3))
-    val number = trimZeroFunc(unpackNumbered(in.substring(4, 6)))
-    if (number == &quot;&quot; || number == &quot;00&quot;) {
-      year + &quot; &quot; + in(3) + in(6)
-    } else {
-      year + &quot; &quot; + in(3) + in(6) + number
-    }
-  }
-</code></pre>
-
-<p>The format consists of the year, a space, the forth character in the string, the seventh character in the string and then a packed number between the two. You can see this reuses the <code>unpackNumbered()</code> function from above.</p>
-
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-scala" data-lang="scala"><span style="display:flex;"><span>  <span style="color:#66d9ef">def</span> numericId<span style="color:#f92672">(</span>in <span style="color:#66d9ef">:</span> <span style="color:#66d9ef">String</span><span style="color:#f92672">)</span> <span style="color:#66d9ef">:</span> <span style="color:#66d9ef">String</span> <span style="color:#f92672">=</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">val</span> year <span style="color:#66d9ef">=</span> unpackNumbered<span style="color:#f92672">(</span>in<span style="color:#f92672">.</span>substring<span style="color:#f92672">(</span><span style="color:#ae81ff">0</span><span style="color:#f92672">,</span> <span style="color:#ae81ff">3</span><span style="color:#f92672">))</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">val</span> number <span style="color:#66d9ef">=</span> trimZeroFunc<span style="color:#f92672">(</span>unpackNumbered<span style="color:#f92672">(</span>in<span style="color:#f92672">.</span>substring<span style="color:#f92672">(</span><span style="color:#ae81ff">4</span><span style="color:#f92672">,</span> <span style="color:#ae81ff">6</span><span style="color:#f92672">)))</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>number <span style="color:#f92672">==</span> <span style="color:#e6db74">&#34;&#34;</span> <span style="color:#f92672">||</span> number <span style="color:#f92672">==</span> <span style="color:#e6db74">&#34;00&#34;</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>      year <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34; &#34;</span> <span style="color:#f92672">+</span> in<span style="color:#f92672">(</span><span style="color:#ae81ff">3</span><span style="color:#f92672">)</span> <span style="color:#f92672">+</span> in<span style="color:#f92672">(</span><span style="color:#ae81ff">6</span><span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">}</span> <span style="color:#66d9ef">else</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>      year <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34; &#34;</span> <span style="color:#f92672">+</span> in<span style="color:#f92672">(</span><span style="color:#ae81ff">3</span><span style="color:#f92672">)</span> <span style="color:#f92672">+</span> in<span style="color:#f92672">(</span><span style="color:#ae81ff">6</span><span style="color:#f92672">)</span> <span style="color:#f92672">+</span> number
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">}</span>
+</span></span></code></pre></div><p>The format consists of the year, a space, the forth character in the string, the seventh character in the string and then a packed number between the two. You can see this reuses the <code>unpackNumbered()</code> function from above.</p>
 <p>Last we have the <code>twoCharCode()</code> function. This one is very simple after the last one. Here we just have to unpack a number and then join it up with two characters and some spacers.</p>
-
-<pre><code class="language-scala">  def twoCharCode(in : String) : String = {
-    val number = unpackNumbered(in.substring(3))
-    number + &quot; &quot; + in(0) + &quot;-&quot; + in(1)
-  }
-</code></pre>
-
-<p>Now we have a function that will unpack the different types of id we might find in the observation file. I recommend using the examples given in the MPC documentation to create some test cases. Put them in <code>src/test/&lt;your package name&gt;</code> and you will be able to run them with <code>./gradlew test</code> or the correct button in your ide. If you have got this wrong you will get very strange results later.</p>
-
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-scala" data-lang="scala"><span style="display:flex;"><span>  <span style="color:#66d9ef">def</span> twoCharCode<span style="color:#f92672">(</span>in <span style="color:#66d9ef">:</span> <span style="color:#66d9ef">String</span><span style="color:#f92672">)</span> <span style="color:#66d9ef">:</span> <span style="color:#66d9ef">String</span> <span style="color:#f92672">=</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">val</span> number <span style="color:#66d9ef">=</span> unpackNumbered<span style="color:#f92672">(</span>in<span style="color:#f92672">.</span>substring<span style="color:#f92672">(</span><span style="color:#ae81ff">3</span><span style="color:#f92672">))</span>
+</span></span><span style="display:flex;"><span>    number <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34; &#34;</span> <span style="color:#f92672">+</span> in<span style="color:#f92672">(</span><span style="color:#ae81ff">0</span><span style="color:#f92672">)</span> <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34;-&#34;</span> <span style="color:#f92672">+</span> in<span style="color:#f92672">(</span><span style="color:#ae81ff">1</span><span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">}</span>
+</span></span></code></pre></div><p>Now we have a function that will unpack the different types of id we might find in the observation file. I recommend using the examples given in the MPC documentation to create some test cases. Put them in <code>src/test/&lt;your package name&gt;</code> and you will be able to run them with <code>./gradlew test</code> or the correct button in your ide. If you have got this wrong you will get very strange results later.</p>
 <p>We need to turn this function <code>unpackIdFunc</code> into a user defined function (udf) so that spark knows how to use it. It will need to work out how to send the function to other computers and so on. Thankfully it does a lot of magic behind the scenes so we just need to define it.</p>
-
-<pre><code class="language-scala">val unpackId = udf(unpackIdFunc _)
-</code></pre>
-
-<p>The underscore here just means that the first parameter to the udf should be passed through to the <code>unpackIdFunc</code> function. Now we can use it in our program. Change the line we created earlier to extract the id column to call the unpackId udf.</p>
-
-<pre><code class="language-scala">  .withColumn(&quot;id&quot;, unpackId(substring(col(&quot;value&quot;), 6, 7)))
-</code></pre>
-
-<p>Nesting functions like this is very powerful and useful. You can often save your self from creating lots of temporary columns by doing this. Though it can sometimes be harder to work out what is going on.</p>
-
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-scala" data-lang="scala"><span style="display:flex;"><span><span style="color:#66d9ef">val</span> unpackId <span style="color:#66d9ef">=</span> udf<span style="color:#f92672">(</span>unpackIdFunc <span style="color:#66d9ef">_</span><span style="color:#f92672">)</span>
+</span></span></code></pre></div><p>The underscore here just means that the first parameter to the udf should be passed through to the <code>unpackIdFunc</code> function. Now we can use it in our program. Change the line we created earlier to extract the id column to call the unpackId udf.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-scala" data-lang="scala"><span style="display:flex;"><span>  <span style="color:#f92672">.</span>withColumn<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;id&#34;</span><span style="color:#f92672">,</span> unpackId<span style="color:#f92672">(</span>substring<span style="color:#f92672">(</span>col<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;value&#34;</span><span style="color:#f92672">),</span> <span style="color:#ae81ff">6</span><span style="color:#f92672">,</span> <span style="color:#ae81ff">7</span><span style="color:#f92672">)))</span>
+</span></span></code></pre></div><p>Nesting functions like this is very powerful and useful. You can often save your self from creating lots of temporary columns by doing this. Though it can sometimes be harder to work out what is going on.</p>
 <p>Our original use case was to be able to find the full date of the first observation of an object. So the next thing we need to extract is the date and time of the observation. This starts in column 16 and is 16 characters long. We will also need to create a function to convert the date from a string into an actual date object.</p>
-
 <p>The date format is a little bit weird. The Year, month and day are pretty reasonable. The first four characters are the year, the next two the month and the next two are the day. The rest of the string however is the part of the day divided into 10000 chunks. So we need to work out how many seconds we have if we take the number of seconds in a day and divide it by 10000. Then we can multiply that number by the last part of the string. Take a look at the code below it will hopefully make a little more sense.</p>
-
-<pre><code class="language-scala">  def dateFunc(in : String): Long = {
-    val year = in.substring(0, 4).toInt
-    val month = in.substring(5, 7).toInt
-    val day = in.substring(8, 10).toInt
-
-    val part = in.substring(11).replaceAll(&quot; &quot;, &quot;0&quot;).toInt
-    val seconds = Math.round(((24*60*60) * 0.00001) * part)
-
-    LocalDate.of(year, month, day).atStartOfDay()
-      .plus(seconds, ChronoUnit.SECONDS)
-      .toInstant(ZoneOffset.UTC)
-      .getEpochSecond
-  }
-</code></pre>
-
-<p>I&rsquo;ve used the java 8 date functions as they are a significant improvement over the older API. The bit to watch out for is to make sure you set the time zone to utc. Finally we return it in epoch seconds as spark doesn&rsquo;t know how to handle dates very well. It is just a lot easier to deal with the date a long. Now turn the <code>dateFunc</code> into a udf like we did with the <code>unpackIdFunc</code></p>
-
-<pre><code class="language-scala"> val dateConvert = udf(ObsUtils.dateFunc _)
-</code></pre>
-
-<p>Then add another column to our data frame.</p>
-
-<pre><code class="language-scala">  .withColumn(&quot;ts&quot;, dateConvert(substring(col(&quot;value&quot;), 16, 16)))
-</code></pre>
-
-<p>We now have the columns we need so we can try and find the minimum time stamp for each id. To do this we need to first group by the id column and then find the minimum of the ts column. We will need to use the <code>.groupBy()</code> and <code>col</code> functions for the first part. Rather inconsistently the <code>.min()</code> function does not need its column name wrapped in a col call. What we end up with should look like this:</p>
-
-<pre><code class="language-scala">val obs = spark.read.text(observationPath)
-      .withColumn(&quot;id&quot;, unpackId(substring(col(&quot;value&quot;), idStart, idLen)))
-      .withColumn(&quot;ts&quot;, dateConvert(substring(col(&quot;value&quot;), 16, 16)))
-      .groupBy(col(&quot;id&quot;))
-      .min(&quot;ts&quot;)
-</code></pre>
-
-<p>There are other aggregation functions available as you would expect. There is a <code>max</code>, <code>avg</code>, and <code>sum</code> to get you started. It is also possible to create your own.</p>
-
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-scala" data-lang="scala"><span style="display:flex;"><span>  <span style="color:#66d9ef">def</span> dateFunc<span style="color:#f92672">(</span>in <span style="color:#66d9ef">:</span> <span style="color:#66d9ef">String</span><span style="color:#f92672">)</span><span style="color:#66d9ef">:</span> <span style="color:#66d9ef">Long</span> <span style="color:#f92672">=</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">val</span> year <span style="color:#66d9ef">=</span> in<span style="color:#f92672">.</span>substring<span style="color:#f92672">(</span><span style="color:#ae81ff">0</span><span style="color:#f92672">,</span> <span style="color:#ae81ff">4</span><span style="color:#f92672">).</span>toInt
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">val</span> month <span style="color:#66d9ef">=</span> in<span style="color:#f92672">.</span>substring<span style="color:#f92672">(</span><span style="color:#ae81ff">5</span><span style="color:#f92672">,</span> <span style="color:#ae81ff">7</span><span style="color:#f92672">).</span>toInt
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">val</span> day <span style="color:#66d9ef">=</span> in<span style="color:#f92672">.</span>substring<span style="color:#f92672">(</span><span style="color:#ae81ff">8</span><span style="color:#f92672">,</span> <span style="color:#ae81ff">10</span><span style="color:#f92672">).</span>toInt
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">val</span> part <span style="color:#66d9ef">=</span> in<span style="color:#f92672">.</span>substring<span style="color:#f92672">(</span><span style="color:#ae81ff">11</span><span style="color:#f92672">).</span>replaceAll<span style="color:#f92672">(</span><span style="color:#e6db74">&#34; &#34;</span><span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;0&#34;</span><span style="color:#f92672">).</span>toInt
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">val</span> seconds <span style="color:#66d9ef">=</span> <span style="color:#a6e22e">Math</span><span style="color:#f92672">.</span>round<span style="color:#f92672">(((</span><span style="color:#ae81ff">24</span><span style="color:#f92672">*</span><span style="color:#ae81ff">60</span><span style="color:#f92672">*</span><span style="color:#ae81ff">60</span><span style="color:#f92672">)</span> <span style="color:#f92672">*</span> <span style="color:#ae81ff">0.00001</span><span style="color:#f92672">)</span> <span style="color:#f92672">*</span> part<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">LocalDate</span><span style="color:#f92672">.</span>of<span style="color:#f92672">(</span>year<span style="color:#f92672">,</span> month<span style="color:#f92672">,</span> day<span style="color:#f92672">).</span>atStartOfDay<span style="color:#f92672">()</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">.</span>plus<span style="color:#f92672">(</span>seconds<span style="color:#f92672">,</span> <span style="color:#a6e22e">ChronoUnit</span><span style="color:#f92672">.</span><span style="color:#a6e22e">SECONDS</span><span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">.</span>toInstant<span style="color:#f92672">(</span><span style="color:#a6e22e">ZoneOffset</span><span style="color:#f92672">.</span><span style="color:#a6e22e">UTC</span><span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">.</span>getEpochSecond
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">}</span>
+</span></span></code></pre></div><p>I&rsquo;ve used the java 8 date functions as they are a significant improvement over the older API. The bit to watch out for is to make sure you set the time zone to utc. Finally we return it in epoch seconds as spark doesn&rsquo;t know how to handle dates very well. It is just a lot easier to deal with the date a long. Now turn the <code>dateFunc</code> into a udf like we did with the <code>unpackIdFunc</code></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-scala" data-lang="scala"><span style="display:flex;"><span> <span style="color:#66d9ef">val</span> dateConvert <span style="color:#66d9ef">=</span> udf<span style="color:#f92672">(</span><span style="color:#a6e22e">ObsUtils</span><span style="color:#f92672">.</span>dateFunc <span style="color:#66d9ef">_</span><span style="color:#f92672">)</span>
+</span></span></code></pre></div><p>Then add another column to our data frame.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-scala" data-lang="scala"><span style="display:flex;"><span>  <span style="color:#f92672">.</span>withColumn<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;ts&#34;</span><span style="color:#f92672">,</span> dateConvert<span style="color:#f92672">(</span>substring<span style="color:#f92672">(</span>col<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;value&#34;</span><span style="color:#f92672">),</span> <span style="color:#ae81ff">16</span><span style="color:#f92672">,</span> <span style="color:#ae81ff">16</span><span style="color:#f92672">)))</span>
+</span></span></code></pre></div><p>We now have the columns we need so we can try and find the minimum time stamp for each id. To do this we need to first group by the id column and then find the minimum of the ts column. We will need to use the <code>.groupBy()</code> and <code>col</code> functions for the first part. Rather inconsistently the <code>.min()</code> function does not need its column name wrapped in a col call. What we end up with should look like this:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-scala" data-lang="scala"><span style="display:flex;"><span><span style="color:#66d9ef">val</span> obs <span style="color:#66d9ef">=</span> spark<span style="color:#f92672">.</span>read<span style="color:#f92672">.</span>text<span style="color:#f92672">(</span>observationPath<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">.</span>withColumn<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;id&#34;</span><span style="color:#f92672">,</span> unpackId<span style="color:#f92672">(</span>substring<span style="color:#f92672">(</span>col<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;value&#34;</span><span style="color:#f92672">),</span> idStart<span style="color:#f92672">,</span> idLen<span style="color:#f92672">)))</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">.</span>withColumn<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;ts&#34;</span><span style="color:#f92672">,</span> dateConvert<span style="color:#f92672">(</span>substring<span style="color:#f92672">(</span>col<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;value&#34;</span><span style="color:#f92672">),</span> <span style="color:#ae81ff">16</span><span style="color:#f92672">,</span> <span style="color:#ae81ff">16</span><span style="color:#f92672">)))</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">.</span>groupBy<span style="color:#f92672">(</span>col<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;id&#34;</span><span style="color:#f92672">))</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">.</span>min<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;ts&#34;</span><span style="color:#f92672">)</span>
+</span></span></code></pre></div><p>There are other aggregation functions available as you would expect. There is a <code>max</code>, <code>avg</code>, and <code>sum</code> to get you started. It is also possible to create your own.</p>
 <p>Now you can add a <code>obs.show(5)</code> call below it to have a look at the results you have. You should see two columns that look something like below</p>
-
-<pre><code class="language-text">+-------+-----------+
-|     id|    min(ts)|
-+-------+-----------+
-|1908 OD|-1938820667|
-|1914 KA|-1755298440|
-|1927 UA|-1331164308|
-|1931 RS|-1208486322|
-|1933 DC|-1163208817|
-+-------+-----------+
-only showing top 5 rows
-</code></pre>
-
-<p>The dates are not massively useful like this. Converting them back in to a human readable string requires another user defined function.</p>
-
-<pre><code class="language-scala">   def formatDateFunc(in : Long) : String = {
-    LocalDateTime.ofEpochSecond(in, 0, ZoneOffset.UTC).format(DateTimeFormatter.ISO_LOCAL_DATE_TIME)
-  }
-</code></pre>
-
-<p>This uses the built in ISO8601 date formatter. We could use any thing but might as well use the built in standard. Turn it into a UDF as usual.</p>
-
-<pre><code class="language-scala">  val formatDate = udf(ObsUtils.formatDateFunc _)
-</code></pre>
-
-<p>Last we need to use this to format the ts column. We can use the <code>.withColumn()</code> function like before. But this time we are also going to use the <code>.select()</code> function to remove the min(ts) column that we don&rsquo;t need any more. This can be very useful if you only need a few columns in a large data set. Also note that we had to call the ts column min(ts) now as it has had its name changed by the min function.</p>
-
-<pre><code class="language-scala">  .withColumn(&quot;date&quot;, formatDate(col(&quot;min(ts)&quot;)))
-  .select(&quot;id&quot;, &quot;date&quot;)
-</code></pre>
-
-<p>If you now run <code>obs.show(5)</code> you should get something like</p>
-
-<pre><code class="language-text">+-------+-------------------+
-|     id|               date|
-+-------+-------------------+
-|1908 OD|1908-07-24T22:42:13|
-|1914 KA|1914-05-19T01:06:00|
-|1927 UA|1927-10-27T00:08:12|
-|1931 RS|1931-09-15T21:21:18|
-|1933 DC|1933-02-20T22:26:23|
-+-------+-------------------+
-only showing top 5 rows
-</code></pre>
-
-<h1 id="conclusion">Conclusion</h1>
-
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>+-------+-----------+
+</span></span><span style="display:flex;"><span>|     id|    min(ts)|
+</span></span><span style="display:flex;"><span>+-------+-----------+
+</span></span><span style="display:flex;"><span>|1908 OD|-1938820667|
+</span></span><span style="display:flex;"><span>|1914 KA|-1755298440|
+</span></span><span style="display:flex;"><span>|1927 UA|-1331164308|
+</span></span><span style="display:flex;"><span>|1931 RS|-1208486322|
+</span></span><span style="display:flex;"><span>|1933 DC|-1163208817|
+</span></span><span style="display:flex;"><span>+-------+-----------+
+</span></span><span style="display:flex;"><span>only showing top 5 rows
+</span></span></code></pre></div><p>The dates are not massively useful like this. Converting them back in to a human readable string requires another user defined function.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-scala" data-lang="scala"><span style="display:flex;"><span>   <span style="color:#66d9ef">def</span> formatDateFunc<span style="color:#f92672">(</span>in <span style="color:#66d9ef">:</span> <span style="color:#66d9ef">Long</span><span style="color:#f92672">)</span> <span style="color:#66d9ef">:</span> <span style="color:#66d9ef">String</span> <span style="color:#f92672">=</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">LocalDateTime</span><span style="color:#f92672">.</span>ofEpochSecond<span style="color:#f92672">(</span>in<span style="color:#f92672">,</span> <span style="color:#ae81ff">0</span><span style="color:#f92672">,</span> <span style="color:#a6e22e">ZoneOffset</span><span style="color:#f92672">.</span><span style="color:#a6e22e">UTC</span><span style="color:#f92672">).</span>format<span style="color:#f92672">(</span><span style="color:#a6e22e">DateTimeFormatter</span><span style="color:#f92672">.</span><span style="color:#a6e22e">ISO_LOCAL_DATE_TIME</span><span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">}</span>
+</span></span></code></pre></div><p>This uses the built in ISO8601 date formatter. We could use any thing but might as well use the built in standard. Turn it into a UDF as usual.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-scala" data-lang="scala"><span style="display:flex;"><span>  <span style="color:#66d9ef">val</span> formatDate <span style="color:#66d9ef">=</span> udf<span style="color:#f92672">(</span><span style="color:#a6e22e">ObsUtils</span><span style="color:#f92672">.</span>formatDateFunc <span style="color:#66d9ef">_</span><span style="color:#f92672">)</span>
+</span></span></code></pre></div><p>Last we need to use this to format the ts column. We can use the <code>.withColumn()</code> function like before. But this time we are also going to use the <code>.select()</code> function to remove the min(ts) column that we don&rsquo;t need any more. This can be very useful if you only need a few columns in a large data set. Also note that we had to call the ts column min(ts) now as it has had its name changed by the min function.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-scala" data-lang="scala"><span style="display:flex;"><span>  <span style="color:#f92672">.</span>withColumn<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;date&#34;</span><span style="color:#f92672">,</span> formatDate<span style="color:#f92672">(</span>col<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;min(ts)&#34;</span><span style="color:#f92672">)))</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">.</span>select<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;id&#34;</span><span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;date&#34;</span><span style="color:#f92672">)</span>
+</span></span></code></pre></div><p>If you now run <code>obs.show(5)</code> you should get something like</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>+-------+-------------------+
+</span></span><span style="display:flex;"><span>|     id|               date|
+</span></span><span style="display:flex;"><span>+-------+-------------------+
+</span></span><span style="display:flex;"><span>|1908 OD|1908-07-24T22:42:13|
+</span></span><span style="display:flex;"><span>|1914 KA|1914-05-19T01:06:00|
+</span></span><span style="display:flex;"><span>|1927 UA|1927-10-27T00:08:12|
+</span></span><span style="display:flex;"><span>|1931 RS|1931-09-15T21:21:18|
+</span></span><span style="display:flex;"><span>|1933 DC|1933-02-20T22:26:23|
+</span></span><span style="display:flex;"><span>+-------+-------------------+
+</span></span><span style="display:flex;"><span>only showing top 5 rows
+</span></span></code></pre></div><h1 id="conclusion">Conclusion<a hidden class="anchor" aria-hidden="true" href="#conclusion">#</a></h1>
 <p>In this post we have learnt to read a text file, pull the bits out of the lines that we need, create user defined functions to handle more complex processing of columns, group by columns, perform aggregations, and select columns. This will hopefully leave you in pretty good stead for processing data.  We will join up these two data sets in the next post.</p>
-
 <p>If you found this interesting or you have any questions please let me know on twitter.</p>
 
-    </section>
 
+  </div>
 
   <footer class="post-footer">
-
-
-    
-
-
-
-
-
-
-
-
-
-<section class="author">
-  <h4><a href="http://parsecsreach.com">Emily Selwood</a></h4>
-  
-  <p>Software Engineer - Sort of full stack but not the normal stack</p>
-  
-  <div class="author-meta">
-    <span class="author-location icon-location">Oxfordshire, UK</span>
-    <span class="author-link icon-link"><a href="http://parsecsreach.com">http://parsecsreach.com</a></span>
-  </div>
-</section>
-
-
-
-
-    
-<section class="share">
-  <h4>Share this post</h4>
-  <a class="icon-twitter" style="font-size: 1.4em" href="https://twitter.com/share?text=Spark%20and%20the%20Minor%20Planet%20Center%20data%20part%202&nbsp;-&nbsp;Parsecs%20Reach&amp;url=http%3a%2f%2fparsecsreach.com%2fpost%2fspark_and_mpc_part_2%2f"
-      onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
-      <span class="hidden">Twitter</span>
+    <ul class="post-tags">
+      <li><a href="https://parsecsreach.org/tags/spark/">spark</a></li>
+      <li><a href="https://parsecsreach.org/tags/minor-planet-center/">minor planet center</a></li>
+      <li><a href="https://parsecsreach.org/tags/asteroids/">asteroids</a></li>
+    </ul>
+<nav class="paginav">
+  <a class="prev" href="https://parsecsreach.org/post/spark_and_mpc_part_3/">
+    <span class="title">« Prev</span>
+    <br>
+    <span>Spark and the Minor Planet Center data part 3</span>
   </a>
-  <a class="icon-facebook" style="font-size: 1.4em" href="https://www.facebook.com/sharer/sharer.php?u=http%3a%2f%2fparsecsreach.com%2fpost%2fspark_and_mpc_part_2%2f"
-      onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;">
-      <span class="hidden">Facebook</span>
+  <a class="next" href="https://parsecsreach.org/post/spark_and_mpc/">
+    <span class="title">Next »</span>
+    <br>
+    <span>Spark and the Minor Planet Center data</span>
   </a>
-  <a class="icon-pinterest" style="font-size: 1.4em" href="http://pinterest.com/pin/create/button/?url=http%3a%2f%2fparsecsreach.com%2fpost%2fspark_and_mpc_part_2%2f&amp;description=Spark%20and%20the%20Minor%20Planet%20Center%20data%20part%202"
-      onclick="window.open(this.href, 'pinterest-share','width=580,height=296');return false;">
-      <span class="hidden">Pinterest</span>
-  </a>
-  <a class="icon-google-plus" style="font-size: 1.4em" href="https://plus.google.com/share?url=http%3a%2f%2fparsecsreach.com%2fpost%2fspark_and_mpc_part_2%2f"
-     onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;">
-      <span class="hidden">Google+</span>
-  </a>
-</section>
-
-
-
-    
-
-
-
-
+</nav>
 
   </footer>
 </article>
-
-</main>
-
-
-  <aside class="read-next">
-  
-      <a class="read-next-story" style="background-image: url(/img/fire3.jpg)" href="/post/spark_and_mpc_part_3/">
-          <section class="post">
-              <h2>Spark and the Minor Planet Center data part 3</h2>
-              
-          </section>
-      </a>
-  
-  
-      <a class="read-next-story prev" style="background-image: url(/img/fire.jpg)" href="/post/spark_and_mpc/">
-          <section class="post">
-              <h2>Spark and the Minor Planet Center data</h2>
-          </section>
-      </a>
-  
-</aside>
-
-
-
-    <footer class="site-footer clearfix">
-        <section class="copyright"><a href="">Parsecs Reach</a> All rights reserved - 2019</section>
-        
-        <section class="poweredby">Proudly generated by <a class="icon-hugo" href="http://gohugo.io">HUGO</a>, with <a class="icon-theme" href="https://github.com/vjeantet/hugo-theme-casper">Casper</a> theme</section>
-        
-    </footer>
-    </div>
-    <script type="text/javascript" src="/js/jquery.js"></script>
-    <script type="text/javascript" src="/js/jquery.fitvids.js"></script>
-    <script type="text/javascript" src="/js/index.js"></script>
+    </main>
     
-</body>
-</html>
+<footer class="footer">
+    <span>All rights reserved - 2022</span>
+    <span>
+        Powered by
+        <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
+        <path d="M12 6H0l6-6z" />
+    </svg>
+</a>
 
+<script>
+    let menu = document.getElementById('menu')
+    if (menu) {
+        menu.scrollLeft = localStorage.getItem("menu-scroll-position");
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var mybutton = document.getElementById("top-link");
+    window.onscroll = function () {
+        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
+            mybutton.style.visibility = "visible";
+            mybutton.style.opacity = "1";
+        } else {
+            mybutton.style.visibility = "hidden";
+            mybutton.style.opacity = "0";
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        if (document.body.className.includes("dark")) {
+            document.body.classList.remove('dark');
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            document.body.classList.add('dark');
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+</body>
+
+</html>

@@ -1,23 +1,19 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
   <channel>
-    <title>Qgis on Parsecs Reach</title>
-    <link>http://parsecsreach.com/tags/qgis/</link>
-    <description>Recent content in Qgis on Parsecs Reach</description>
+    <title>qgis on Parsecs Reach</title>
+    <link>https://parsecsreach.org/tags/qgis/</link>
+    <description>Recent content in qgis on Parsecs Reach</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <copyright>All rights reserved - 2019</copyright>
-    <lastBuildDate>Fri, 26 Jan 2018 21:58:30 +0000</lastBuildDate>
-    
-	<atom:link href="http://parsecsreach.com/tags/qgis/index.xml" rel="self" type="application/rss+xml" />
-    
-    
+    <copyright>All rights reserved - 2022</copyright>
+    <lastBuildDate>Fri, 26 Jan 2018 21:58:30 +0000</lastBuildDate><atom:link href="https://parsecsreach.org/tags/qgis/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Finding flatroofs with QGIS</title>
-      <link>http://parsecsreach.com/post/flatroofs_with_qgis/</link>
+      <link>https://parsecsreach.org/post/flatroofs_with_qgis/</link>
       <pubDate>Fri, 26 Jan 2018 21:58:30 +0000</pubDate>
       
-      <guid>http://parsecsreach.com/post/flatroofs_with_qgis/</guid>
+      <guid>https://parsecsreach.org/post/flatroofs_with_qgis/</guid>
       <description>A little while ago I attended the Climathon kic event/hackathon in Bristol at my old university. The event was to come up with solutions that could help with pollution in the city. There were not a lot of people who turned up so we formed a single team. The idea we came up with was to create an incentive for people with flat roofs to put plants on them. This meant we needed to be able to find flat roofs in the city.</description>
     </item>
     

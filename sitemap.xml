@@ -1,157 +1,85 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
-  
   <url>
-    <loc>http://parsecsreach.com/post/its_me/</loc>
+    <loc>https://parsecsreach.org/post/its_me/</loc>
     <lastmod>2019-09-06T17:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>http://parsecsreach.com/post/golangresparse/</loc>
+  </url><url>
+    <loc>https://parsecsreach.org/</loc>
+    <lastmod>2019-09-06T17:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://parsecsreach.org/tags/personal/</loc>
+    <lastmod>2019-09-06T17:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://parsecsreach.org/post/</loc>
+    <lastmod>2019-09-06T17:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://parsecsreach.org/tags/</loc>
+    <lastmod>2019-09-06T17:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://parsecsreach.org/tags/go/</loc>
     <lastmod>2018-12-08T13:28:33+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>http://parsecsreach.com/post/wsl_dot_files/</loc>
+  </url><url>
+    <loc>https://parsecsreach.org/tags/golang/</loc>
+    <lastmod>2018-12-08T13:28:33+00:00</lastmod>
+  </url><url>
+    <loc>https://parsecsreach.org/post/golangresparse/</loc>
+    <lastmod>2018-12-08T13:28:33+00:00</lastmod>
+  </url><url>
+    <loc>https://parsecsreach.org/tags/resparse/</loc>
+    <lastmod>2018-12-08T13:28:33+00:00</lastmod>
+  </url><url>
+    <loc>https://parsecsreach.org/tags/dotfiles/</loc>
     <lastmod>2018-08-09T08:25:13+01:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>http://parsecsreach.com/post/flatroofs_with_qgis/</loc>
+  </url><url>
+    <loc>https://parsecsreach.org/tags/windows-subsystem-for-linux/</loc>
+    <lastmod>2018-08-09T08:25:13+01:00</lastmod>
+  </url><url>
+    <loc>https://parsecsreach.org/post/wsl_dot_files/</loc>
+    <lastmod>2018-08-09T08:25:13+01:00</lastmod>
+  </url><url>
+    <loc>https://parsecsreach.org/tags/wsl/</loc>
+    <lastmod>2018-08-09T08:25:13+01:00</lastmod>
+  </url><url>
+    <loc>https://parsecsreach.org/post/flatroofs_with_qgis/</loc>
     <lastmod>2018-01-26T21:58:30+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>http://parsecsreach.com/post/spark_and_mpc_part_3/</loc>
+  </url><url>
+    <loc>https://parsecsreach.org/tags/geography/</loc>
+    <lastmod>2018-01-26T21:58:30+00:00</lastmod>
+  </url><url>
+    <loc>https://parsecsreach.org/tags/qgis/</loc>
+    <lastmod>2018-01-26T21:58:30+00:00</lastmod>
+  </url><url>
+    <loc>https://parsecsreach.org/tags/raster/</loc>
+    <lastmod>2018-01-26T21:58:30+00:00</lastmod>
+  </url><url>
+    <loc>https://parsecsreach.org/tags/asteroids/</loc>
     <lastmod>2017-12-05T19:39:29+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>http://parsecsreach.com/post/spark_and_mpc_part_2/</loc>
+  </url><url>
+    <loc>https://parsecsreach.org/tags/minor-planet-center/</loc>
+    <lastmod>2017-12-05T19:39:29+00:00</lastmod>
+  </url><url>
+    <loc>https://parsecsreach.org/tags/spark/</loc>
+    <lastmod>2017-12-05T19:39:29+00:00</lastmod>
+  </url><url>
+    <loc>https://parsecsreach.org/post/spark_and_mpc_part_3/</loc>
+    <lastmod>2017-12-05T19:39:29+00:00</lastmod>
+  </url><url>
+    <loc>https://parsecsreach.org/post/spark_and_mpc_part_2/</loc>
     <lastmod>2017-12-03T15:39:22+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>http://parsecsreach.com/post/spark_and_mpc/</loc>
+  </url><url>
+    <loc>https://parsecsreach.org/post/spark_and_mpc/</loc>
     <lastmod>2017-12-02T08:55:24+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>http://parsecsreach.com/about/</loc>
+  </url><url>
+    <loc>https://parsecsreach.org/about/</loc>
     <lastmod>2017-12-02T08:33:15+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>http://parsecsreach.com/post/introduction/</loc>
+  </url><url>
+    <loc>https://parsecsreach.org/tags/introduction/</loc>
     <lastmod>2017-12-02T08:01:19+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>http://parsecsreach.com/tags/asteroids/</loc>
-    <lastmod>2017-12-05T19:39:29+00:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>http://parsecsreach.com/categories/</loc>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>http://parsecsreach.com/tags/dotfiles/</loc>
-    <lastmod>2018-08-09T08:25:13+01:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>http://parsecsreach.com/tags/geography/</loc>
-    <lastmod>2018-01-26T21:58:30+00:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>http://parsecsreach.com/tags/go/</loc>
-    <lastmod>2018-12-08T13:28:33+00:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>http://parsecsreach.com/tags/golang/</loc>
-    <lastmod>2018-12-08T13:28:33+00:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>http://parsecsreach.com/tags/introduction/</loc>
+  </url><url>
+    <loc>https://parsecsreach.org/post/introduction/</loc>
     <lastmod>2017-12-02T08:01:19+00:00</lastmod>
-    <priority>0</priority>
+  </url><url>
+    <loc>https://parsecsreach.org/categories/</loc>
   </url>
-  
-  <url>
-    <loc>http://parsecsreach.com/tags/minor-planet-center/</loc>
-    <lastmod>2017-12-05T19:39:29+00:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>http://parsecsreach.com/</loc>
-    <lastmod>2019-09-06T17:00:00+00:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>http://parsecsreach.com/tags/personal/</loc>
-    <lastmod>2019-09-06T17:00:00+00:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>http://parsecsreach.com/post/</loc>
-    <lastmod>2019-09-06T17:00:00+00:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>http://parsecsreach.com/tags/qgis/</loc>
-    <lastmod>2018-01-26T21:58:30+00:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>http://parsecsreach.com/tags/raster/</loc>
-    <lastmod>2018-01-26T21:58:30+00:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>http://parsecsreach.com/tags/resparse/</loc>
-    <lastmod>2018-12-08T13:28:33+00:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>http://parsecsreach.com/tags/spark/</loc>
-    <lastmod>2017-12-05T19:39:29+00:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>http://parsecsreach.com/tags/</loc>
-    <lastmod>2017-12-05T19:39:29+00:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>http://parsecsreach.com/tags/windows-subsystem-for-linux/</loc>
-    <lastmod>2018-08-09T08:25:13+01:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>http://parsecsreach.com/tags/wsl/</loc>
-    <lastmod>2018-08-09T08:25:13+01:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
 </urlset>

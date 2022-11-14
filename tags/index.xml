@@ -1,140 +1,136 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
   <channel>
     <title>Tags on Parsecs Reach</title>
-    <link>http://parsecsreach.com/tags/</link>
+    <link>https://parsecsreach.org/tags/</link>
     <description>Recent content in Tags on Parsecs Reach</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <copyright>All rights reserved - 2019</copyright>
-    <lastBuildDate>Tue, 05 Dec 2017 19:39:29 +0000</lastBuildDate>
-    
-	<atom:link href="http://parsecsreach.com/tags/index.xml" rel="self" type="application/rss+xml" />
-    
-    
+    <copyright>All rights reserved - 2022</copyright>
+    <lastBuildDate>Fri, 06 Sep 2019 17:00:00 +0000</lastBuildDate><atom:link href="https://parsecsreach.org/tags/index.xml" rel="self" type="application/rss+xml" />
     <item>
-      <title>Asteroids</title>
-      <link>http://parsecsreach.com/tags/asteroids/</link>
-      <pubDate>Tue, 05 Dec 2017 19:39:29 +0000</pubDate>
-      
-      <guid>http://parsecsreach.com/tags/asteroids/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Dotfiles</title>
-      <link>http://parsecsreach.com/tags/dotfiles/</link>
-      <pubDate>Thu, 09 Aug 2018 08:25:13 +0100</pubDate>
-      
-      <guid>http://parsecsreach.com/tags/dotfiles/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Geography</title>
-      <link>http://parsecsreach.com/tags/geography/</link>
-      <pubDate>Fri, 26 Jan 2018 21:58:30 +0000</pubDate>
-      
-      <guid>http://parsecsreach.com/tags/geography/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Go</title>
-      <link>http://parsecsreach.com/tags/go/</link>
-      <pubDate>Sat, 08 Dec 2018 13:28:33 +0000</pubDate>
-      
-      <guid>http://parsecsreach.com/tags/go/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Golang</title>
-      <link>http://parsecsreach.com/tags/golang/</link>
-      <pubDate>Sat, 08 Dec 2018 13:28:33 +0000</pubDate>
-      
-      <guid>http://parsecsreach.com/tags/golang/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Introduction</title>
-      <link>http://parsecsreach.com/tags/introduction/</link>
-      <pubDate>Sat, 02 Dec 2017 08:01:19 +0000</pubDate>
-      
-      <guid>http://parsecsreach.com/tags/introduction/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Minor Planet Center</title>
-      <link>http://parsecsreach.com/tags/minor-planet-center/</link>
-      <pubDate>Tue, 05 Dec 2017 19:39:29 +0000</pubDate>
-      
-      <guid>http://parsecsreach.com/tags/minor-planet-center/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Personal</title>
-      <link>http://parsecsreach.com/tags/personal/</link>
+      <title>personal</title>
+      <link>https://parsecsreach.org/tags/personal/</link>
       <pubDate>Fri, 06 Sep 2019 17:00:00 +0000</pubDate>
       
-      <guid>http://parsecsreach.com/tags/personal/</guid>
+      <guid>https://parsecsreach.org/tags/personal/</guid>
       <description></description>
     </item>
     
     <item>
-      <title>Qgis</title>
-      <link>http://parsecsreach.com/tags/qgis/</link>
-      <pubDate>Fri, 26 Jan 2018 21:58:30 +0000</pubDate>
-      
-      <guid>http://parsecsreach.com/tags/qgis/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Raster</title>
-      <link>http://parsecsreach.com/tags/raster/</link>
-      <pubDate>Fri, 26 Jan 2018 21:58:30 +0000</pubDate>
-      
-      <guid>http://parsecsreach.com/tags/raster/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Resparse</title>
-      <link>http://parsecsreach.com/tags/resparse/</link>
+      <title>go</title>
+      <link>https://parsecsreach.org/tags/go/</link>
       <pubDate>Sat, 08 Dec 2018 13:28:33 +0000</pubDate>
       
-      <guid>http://parsecsreach.com/tags/resparse/</guid>
+      <guid>https://parsecsreach.org/tags/go/</guid>
       <description></description>
     </item>
     
     <item>
-      <title>Spark</title>
-      <link>http://parsecsreach.com/tags/spark/</link>
-      <pubDate>Tue, 05 Dec 2017 19:39:29 +0000</pubDate>
+      <title>golang</title>
+      <link>https://parsecsreach.org/tags/golang/</link>
+      <pubDate>Sat, 08 Dec 2018 13:28:33 +0000</pubDate>
       
-      <guid>http://parsecsreach.com/tags/spark/</guid>
+      <guid>https://parsecsreach.org/tags/golang/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>resparse</title>
+      <link>https://parsecsreach.org/tags/resparse/</link>
+      <pubDate>Sat, 08 Dec 2018 13:28:33 +0000</pubDate>
+      
+      <guid>https://parsecsreach.org/tags/resparse/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>dotfiles</title>
+      <link>https://parsecsreach.org/tags/dotfiles/</link>
+      <pubDate>Thu, 09 Aug 2018 08:25:13 +0100</pubDate>
+      
+      <guid>https://parsecsreach.org/tags/dotfiles/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Windows Subsystem for Linux</title>
-      <link>http://parsecsreach.com/tags/windows-subsystem-for-linux/</link>
+      <link>https://parsecsreach.org/tags/windows-subsystem-for-linux/</link>
       <pubDate>Thu, 09 Aug 2018 08:25:13 +0100</pubDate>
       
-      <guid>http://parsecsreach.com/tags/windows-subsystem-for-linux/</guid>
+      <guid>https://parsecsreach.org/tags/windows-subsystem-for-linux/</guid>
       <description></description>
     </item>
     
     <item>
-      <title>Wsl</title>
-      <link>http://parsecsreach.com/tags/wsl/</link>
+      <title>wsl</title>
+      <link>https://parsecsreach.org/tags/wsl/</link>
       <pubDate>Thu, 09 Aug 2018 08:25:13 +0100</pubDate>
       
-      <guid>http://parsecsreach.com/tags/wsl/</guid>
+      <guid>https://parsecsreach.org/tags/wsl/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>geography</title>
+      <link>https://parsecsreach.org/tags/geography/</link>
+      <pubDate>Fri, 26 Jan 2018 21:58:30 +0000</pubDate>
+      
+      <guid>https://parsecsreach.org/tags/geography/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>qgis</title>
+      <link>https://parsecsreach.org/tags/qgis/</link>
+      <pubDate>Fri, 26 Jan 2018 21:58:30 +0000</pubDate>
+      
+      <guid>https://parsecsreach.org/tags/qgis/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>raster</title>
+      <link>https://parsecsreach.org/tags/raster/</link>
+      <pubDate>Fri, 26 Jan 2018 21:58:30 +0000</pubDate>
+      
+      <guid>https://parsecsreach.org/tags/raster/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>asteroids</title>
+      <link>https://parsecsreach.org/tags/asteroids/</link>
+      <pubDate>Tue, 05 Dec 2017 19:39:29 +0000</pubDate>
+      
+      <guid>https://parsecsreach.org/tags/asteroids/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>minor planet center</title>
+      <link>https://parsecsreach.org/tags/minor-planet-center/</link>
+      <pubDate>Tue, 05 Dec 2017 19:39:29 +0000</pubDate>
+      
+      <guid>https://parsecsreach.org/tags/minor-planet-center/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>spark</title>
+      <link>https://parsecsreach.org/tags/spark/</link>
+      <pubDate>Tue, 05 Dec 2017 19:39:29 +0000</pubDate>
+      
+      <guid>https://parsecsreach.org/tags/spark/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>introduction</title>
+      <link>https://parsecsreach.org/tags/introduction/</link>
+      <pubDate>Sat, 02 Dec 2017 08:01:19 +0000</pubDate>
+      
+      <guid>https://parsecsreach.org/tags/introduction/</guid>
       <description></description>
     </item>
     
