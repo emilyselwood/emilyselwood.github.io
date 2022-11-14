@@ -2,19 +2,25 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
+    <loc>https://parsecsreach.org/post/180_degrees/</loc>
+    <lastmod>2022-11-14T19:48:00+01:00</lastmod>
+  </url><url>
+    <loc>https://parsecsreach.org/tags/geospatial/</loc>
+    <lastmod>2022-11-14T19:48:00+01:00</lastmod>
+  </url><url>
+    <loc>https://parsecsreach.org/</loc>
+    <lastmod>2022-11-14T19:48:00+01:00</lastmod>
+  </url><url>
+    <loc>https://parsecsreach.org/post/</loc>
+    <lastmod>2022-11-14T19:48:00+01:00</lastmod>
+  </url><url>
+    <loc>https://parsecsreach.org/tags/</loc>
+    <lastmod>2022-11-14T19:48:00+01:00</lastmod>
+  </url><url>
     <loc>https://parsecsreach.org/post/its_me/</loc>
     <lastmod>2019-09-06T17:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://parsecsreach.org/</loc>
-    <lastmod>2019-09-06T17:00:00+00:00</lastmod>
-  </url><url>
     <loc>https://parsecsreach.org/tags/personal/</loc>
-    <lastmod>2019-09-06T17:00:00+00:00</lastmod>
-  </url><url>
-    <loc>https://parsecsreach.org/post/</loc>
-    <lastmod>2019-09-06T17:00:00+00:00</lastmod>
-  </url><url>
-    <loc>https://parsecsreach.org/tags/</loc>
     <lastmod>2019-09-06T17:00:00+00:00</lastmod>
   </url><url>
     <loc>https://parsecsreach.org/tags/go/</loc>
