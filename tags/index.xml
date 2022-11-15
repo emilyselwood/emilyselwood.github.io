@@ -7,13 +7,22 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>All rights reserved - 2022</copyright>
-    <lastBuildDate>Mon, 14 Nov 2022 19:48:00 +0100</lastBuildDate><atom:link href="https://parsecsreach.org/tags/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Tue, 15 Nov 2022 07:38:00 +0100</lastBuildDate><atom:link href="https://parsecsreach.org/tags/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>geospatial</title>
       <link>https://parsecsreach.org/tags/geospatial/</link>
-      <pubDate>Mon, 14 Nov 2022 19:48:00 +0100</pubDate>
+      <pubDate>Tue, 15 Nov 2022 07:38:00 +0100</pubDate>
       
       <guid>https://parsecsreach.org/tags/geospatial/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>ndvi</title>
+      <link>https://parsecsreach.org/tags/ndvi/</link>
+      <pubDate>Tue, 15 Nov 2022 07:38:00 +0100</pubDate>
+      
+      <guid>https://parsecsreach.org/tags/ndvi/</guid>
       <description></description>
     </item>
     

@@ -7,7 +7,19 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>All rights reserved - 2022</copyright>
-    <lastBuildDate>Mon, 14 Nov 2022 19:48:00 +0100</lastBuildDate><atom:link href="https://parsecsreach.org/post/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Tue, 15 Nov 2022 07:38:00 +0100</lastBuildDate><atom:link href="https://parsecsreach.org/post/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Normalized Difference Vegetation Index</title>
+      <link>https://parsecsreach.org/post/ndvi/</link>
+      <pubDate>Tue, 15 Nov 2022 07:38:00 +0100</pubDate>
+      
+      <guid>https://parsecsreach.org/post/ndvi/</guid>
+      <description>Today&amp;rsquo;s topic: NDVI. This is another post that started life as a thread over on mastodon.
+What the heck is that? It&amp;rsquo;s an acronym (sorry) it stands for normalized difference vegetation index. Short version it&amp;rsquo;s a proxy for how much healthy plant life there is.
+It will be a number between -1 and 1. -1 being a clean concrete slab or similar. 1 being an impossibly healthy rainforest canopy.
+The way this one works is comparing the difference between absorption of near infrared light and red light.</description>
+    </item>
+    
     <item>
       <title>180 Degrees</title>
       <link>https://parsecsreach.org/post/180_degrees/</link>
