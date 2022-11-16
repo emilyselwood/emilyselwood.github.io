@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto">
+
+<head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>AIS | Parsecs Reach</title>
+<meta name="keywords" content="geospatial">
+<meta name="description" content="Today we&rsquo;ll talk about ais data. This is another post that started out as a thread over on mastodon
+Sorry it&rsquo;s another acronym. Automatic Identification System. It&rsquo;s original purpose was for ships to be able to tell each other where they are and which way they are going to avoid collisions. It is a little radio box on the boat that sends periodic messages saying &ldquo;my Id is 123456, I&rsquo;m at this lat and long, I&rsquo;m going this way at this speed&rdquo; it also sends out other messages like &ldquo;my Id is 123456 my name is see the wind, I&rsquo;m a bulk grain transporter and 30m long&rdquo;">
+<meta name="author" content="Emily Selwood">
+<link rel="canonical" href="https://parsecsreach.org/post/ais/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.bc1149f4a72aa4858d3a9f71462f75e5884ffe8073ea9d6d5761d5663d651e20.css" integrity="sha256-vBFJ9KcqpIWNOp9xRi915YhP/oBz6p1tV2HVZj1lHiA=" rel="preload stylesheet" as="style">
+<script defer crossorigin="anonymous" src="/assets/js/highlight.f413e19d0714851f6474e7ee9632408e58ac146fbdbe62747134bea2fa3415e0.js" integrity="sha256-9BPhnQcUhR9kdOfuljJAjlisFG&#43;9vmJ0cTS&#43;ovo0FeA="
+    onload="hljs.initHighlightingOnLoad();"></script>
+<link rel="icon" href="https://parsecsreach.org/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="https://parsecsreach.org/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://parsecsreach.org/favicon-32x32.png">
+<link rel="apple-touch-icon" href="https://parsecsreach.org/apple-touch-icon.png">
+<link rel="mask-icon" href="https://parsecsreach.org/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --hljs-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-track {
+                background: 0 0;
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-thumb {
+                border-color: var(--theme);
+            }
+        }
+
+    </style>
+</noscript><meta property="og:title" content="AIS" />
+<meta property="og:description" content="Today we&rsquo;ll talk about ais data. This is another post that started out as a thread over on mastodon
+Sorry it&rsquo;s another acronym. Automatic Identification System. It&rsquo;s original purpose was for ships to be able to tell each other where they are and which way they are going to avoid collisions. It is a little radio box on the boat that sends periodic messages saying &ldquo;my Id is 123456, I&rsquo;m at this lat and long, I&rsquo;m going this way at this speed&rdquo; it also sends out other messages like &ldquo;my Id is 123456 my name is see the wind, I&rsquo;m a bulk grain transporter and 30m long&rdquo;" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://parsecsreach.org/post/ais/" /><meta property="article:section" content="post" />
+<meta property="article:published_time" content="2022-11-16T06:27:00+01:00" />
+<meta property="article:modified_time" content="2022-11-16T06:27:00+01:00" />
+
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="AIS"/>
+<meta name="twitter:description" content="Today we&rsquo;ll talk about ais data. This is another post that started out as a thread over on mastodon
+Sorry it&rsquo;s another acronym. Automatic Identification System. It&rsquo;s original purpose was for ships to be able to tell each other where they are and which way they are going to avoid collisions. It is a little radio box on the boat that sends periodic messages saying &ldquo;my Id is 123456, I&rsquo;m at this lat and long, I&rsquo;m going this way at this speed&rdquo; it also sends out other messages like &ldquo;my Id is 123456 my name is see the wind, I&rsquo;m a bulk grain transporter and 30m long&rdquo;"/>
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "Posts",
+      "item": "https://parsecsreach.org/post/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  3 ,
+      "name": "AIS",
+      "item": "https://parsecsreach.org/post/ais/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "AIS",
+  "name": "AIS",
+  "description": "Today we\u0026rsquo;ll talk about ais data. This is another post that started out as a thread over on mastodon\nSorry it\u0026rsquo;s another acronym. Automatic Identification System. It\u0026rsquo;s original purpose was for ships to be able to tell each other where they are and which way they are going to avoid collisions. It is a little radio box on the boat that sends periodic messages saying \u0026ldquo;my Id is 123456, I\u0026rsquo;m at this lat and long, I\u0026rsquo;m going this way at this speed\u0026rdquo; it also sends out other messages like \u0026ldquo;my Id is 123456 my name is see the wind, I\u0026rsquo;m a bulk grain transporter and 30m long\u0026rdquo;",
+  "keywords": [
+    "geospatial"
+  ],
+  "articleBody": "Today we’ll talk about ais data. This is another post that started out as a thread over on mastodon\nSorry it’s another acronym. Automatic Identification System. It’s original purpose was for ships to be able to tell each other where they are and which way they are going to avoid collisions. It is a little radio box on the boat that sends periodic messages saying “my Id is 123456, I’m at this lat and long, I’m going this way at this speed” it also sends out other messages like “my Id is 123456 my name is see the wind, I’m a bulk grain transporter and 30m long”\nThere are many message types that can mean all sorts of different things. There are special ones for lighthouses, search and rescue aircraft, etc.\nBy maritime law any vessel over a defined size must have an aid transmitter on board. The fun thing is that these transmissions can be picked up by anyone. The transmissions are mostly line of sight (it’s radio, that gets weird so I’m not going to go into it too much) but satellites are always over head so can see everything.\nIt’s possible to buy a feed of the transmissions of every boat on the planet, it’s quite a lot of data to process, but honestly only just into big data territory.\nThe problem is the data is noisy. Very noisy. Because the transmitters are on the vessels, the owner can do what they like, turn it off? Easy, unplug the power. Change the id and vessel details? Also easy. If someone is doing something they shouldn’t they will often just sail out of port and turn off the transmitter.\nThen there is the fun that because the messages are resent pretty often it doesn’t matter if one or two are corrupt so there is very little error correction. Bit flips are possible and more than one is common, if that bit is in the position parts it can make a vessel look like it’s jumped across the globe for a second and then jumped back. That’s before hundreds of people put their Id in as 111111 or 123456\nSo let’s dig in to some use cases:\nSay your country has a system to license vessels to fish in your waters, but also can’t really afford a big navy. With ais data you can track vessels in your waters and deal with any that look like they are fishing.\nBoats that are fishing move very differently to a cargo ship trying to get to the next port, so even if it lies about being a fishing vessel you can tell.\nWhat about verification that the fish you are selling in your super market is caught legally? This is a good one because it’s just making sure vessels are doing what they say they are, so they will want to keep their transmitters on to prove they are good and can sell their fish.\nYou can also keep track of your cargo containers and know where the shipments are out side of what the shipping company says. That snafu in the Suez was fun to watch.\nWant to make an economic estimate of how much stuff is getting to a country? Reasonably easy to get a list of vessels who’ve arrived at ports and how big they are. From a humanitarian point of view I’ve helped figure out how much fuel was getting into Yemen.\nAis is an awesomely powerful dataset but also not easy to work with. The source data comes in as basically points and then you have to construct routes and so on from that.\nIf you want to have a look at some data check out marine traffic. Who have a nice web interface. Also check out Anita Graser’s tutorial on processing ais data\n",
+  "wordCount" : "638",
+  "inLanguage": "en",
+  "datePublished": "2022-11-16T06:27:00+01:00",
+  "dateModified": "2022-11-16T06:27:00+01:00",
+  "author":{
+    "@type": "Person",
+    "name": "Emily Selwood"
+  },
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://parsecsreach.org/post/ais/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Parsecs Reach",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://parsecsreach.org/favicon.ico"
+    }
+  }
+}
+</script>
+</head>
+
+<body class="" id="top">
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.body.classList.add('dark');
+    } else if (localStorage.getItem("pref-theme") === "light") {
+        document.body.classList.remove('dark')
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.body.classList.add('dark');
+    }
+
+</script>
+
+<header class="header">
+    <nav class="nav">
+        <div class="logo">
+            <a href="https://parsecsreach.org" accesskey="h" title="Parsecs Reach (Alt + H)">Parsecs Reach</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" accesskey="t" title="(Alt + T)">
+                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <ul id="menu">
+            <li>
+                <a rel="" href="https://parsecsreach.org/orbviewer"  target="_blank" title="Orb Viewer">
+                    <span>Orb Viewer</span>
+                    
+                </a>
+            </li>
+            <li>
+                <a rel="me" href="https://tech.lgbt/@emily_s"  target="_blank" title="@emily_s@tech.lgbt">
+                    <span>@emily_s@tech.lgbt</span>
+                    
+                </a>
+            </li>
+            <li>
+                <a rel="" href="https://github.com/emilyselwood"  target="_blank" title="GitHub">
+                    <span>GitHub</span>
+                    
+                </a>
+            </li>
+            <li>
+                <a rel="" href="https://parsecsreach.org/about"  target="_self" title="About me">
+                    <span>About me</span>
+                    
+                </a>
+            </li>
+            <li>
+                <a rel="" href="https://parsecsreach.org/"  target="_self" title="Home">
+                    <span>Home</span>
+                    
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    
+    <h1 class="post-title">
+      AIS
+    </h1>
+    <div class="post-meta"><span title='2022-11-16 06:27:00 +0100 +0100'>2022 November 16</span>&nbsp;·&nbsp;Emily Selwood
+
+</div>
+  </header> 
+  <div class="post-content"><p>Today we&rsquo;ll talk about ais data. This is another post that started out as a thread over on mastodon</p>
+<p>Sorry it&rsquo;s another acronym. Automatic Identification System. It&rsquo;s original purpose was for ships to be able to tell each other where they are and which way they are going to avoid collisions. It is a little radio box on the boat that sends periodic messages saying &ldquo;my Id is 123456, I&rsquo;m at this lat and long, I&rsquo;m going this way at this speed&rdquo; it also sends out other messages like &ldquo;my Id is 123456 my name is see the wind, I&rsquo;m a bulk grain transporter and 30m long&rdquo;</p>
+<p>There are many message types that can mean all sorts of different things. There are special ones for lighthouses, search and rescue aircraft, etc.</p>
+<p>By maritime law any vessel over a defined size must have an aid transmitter on board. The fun thing is that these transmissions can be picked up by anyone. The transmissions are mostly line of sight (it&rsquo;s radio, that gets weird so I&rsquo;m not going to go into it too much) but satellites are always over head so can see everything.</p>
+<p>It&rsquo;s possible to buy a feed of the transmissions of every boat on the planet, it&rsquo;s quite a lot of data to process, but honestly only just into big data territory.</p>
+<p>The problem is the data is noisy. Very noisy.   Because the transmitters are on the vessels, the owner can do what they like, turn it off? Easy, unplug the power. Change the id and vessel details? Also easy. If someone is doing something they shouldn&rsquo;t they will often just sail out of port and turn off the transmitter.</p>
+<p>Then there is the fun that because the messages are resent pretty often it doesn&rsquo;t matter if one or two are corrupt so there is very little error correction. Bit flips are possible and more than one is common, if that bit is in the position parts it can make a vessel look like it&rsquo;s jumped across the globe for a second and then jumped back. That&rsquo;s before hundreds of people put their Id in as 111111 or 123456</p>
+<p>So let&rsquo;s dig in to some use cases:</p>
+<p>Say your country has a system to license vessels to fish in your waters, but also can&rsquo;t really afford a big navy. With ais data you can track vessels in your waters and deal with any that look like they are fishing.</p>
+<p>Boats that are fishing move very differently to a cargo ship trying to get to the next port, so even if it lies about being a fishing vessel you can tell.</p>
+<p>What about verification that the fish you are selling in your super market is caught legally? This is a good one because it&rsquo;s just making sure vessels are doing what they say they are, so they will want to keep their transmitters on to prove they are good and can sell their fish.</p>
+<p>You can also keep track of your cargo containers and know where the shipments are out side of what the shipping company says. That snafu in the Suez was fun to watch.</p>
+<p>Want to make an economic estimate of how much stuff is getting to a country? Reasonably easy to get a list of vessels who&rsquo;ve arrived at ports and how big they are. From a humanitarian point of view I&rsquo;ve helped figure out how much fuel was getting into Yemen.</p>
+<p>Ais is an awesomely powerful dataset but also not easy to work with. The source data comes in as basically points and then you have to construct routes and so on from that.</p>
+<p>If you want to have a look at some data check out <a href="https://www.marinetraffic.com/en/ais/home/centerx:-12.0/centery:25.0/zoom:4">marine traffic</a>. Who have a nice web interface. Also check out <a href="https://github.com/anitagraser/EDA-protocol-movement-data">Anita Graser&rsquo;s tutorial on processing ais data</a></p>
+
+
+  </div>
+
+  <footer class="post-footer">
+    <ul class="post-tags">
+      <li><a href="https://parsecsreach.org/tags/geospatial/">geospatial</a></li>
+    </ul>
+<nav class="paginav">
+  <a class="next" href="https://parsecsreach.org/post/ndvi/">
+    <span class="title">Next »</span>
+    <br>
+    <span>Normalized Difference Vegetation Index</span>
+  </a>
+</nav>
+
+  </footer>
+</article>
+    </main>
+    
+<footer class="footer">
+    <span>All rights reserved - 2022</span>
+    <span>
+        Powered by
+        <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
+        <path d="M12 6H0l6-6z" />
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu')
+    if (menu) {
+        menu.scrollLeft = localStorage.getItem("menu-scroll-position");
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var mybutton = document.getElementById("top-link");
+    window.onscroll = function () {
+        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
+            mybutton.style.visibility = "visible";
+            mybutton.style.opacity = "1";
+        } else {
+            mybutton.style.visibility = "hidden";
+            mybutton.style.opacity = "0";
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        if (document.body.className.includes("dark")) {
+            document.body.classList.remove('dark');
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            document.body.classList.add('dark');
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+</body>
+
+</html>

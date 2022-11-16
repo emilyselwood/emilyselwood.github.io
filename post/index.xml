@@ -7,7 +7,17 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>All rights reserved - 2022</copyright>
-    <lastBuildDate>Tue, 15 Nov 2022 07:38:00 +0100</lastBuildDate><atom:link href="https://parsecsreach.org/post/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Wed, 16 Nov 2022 06:27:00 +0100</lastBuildDate><atom:link href="https://parsecsreach.org/post/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>AIS</title>
+      <link>https://parsecsreach.org/post/ais/</link>
+      <pubDate>Wed, 16 Nov 2022 06:27:00 +0100</pubDate>
+      
+      <guid>https://parsecsreach.org/post/ais/</guid>
+      <description>Today we&amp;rsquo;ll talk about ais data. This is another post that started out as a thread over on mastodon
+Sorry it&amp;rsquo;s another acronym. Automatic Identification System. It&amp;rsquo;s original purpose was for ships to be able to tell each other where they are and which way they are going to avoid collisions. It is a little radio box on the boat that sends periodic messages saying &amp;ldquo;my Id is 123456, I&amp;rsquo;m at this lat and long, I&amp;rsquo;m going this way at this speed&amp;rdquo; it also sends out other messages like &amp;ldquo;my Id is 123456 my name is see the wind, I&amp;rsquo;m a bulk grain transporter and 30m long&amp;rdquo;</description>
+    </item>
+    
     <item>
       <title>Normalized Difference Vegetation Index</title>
       <link>https://parsecsreach.org/post/ndvi/</link>
