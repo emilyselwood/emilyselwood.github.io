@@ -7,7 +7,18 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>All rights reserved - 2022</copyright>
-    <lastBuildDate>Wed, 16 Nov 2022 06:27:00 +0100</lastBuildDate><atom:link href="https://parsecsreach.org/tags/geospatial/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Thu, 17 Nov 2022 08:17:00 +0100</lastBuildDate><atom:link href="https://parsecsreach.org/tags/geospatial/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>InSAR</title>
+      <link>https://parsecsreach.org/post/insar/</link>
+      <pubDate>Thu, 17 Nov 2022 08:17:00 +0100</pubDate>
+      
+      <guid>https://parsecsreach.org/post/insar/</guid>
+      <description>Today I&amp;rsquo;m going to do a thread on something I want to learn more about but have used a little in the past. So be warned this topic might not be 100% accurate but is my understanding.
+Interferometric synthetic-aperture radar or InSAR for short because everyone loves acronyms.
+Its a way of measuring how much something has moved between two radar &amp;ldquo;images&amp;rdquo; the something can be a building, a dam, a mountain.</description>
+    </item>
+    
     <item>
       <title>AIS</title>
       <link>https://parsecsreach.org/post/ais/</link>
