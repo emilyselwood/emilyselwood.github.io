@@ -7,11 +7,20 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>All rights reserved - 2022</copyright>
-    <lastBuildDate>Thu, 17 Nov 2022 08:17:00 +0100</lastBuildDate><atom:link href="https://parsecsreach.org/tags/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Fri, 18 Nov 2022 08:17:00 +0100</lastBuildDate><atom:link href="https://parsecsreach.org/tags/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>algorithms</title>
+      <link>https://parsecsreach.org/tags/algorithms/</link>
+      <pubDate>Fri, 18 Nov 2022 08:17:00 +0100</pubDate>
+      
+      <guid>https://parsecsreach.org/tags/algorithms/</guid>
+      <description></description>
+    </item>
+    
     <item>
       <title>geospatial</title>
       <link>https://parsecsreach.org/tags/geospatial/</link>
-      <pubDate>Thu, 17 Nov 2022 08:17:00 +0100</pubDate>
+      <pubDate>Fri, 18 Nov 2022 08:17:00 +0100</pubDate>
       
       <guid>https://parsecsreach.org/tags/geospatial/</guid>
       <description></description>

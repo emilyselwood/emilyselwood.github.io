@@ -7,7 +7,19 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>All rights reserved - 2022</copyright>
-    <lastBuildDate>Thu, 17 Nov 2022 08:17:00 +0100</lastBuildDate><atom:link href="https://parsecsreach.org/tags/geospatial/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Fri, 18 Nov 2022 08:17:00 +0100</lastBuildDate><atom:link href="https://parsecsreach.org/tags/geospatial/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Big O for geospatial people</title>
+      <link>https://parsecsreach.org/post/bigo/</link>
+      <pubDate>Fri, 18 Nov 2022 08:17:00 +0100</pubDate>
+      
+      <guid>https://parsecsreach.org/post/bigo/</guid>
+      <description>Today&amp;rsquo;s topic is Algorithmic complexity for #geospatial people.
+Or what the heck is Big O any way.
+If you&amp;rsquo;ve been around programmers for any length of time you&amp;rsquo;ve probably heard of Big O. (settle down nsfw folk, this is about algorithms and programming not that)
+The short version is its a way of describing the worst case runtime of an algorithm with regards to the amount of data. Given n bits of information what&amp;rsquo;s the order of magnitude of the worst possible run time.</description>
+    </item>
+    
     <item>
       <title>InSAR</title>
       <link>https://parsecsreach.org/post/insar/</link>
