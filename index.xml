@@ -7,7 +7,19 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>All rights reserved - 2022</copyright>
-    <lastBuildDate>Tue, 22 Nov 2022 06:45:00 +0000</lastBuildDate><atom:link href="https://parsecsreach.org/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Wed, 23 Nov 2022 06:45:00 +0000</lastBuildDate><atom:link href="https://parsecsreach.org/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>SVG</title>
+      <link>https://parsecsreach.org/post/svgs/</link>
+      <pubDate>Wed, 23 Nov 2022 06:45:00 +0000</pubDate>
+      
+      <guid>https://parsecsreach.org/post/svgs/</guid>
+      <description>lets talk about SVGs as an image format.
+You may have heard of them called a vector format. This means that instead of defining a grid of pixels and having about what colour every pixel is, it defines the features of the image.
+There is a red line from 12,45 to 26,78 The text &amp;ldquo;hello&amp;rdquo; is in front ariel, 14pt and blue etc.
+The advantage of this is you can scale the image with out losing any quality.</description>
+    </item>
+    
     <item>
       <title>COG - Cloud Optimized Geotiffs</title>
       <link>https://parsecsreach.org/post/cogs/</link>

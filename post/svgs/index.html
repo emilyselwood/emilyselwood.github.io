@@ -5,13 +5,14 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <meta name="robots" content="index, follow">
-<title>COG - Cloud Optimized Geotiffs | Parsecs Reach</title>
-<meta name="keywords" content="geospatial, cogs, file formats">
-<meta name="description" content="COGs, Cloud Optimized GeoTiffs, not the little things in clocks and gearboxes.
-Why do we need yet another data format? What is the point? Well dear #geospatial people. Lets dive in.
-First of all, lets quickly go over what a GeoTiff is. A tiff file is a type of image. Really old format designed for fax machines, but it has an advantage of not requiring only red, green, blue or alpha bands like a lot of other image formats do so you can happily have a 12 band sentinel 2 image as a single tiff.">
+<title>SVG | Parsecs Reach</title>
+<meta name="keywords" content="file formats">
+<meta name="description" content="lets talk about SVGs as an image format.
+You may have heard of them called a vector format. This means that instead of defining a grid of pixels and having about what colour every pixel is, it defines the features of the image.
+There is a red line from 12,45 to 26,78 The text &ldquo;hello&rdquo; is in front ariel, 14pt and blue etc.
+The advantage of this is you can scale the image with out losing any quality.">
 <meta name="author" content="Emily Selwood">
-<link rel="canonical" href="https://parsecsreach.org/post/cogs/">
+<link rel="canonical" href="https://parsecsreach.org/post/svgs/">
 <link crossorigin="anonymous" href="/assets/css/stylesheet.979d31a757b649bf90615e658aedd46e2896dc33bf05775ea99697ce5b3e4fe4.css" integrity="sha256-l50xp1e2Sb&#43;QYV5liu3UbiiW3DO/BXdeqZaXzls&#43;T&#43;Q=" rel="preload stylesheet" as="style">
 <script defer crossorigin="anonymous" src="/assets/js/highlight.f413e19d0714851f6474e7ee9632408e58ac146fbdbe62747134bea2fa3415e0.js" integrity="sha256-9BPhnQcUhR9kdOfuljJAjlisFG&#43;9vmJ0cTS&#43;ovo0FeA="
     onload="hljs.initHighlightingOnLoad();"></script>
@@ -58,20 +59,22 @@ First of all, lets quickly go over what a GeoTiff is. A tiff file is a type of i
         }
 
     </style>
-</noscript><meta property="og:title" content="COG - Cloud Optimized Geotiffs" />
-<meta property="og:description" content="COGs, Cloud Optimized GeoTiffs, not the little things in clocks and gearboxes.
-Why do we need yet another data format? What is the point? Well dear #geospatial people. Lets dive in.
-First of all, lets quickly go over what a GeoTiff is. A tiff file is a type of image. Really old format designed for fax machines, but it has an advantage of not requiring only red, green, blue or alpha bands like a lot of other image formats do so you can happily have a 12 band sentinel 2 image as a single tiff." />
+</noscript><meta property="og:title" content="SVG" />
+<meta property="og:description" content="lets talk about SVGs as an image format.
+You may have heard of them called a vector format. This means that instead of defining a grid of pixels and having about what colour every pixel is, it defines the features of the image.
+There is a red line from 12,45 to 26,78 The text &ldquo;hello&rdquo; is in front ariel, 14pt and blue etc.
+The advantage of this is you can scale the image with out losing any quality." />
 <meta property="og:type" content="article" />
-<meta property="og:url" content="https://parsecsreach.org/post/cogs/" /><meta property="article:section" content="post" />
-<meta property="article:published_time" content="2022-11-22T06:45:00+00:00" />
-<meta property="article:modified_time" content="2022-11-22T06:45:00+00:00" />
+<meta property="og:url" content="https://parsecsreach.org/post/svgs/" /><meta property="article:section" content="post" />
+<meta property="article:published_time" content="2022-11-23T06:45:00+00:00" />
+<meta property="article:modified_time" content="2022-11-23T06:45:00+00:00" />
 
 <meta name="twitter:card" content="summary"/>
-<meta name="twitter:title" content="COG - Cloud Optimized Geotiffs"/>
-<meta name="twitter:description" content="COGs, Cloud Optimized GeoTiffs, not the little things in clocks and gearboxes.
-Why do we need yet another data format? What is the point? Well dear #geospatial people. Lets dive in.
-First of all, lets quickly go over what a GeoTiff is. A tiff file is a type of image. Really old format designed for fax machines, but it has an advantage of not requiring only red, green, blue or alpha bands like a lot of other image formats do so you can happily have a 12 band sentinel 2 image as a single tiff."/>
+<meta name="twitter:title" content="SVG"/>
+<meta name="twitter:description" content="lets talk about SVGs as an image format.
+You may have heard of them called a vector format. This means that instead of defining a grid of pixels and having about what colour every pixel is, it defines the features of the image.
+There is a red line from 12,45 to 26,78 The text &ldquo;hello&rdquo; is in front ariel, 14pt and blue etc.
+The advantage of this is you can scale the image with out losing any quality."/>
 
 
 <script type="application/ld+json">
@@ -88,8 +91,8 @@ First of all, lets quickly go over what a GeoTiff is. A tiff file is a type of i
     {
       "@type": "ListItem",
       "position":  3 ,
-      "name": "COG - Cloud Optimized Geotiffs",
-      "item": "https://parsecsreach.org/post/cogs/"
+      "name": "SVG",
+      "item": "https://parsecsreach.org/post/svgs/"
     }
   ]
 }
@@ -98,24 +101,24 @@ First of all, lets quickly go over what a GeoTiff is. A tiff file is a type of i
 {
   "@context": "https://schema.org",
   "@type": "BlogPosting",
-  "headline": "COG - Cloud Optimized Geotiffs",
-  "name": "COG - Cloud Optimized Geotiffs",
-  "description": "COGs, Cloud Optimized GeoTiffs, not the little things in clocks and gearboxes.\nWhy do we need yet another data format? What is the point? Well dear #geospatial people. Lets dive in.\nFirst of all, lets quickly go over what a GeoTiff is. A tiff file is a type of image. Really old format designed for fax machines, but it has an advantage of not requiring only red, green, blue or alpha bands like a lot of other image formats do so you can happily have a 12 band sentinel 2 image as a single tiff.",
+  "headline": "SVG",
+  "name": "SVG",
+  "description": "lets talk about SVGs as an image format.\nYou may have heard of them called a vector format. This means that instead of defining a grid of pixels and having about what colour every pixel is, it defines the features of the image.\nThere is a red line from 12,45 to 26,78 The text \u0026ldquo;hello\u0026rdquo; is in front ariel, 14pt and blue etc.\nThe advantage of this is you can scale the image with out losing any quality.",
   "keywords": [
-    "geospatial", "cogs", "file formats"
+    "file formats"
   ],
-  "articleBody": "COGs, Cloud Optimized GeoTiffs, not the little things in clocks and gearboxes.\nWhy do we need yet another data format? What is the point? Well dear #geospatial people. Lets dive in.\nFirst of all, lets quickly go over what a GeoTiff is. A tiff file is a type of image. Really old format designed for fax machines, but it has an advantage of not requiring only red, green, blue or alpha bands like a lot of other image formats do so you can happily have a 12 band sentinel 2 image as a single tiff. It also handles 16bit values and floating point values.\nA geo tiff is a tiff file with a bunch of added geospatial information, so it can be placed in the world easily.\nThe one downside to a GeoTiff is because its a tiff and tiffs are very flexible you usually have to read the entire thing to understand it. This is fine with a fax machine, but with a 4gb multi band image its annoying.\nA COG is a GeoTiff that has been setup in a defined way. all of the metadata will be at the beginning and the bands will be laid out in a known order.\nWhy is it being in a known order useful? Because of a completely unrelated bit of magic tech. The HTTP range request. Normally when you use the web your browser issues lots of “get” requests, which ask for files. you usually want the entire thing. there is no point displaying half the mastodon logo usually. With a range request you can ask the web server for bytes 45 to 2367 of a file and it’ll just get that. Assuming it supports range requests.\nCombining this with a COG we can only pull down the bits of that 4Gb image that we actually need. Say we only want a small bit of the image to show one house on a map, or we only need two of the bands.\nWe can issue a couple of range requests to get the header information from the COG, and then work out where the data we want actually is and issue another range request for just that bit. Now we’ve not downloaded 3.9Gb of data we didn’t need we’ve just pulled out the 100mb we do.\nCloud storage systems like Amazon S3 or azure Blob storage support these range requests already, and their ease of use with COGs is why they are called “Cloud Optimized GeoTiffs”\nThey are designed to work on the cloud, but they don’t have to be on the cloud. They work just like an existing GeoTiff, so you can use them anywhere.\nThat is the magic, they don’t break anything that already works with a GeoTiff input, but they let you do new fun things.\nIf you want to know more about tiff file internals I gave a talk at Foss4guk a couple of years go on the the topic\n",
-  "wordCount" : "493",
+  "articleBody": "lets talk about SVGs as an image format.\nYou may have heard of them called a vector format. This means that instead of defining a grid of pixels and having about what colour every pixel is, it defines the features of the image.\nThere is a red line from 12,45 to 26,78 The text “hello” is in front ariel, 14pt and blue etc.\nThe advantage of this is you can scale the image with out losing any quality. Hence the name Scalable Vector Graphics\nIf you double the size of the image you still have a red line, the edges of it will still be just as crisp, unlike if you double the size of a raster image, you end up with 4 pixels for every one in the original, it starts to look blocky unless you do some magic maths to add extra information where there wasn’t before. AKA, make stuff up.\nInternally an SVG file is an xml document. Just like any webpage you view its a series of “tags” which tell your computer what to display. There are a lot of similar concepts too, both have text, links, ids, even CSS.\nSVGs have lines, rectangles, circles. You can draw almost anything as an SVG, but it can be a little more complex than painting a raster image.\nInstead of div tags to group bits of an html document you have g or group tags. This is almost always just an ease of use thing rather than actually meaning anything in the picture. You can apply transformations and styles at the group level though to make your life easier. “rotate all of these things by 60 degrees” or “make all the lines red and fill with green”\nWhere the SVG language gets away from xml is in the definitions of paths and lines. Paths are a series of points joined by lines or curves. Once you start to deal with curves in computers things start to get complex. Mathematically there are a bunch of different ways to define curves. Some based on circles, some based on Bezier curves, which a bunch of helpful shortcuts.\nIf you want to know more Mozilla’s documentation on SVG’s is excellent.\nLike HTML I’d argue that anything more complex than a simple image, you should not be hand crafting it. Inkscape is an excellent and free opensource tool to edit SVG files. Because they are basically an XML document internally there are libraries available for almost every programming language that exists. Even if you just end up editing the raw XML\nOne thing to keep in mind when working with SVG images is eventually it will be pixels on a screen or on a page. When you get there you will need to define your Pixels per inch. There is no defined standard, Inkscape uses 96ppi by default. The Cricut used 72. This causes no end of headaches. You can use physical units inside an SVG if you want. You can also set the size of the image, e.g. to the size of an A4 page.\nWhile I said they will be pixels on a screen, the other really useful thing about SVGs is because they are made up of paths mostly they can be fed into things like laser cutters, plotters, and draw knife machines like the Cricut. The thing to watch out for though is the level of detail. You usually have a minimum feature size so you want to make sure your detail isn’t below that.\n",
+  "wordCount" : "586",
   "inLanguage": "en",
-  "datePublished": "2022-11-22T06:45:00Z",
-  "dateModified": "2022-11-22T06:45:00Z",
+  "datePublished": "2022-11-23T06:45:00Z",
+  "dateModified": "2022-11-23T06:45:00Z",
   "author":{
     "@type": "Person",
     "name": "Emily Selwood"
   },
   "mainEntityOfPage": {
     "@type": "WebPage",
-    "@id": "https://parsecsreach.org/post/cogs/"
+    "@id": "https://parsecsreach.org/post/svgs/"
   },
   "publisher": {
     "@type": "Organization",
@@ -208,45 +211,42 @@ First of all, lets quickly go over what a GeoTiff is. A tiff file is a type of i
   <header class="post-header">
     
     <h1 class="post-title">
-      COG - Cloud Optimized Geotiffs
+      SVG
     </h1>
-    <div class="post-meta"><span title='2022-11-22 06:45:00 +0000 GMT'>2022 November 22</span>&nbsp;·&nbsp;Emily Selwood
+    <div class="post-meta"><span title='2022-11-23 06:45:00 +0000 GMT'>2022 November 23</span>&nbsp;·&nbsp;Emily Selwood
 
 </div>
   </header> 
-  <div class="post-content"><p>COGs, Cloud Optimized GeoTiffs, not the little things in clocks and gearboxes.</p>
-<p>Why do we need yet another data format? What is the point? Well dear #geospatial people. Lets dive in.</p>
-<p>First of all, lets quickly go over what a GeoTiff is. A tiff file is a type of image. Really old format designed for fax machines, but it has an advantage of not requiring only red, green, blue or alpha bands like a lot of other image formats do so you can happily have a 12 band sentinel 2 image as a single tiff. It also handles 16bit values and floating point values.</p>
-<p>A geo tiff is a tiff file with a bunch of added geospatial information, so it can be placed in the world easily.</p>
-<p>The one downside to a GeoTiff is because its a tiff and tiffs are very flexible you usually have to read the entire thing to understand it. This is fine with a fax machine, but with a 4gb multi band image its annoying.</p>
-<p>A COG is a GeoTiff that has been setup in a defined way. all of the metadata will be at the beginning and the bands will be laid out in a known order.</p>
-<p>Why is it being in a known order useful? Because of a completely unrelated bit of magic tech. The HTTP range request. Normally when you use the web your browser issues lots of &ldquo;get&rdquo; requests, which ask for files. you usually want the entire thing. there is no point displaying half the mastodon logo usually. With a range request you can ask the web server for bytes 45 to 2367 of a file and it&rsquo;ll just get that. Assuming it supports range requests.</p>
-<p>Combining this with a COG we can only pull down the bits of that 4Gb image that we actually need. Say we only want a small bit of the image to show one house on a map, or we only need two of the bands.</p>
-<p>We can issue a couple of range requests to get the header information from the COG, and then work out where the data we want actually is and issue another range request for just that bit. Now we&rsquo;ve not downloaded 3.9Gb of data we didn&rsquo;t need we&rsquo;ve just pulled out the 100mb we do.</p>
-<p>Cloud storage systems like Amazon S3 or azure Blob storage support these range requests already, and their ease of use with COGs is why they are called &ldquo;Cloud Optimized GeoTiffs&rdquo;</p>
-<p>They are designed to work on the cloud, but they don&rsquo;t have to be on the cloud. They work just like an existing GeoTiff, so you can use them anywhere.</p>
-<p>That is the magic, they don&rsquo;t break anything that already works with a GeoTiff input, but they let you do new fun things.</p>
-<p>If you want to know more about tiff file internals I gave a talk at <a href="https://www.youtube.com/watch?v=Z5g5p4H5u58">Foss4guk</a> a couple of years go on the the topic</p>
+  <div class="post-content"><p>lets talk about SVGs as an image format.</p>
+<p>You may have heard of them called a vector format. This means that instead of defining a grid of pixels and having about what colour every pixel is, it defines the features of the image.</p>
+<p>There is a red line from 12,45 to 26,78
+The text &ldquo;hello&rdquo; is in front ariel, 14pt and blue
+etc.</p>
+<p>The advantage of this is you can scale the image with out losing any quality. Hence the name Scalable Vector Graphics</p>
+<p>If you double the size of the image you still have a red line, the edges of it will still be just as crisp, unlike if you double the size of a raster image, you end up with 4 pixels for every one in the original, it starts to look blocky unless you do some magic maths to add extra information where there wasn&rsquo;t before. AKA, make stuff up.</p>
+<p>Internally an SVG file is an xml document. Just like any webpage you view its a series of &ldquo;tags&rdquo; which tell your computer what to display. There are a lot of similar concepts too, both have text, links, ids, even CSS.</p>
+<p>SVGs have lines, rectangles, circles. You can draw almost anything as an SVG, but it can be a little more complex than painting a raster image.</p>
+<p><img loading="lazy" src="/img/shorts/svg_internals.png" alt="A screen shot of the internal xml structure of a SVG file."  />
+</p>
+<p>Instead of div tags to group bits of an html document you have g or group tags. This is almost always just an ease of use thing rather than actually meaning anything in the picture. You can apply transformations and styles at the group level though to make your life easier. &ldquo;rotate all of these things by 60 degrees&rdquo; or &ldquo;make all the lines red and fill with green&rdquo;</p>
+<p>Where the SVG language gets away from xml is in the definitions of paths and lines. Paths are a series of points joined by lines or curves. Once you start to deal with curves in computers things start to get complex. Mathematically there are a bunch of different ways to define curves. Some based on circles, some based on Bezier curves, which a bunch of helpful shortcuts.</p>
+<p>If you want to know more <a href="https://developer.mozilla.org/en-US/docs/Web/SVG/Tutorial/Paths">Mozilla&rsquo;s documentation</a> on SVG&rsquo;s is excellent.</p>
+<p>Like HTML I&rsquo;d argue that anything more complex than a simple image, you should not be hand crafting it. Inkscape is an excellent and free opensource tool to edit SVG files. Because they are basically an XML document internally there are libraries available for almost every programming language that exists. Even if you just end up editing the raw XML</p>
+<p>One thing to keep in mind when working with SVG images is eventually it will be pixels on a screen or on a page. When you get there you will need to define your Pixels per inch. There is no defined standard, Inkscape uses 96ppi by default. The Cricut used 72. This causes no end of headaches. You can use physical units inside an SVG if you want. You can also set the size of the image, e.g. to the size of an A4 page.</p>
+<p>While I said they will be pixels on a screen, the other really useful thing about SVGs is because they are made up of paths mostly they can be fed into things like laser cutters, plotters, and draw knife machines like the Cricut. The thing to watch out for though is the level of detail. You usually have a minimum feature size so you want to make sure your detail isn&rsquo;t below that.</p>
 
 
   </div>
 
   <footer class="post-footer">
     <ul class="post-tags">
-      <li><a href="https://parsecsreach.org/tags/geospatial/">geospatial</a></li>
-      <li><a href="https://parsecsreach.org/tags/cogs/">cogs</a></li>
       <li><a href="https://parsecsreach.org/tags/file-formats/">file formats</a></li>
     </ul>
 <nav class="paginav">
-  <a class="prev" href="https://parsecsreach.org/post/svgs/">
-    <span class="title">« Prev</span>
-    <br>
-    <span>SVG</span>
-  </a>
-  <a class="next" href="https://parsecsreach.org/post/bigo/">
+  <a class="next" href="https://parsecsreach.org/post/cogs/">
     <span class="title">Next »</span>
     <br>
-    <span>Big O for geospatial people</span>
+    <span>COG - Cloud Optimized Geotiffs</span>
   </a>
 </nav>
 

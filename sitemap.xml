@@ -2,6 +2,21 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
+    <loc>https://parsecsreach.org/tags/file-formats/</loc>
+    <lastmod>2022-11-23T06:45:00+00:00</lastmod>
+  </url><url>
+    <loc>https://parsecsreach.org/</loc>
+    <lastmod>2022-11-23T06:45:00+00:00</lastmod>
+  </url><url>
+    <loc>https://parsecsreach.org/post/</loc>
+    <lastmod>2022-11-23T06:45:00+00:00</lastmod>
+  </url><url>
+    <loc>https://parsecsreach.org/post/svgs/</loc>
+    <lastmod>2022-11-23T06:45:00+00:00</lastmod>
+  </url><url>
+    <loc>https://parsecsreach.org/tags/</loc>
+    <lastmod>2022-11-23T06:45:00+00:00</lastmod>
+  </url><url>
     <loc>https://parsecsreach.org/post/cogs/</loc>
     <lastmod>2022-11-22T06:45:00+00:00</lastmod>
   </url><url>
@@ -9,15 +24,6 @@
     <lastmod>2022-11-22T06:45:00+00:00</lastmod>
   </url><url>
     <loc>https://parsecsreach.org/tags/geospatial/</loc>
-    <lastmod>2022-11-22T06:45:00+00:00</lastmod>
-  </url><url>
-    <loc>https://parsecsreach.org/</loc>
-    <lastmod>2022-11-22T06:45:00+00:00</lastmod>
-  </url><url>
-    <loc>https://parsecsreach.org/post/</loc>
-    <lastmod>2022-11-22T06:45:00+00:00</lastmod>
-  </url><url>
-    <loc>https://parsecsreach.org/tags/</loc>
     <lastmod>2022-11-22T06:45:00+00:00</lastmod>
   </url><url>
     <loc>https://parsecsreach.org/tags/algorithms/</loc>
