@@ -7,7 +7,18 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>All rights reserved - 2022</copyright>
-    <lastBuildDate>Wed, 23 Nov 2022 06:45:00 +0000</lastBuildDate><atom:link href="https://parsecsreach.org/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Fri, 02 Dec 2022 22:23:00 +0000</lastBuildDate><atom:link href="https://parsecsreach.org/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Plotting Geospatial Data</title>
+      <link>https://parsecsreach.org/post/plotting/</link>
+      <pubDate>Fri, 02 Dec 2022 22:23:00 +0000</pubDate>
+      
+      <guid>https://parsecsreach.org/post/plotting/</guid>
+      <description>As useful as data is on its own, its really important for people to be able to see it. For a recent project I needed to show some World Cover images with the area of interest marked, along side the table of results. People respond better to being able to see it. This how I did that.
+Lets start with a list of tools we used:
+GeoPandas Rasterio MatPlotLib First we need to open our image data.</description>
+    </item>
+    
     <item>
       <title>SVG</title>
       <link>https://parsecsreach.org/post/svgs/</link>
