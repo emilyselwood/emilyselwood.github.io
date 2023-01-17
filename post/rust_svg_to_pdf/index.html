@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto">
+
+<head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>Turning an SVG into a PDF in rust | Parsecs Reach</title>
+<meta name="keywords" content="svg, rust, pdf">
+<meta name="description" content="I have some code that creates pages of shapes. My wife uses this to create products for her etsy shop. I originally wrote this in java many years ago. Some time last year I decided to rewrite the entire thing in rust. There were a number of reasons for this. Mostly that I&rsquo;d learned a heck of a lot since I designed the original architecture and wanted some features that would not be possible with out rewriting most of it any way.">
+<meta name="author" content="Emily Selwood">
+<link rel="canonical" href="https://parsecsreach.org/post/rust_svg_to_pdf/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.979d31a757b649bf90615e658aedd46e2896dc33bf05775ea99697ce5b3e4fe4.css" integrity="sha256-l50xp1e2Sb&#43;QYV5liu3UbiiW3DO/BXdeqZaXzls&#43;T&#43;Q=" rel="preload stylesheet" as="style">
+<script defer crossorigin="anonymous" src="/assets/js/highlight.f413e19d0714851f6474e7ee9632408e58ac146fbdbe62747134bea2fa3415e0.js" integrity="sha256-9BPhnQcUhR9kdOfuljJAjlisFG&#43;9vmJ0cTS&#43;ovo0FeA="
+    onload="hljs.initHighlightingOnLoad();"></script>
+<link rel="icon" href="https://parsecsreach.org/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="https://parsecsreach.org/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://parsecsreach.org/favicon-32x32.png">
+<link rel="apple-touch-icon" href="https://parsecsreach.org/apple-touch-icon.png">
+<link rel="mask-icon" href="https://parsecsreach.org/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --hljs-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-track {
+                background: 0 0;
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-thumb {
+                border-color: var(--theme);
+            }
+        }
+
+    </style>
+</noscript><meta property="og:title" content="Turning an SVG into a PDF in rust" />
+<meta property="og:description" content="I have some code that creates pages of shapes. My wife uses this to create products for her etsy shop. I originally wrote this in java many years ago. Some time last year I decided to rewrite the entire thing in rust. There were a number of reasons for this. Mostly that I&rsquo;d learned a heck of a lot since I designed the original architecture and wanted some features that would not be possible with out rewriting most of it any way." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://parsecsreach.org/post/rust_svg_to_pdf/" /><meta property="article:section" content="post" />
+<meta property="article:published_time" content="2023-01-17T12:11:00+00:00" />
+<meta property="article:modified_time" content="2023-01-17T12:11:00+00:00" />
+
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Turning an SVG into a PDF in rust"/>
+<meta name="twitter:description" content="I have some code that creates pages of shapes. My wife uses this to create products for her etsy shop. I originally wrote this in java many years ago. Some time last year I decided to rewrite the entire thing in rust. There were a number of reasons for this. Mostly that I&rsquo;d learned a heck of a lot since I designed the original architecture and wanted some features that would not be possible with out rewriting most of it any way."/>
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "Posts",
+      "item": "https://parsecsreach.org/post/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  3 ,
+      "name": "Turning an SVG into a PDF in rust",
+      "item": "https://parsecsreach.org/post/rust_svg_to_pdf/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "Turning an SVG into a PDF in rust",
+  "name": "Turning an SVG into a PDF in rust",
+  "description": "I have some code that creates pages of shapes. My wife uses this to create products for her etsy shop. I originally wrote this in java many years ago. Some time last year I decided to rewrite the entire thing in rust. There were a number of reasons for this. Mostly that I\u0026rsquo;d learned a heck of a lot since I designed the original architecture and wanted some features that would not be possible with out rewriting most of it any way.",
+  "keywords": [
+    "svg", "rust", "pdf"
+  ],
+  "articleBody": "I have some code that creates pages of shapes. My wife uses this to create products for her etsy shop. I originally wrote this in java many years ago. Some time last year I decided to rewrite the entire thing in rust. There were a number of reasons for this. Mostly that I’d learned a heck of a lot since I designed the original architecture and wanted some features that would not be possible with out rewriting most of it any way.\nSo the rust rewrite happened. Everything was wonderful and lovely. Ish. I did have to build my own SVG classes to do what I needed. Thankfully the quick_xml library made this reasonably easy. While I don’t mind creating readers and writers for SVG files, PDFs are another kettle of fish.\nIn java land I used the batik-transcoder which worked wonderfully. In rust I started out using the aptly named svg2pdf library and thought I was done.\nUnfortunately I eventually discovered, when we went to upload a file of pdfs to etsy that was too big, that the svg2pdf library uses usvg under the hood. This is a wonderful library that simplifies the svg down as much as possible to make later operations have to deal with the smallest subset of svg as possible.\nOne of the main things it does is convert everything to a path object. This does remove the need for a lot of special handling, circle? its a path, rect? its a path, text? its a path. Wait what? Yeah, it converts every single character of text into a path object. The watermark we put in the background to stop people reselling our files suddenly made the files 5x bigger.\nI know PDFs can handle this, the original java version was handling text in SVGs nicely after all. So back to searching for a library to do this for me. Unfortunately I couldn’t find one. I did find printpdf which is a more manual way of creating a pdf, and has support for SVGs in a feature flag. Unfortunately it uses usvg and svg2pdf under the hood to do the import.\nHowever it does also give me access to the pdf generation, so I could create a svg without the text in it, and handle the text separately. This is what I ended up doing. Though it wasn’t with out its wrinkles as I’ll describe now.\nStep one was to do a depth first search of the svg document tree and find all the text elements. This was easy enough, a recursive tree walk function solves that. Due to rusts memory safety its better to create a new tree to go along with it, so copy everything thats not a text element over to the new tree and add to a vector of text elements. I’m not going to show an example here because its using my svg library and won’t apply anywhere else.\nThen using the printpdf library we need to create a new document.\nlet (doc, page1, main_layer) = PdfDocument::new( \"FaerydaeStitches Shape File\", Mm(convert::pixels_to_mm(page.width, page.dpi)), Mm(convert::pixels_to_mm(page.height, page.dpi)), \"layer1\" ); let main_layer_ref = doc.get_page(page1).get_layer(main_layer); Note: we also need to get a PDFLayerReference to modify our layer, so we have to look that up after creating it.\nNow we can go through and create our text elements. Wait no, to create a text element we need to tell the library what font we are using. First lets go through and create a cache of fonts we need. Now SVGs can’t embed a font, but a pdf can, so we can make sure that our fancy font goes with our documents. This will make them bigger but will also make sure they look right everywhere. I used the font_kit library to handle looking up the path for a system font. I’m only using the SystemFontSource bit not any of the rendering.\nfn create_font_cache(doc : \u0026printpdf::PdfDocumentReference, texts: \u0026Vec\u003cTextElement\u003e) -\u003e Result\u003cHashMap\u003cString, IndirectFontRef\u003e, Error\u003e { let mut result = HashMap::new(); for te in texts { if !result.contains_key(\u0026te.font_name) { let font_path = find_font(te.font_name.clone())?; let font = doc.add_external_font(File::open(font_path)?)?; result.insert(te.font_name.clone(), font); } } return Ok(result); } fn find_font(font_name: String) -\u003e Result\u003cString, Error\u003e { let handle = SystemSource::new().select_by_postscript_name(font_name.as_str())?; match handle { Handle::Path { path, ..} =\u003e return Ok(path.to_str().unwrap().to_string()), _ =\u003e Err(Error::FontMemoryFont) } } Ok Now we have the fonts we can create the text. Awesome…\nlayer.begin_text_section(); let font = font_cache.get(\u0026text.font_name).unwrap(); // we created the font cache from this list of text objects. We know this will exist. layer.set_font(font, text.font_size as f64); // set text colours layer.set_fill_color(convert_colour(text.fill.as_str())?); layer.set_outline_color(convert_colour(text.stroke.as_str())?); layer.write_text(text.text.clone(), font); layer.end_text_section(); Please note: I skipped over the part where we got the colours and font names from the text elements style attributes. Its all just text parsing, convert_colour is a helper function to go from #0CAB0AFF type hex colour codes to printpdf’s rgb colour objects.\nAaaaahhhhh, why is our text at the bottom of the page not the top? PDF’s (0,0) origin point is in the bottom left corner of the page. SVG’s is in the top right. So our text won’t appear where we want. To solve this we need to create a TextMatrix to feed our layer. This can just be a translation or rotation or both.\nI know I’ll need to do a rotation later so lets solve all of this at once. But, the svg rotation isn’t applied on the text elements. Its applied on a group above the text elements. So when we walk the tree we are going to need to keep track of the current rotation as we go, so we can apply the right rotation values to the text elements we create.\nThe next fun thing is the coordinates applied to the text element in the svg get transformed by the group above them. So they think they are printing to a normal x,y coordinate plane, but that entire plane then gets rotated by the group. This doesn’t happen in the PDF so we need to undo it. Go from group coordinates to page coordinates. Functionally this is rotating the axis, which is reasonably easy to do with some trigonometry\n// function for finding the coords in the page axis when there has been a rotation applied to the coords fn get_effective_location(rotation:f64, x:i32, y:i32) -\u003e (i32, i32) { if rotation == 0.0 { return (x, y) } let rad_rotation = rotation.to_radians(); let new_x = ((x as f64) * rad_rotation.cos()) - ((y as f64) * rad_rotation.sin()); let new_y = ((x as f64) * rad_rotation.sin()) + ((y as f64) * rad_rotation.cos()); let rx = new_x.round() as i32; let ry = new_y.round() as i32; return (rx, ry) } I’m not going to explain how to get here. I don’t want to write another couple of thousand words. It just does what we need and gives us a point in page space as though the group was not there.\nNow we need to tell the pdf that this is where we want our text. So we add a TextMatrix to our code from before\nlayer.begin_text_section(); let font = font_cache.get(\u0026text.font_name).unwrap(); layer.set_font(font, text.font_size as f64); // set text rotation // set text colours layer.set_fill_color(convert_colour(text.fill.as_str())?); layer.set_outline_color(convert_colour(text.stroke.as_str())?); layer.set_text_matrix(TextMatrix::TranslateRotate( Mm(convert::pixels_to_mm(text.x, page.dpi)).into_pt(), convert_y(text.y, page).into_pt(), convert_angle(text.rotation) )); layer.write_text(text.text.clone(), font); layer.end_text_section(); The x axis is still the same values, just at the bottom of the page rather than the top. We do need to convert the y axis though. Reasonably straight forward, take the existing y value away from the height of the page, with a bunch of unit conversions thrown in for good measure. My SVGs operate in pixels, the printpdf library likes millimeters (its Mm objects)\nfn convert_y(y:i32, page: \u0026Page) -\u003e Mm { let page_height = convert::pixels_to_mm(page.height, page.dpi); let y_mm = convert::pixels_to_mm(y, page.dpi); Mm(page_height - y_mm) } The other wrinkle is because of the flipped axis the rotation angle is different. Instead of positive values rotating clockwise from the top of the page, positive values now rotate counter clockwise from the bottom of the page, again easy to solve, multiply by -1\nfn convert_angle(angle:f64) -\u003e f64 { angle * -1.0 } Hurrah! Now our text is the right font, in the right place and going in the right direction. Excellent.\nNow we just need to add our svg with out the text elements.\nlet svg_string = svg_filtered.to_pretty_string(); let pdf_svg = Svg::parse(svg_string.as_str())?; let svg_transform = SvgTransform{ translate_x: None, translate_y: None, scale_x: None, scale_y: None, rotate: None, dpi: Some(page.dpi as f64), }; pdf_svg.add_to_layer(\u0026main_layer_ref, svg_transform); First we turn our svg object tree into a string so it can be parsed by the pdf library. This is the down side to using our own objects for this, but at least we can do everything we want. Next we parse the string, this is where the text would get converted into paths if we hadn’t removed it all.\nWe set up a transform, mostly this is just need to set the dpi. If we don’t do this it defaults to 300dpi which is almost certainly wrong. While my code handles any dpi the most common uses are 96 and 72 dpi.\nFinally we add the svg to our layer. Tada!\nOh we should probably save our pdf too.\nOk(doc.save(\u0026mut BufWriter::new(File::create(path)?))?) Ok now we are finally done. My PDF’s have gone from 1mb ish to 200kb ish. Perfect.\nMay all this rambling be of no use to you. There is a bunch of stuff I didn’t cover that would be possible to solve. I only handle rotation transforms, not any other kind. It would be easy enough to do so, but my code does not ever generate any thing but rotations. It also doesn’t handle style cascading from group elements and probably a thousand other things. This is one of those problems that the more you look at it the harder it gets.\nI’m glad I got this far and am very happy to put it down now. As usual this is as much documentation for my self as any one else.\n",
+  "wordCount" : "1650",
+  "inLanguage": "en",
+  "datePublished": "2023-01-17T12:11:00Z",
+  "dateModified": "2023-01-17T12:11:00Z",
+  "author":{
+    "@type": "Person",
+    "name": "Emily Selwood"
+  },
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://parsecsreach.org/post/rust_svg_to_pdf/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Parsecs Reach",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://parsecsreach.org/favicon.ico"
+    }
+  }
+}
+</script>
+</head>
+
+<body class="" id="top">
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.body.classList.add('dark');
+    } else if (localStorage.getItem("pref-theme") === "light") {
+        document.body.classList.remove('dark')
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.body.classList.add('dark');
+    }
+
+</script>
+
+<header class="header">
+    <nav class="nav">
+        <div class="logo">
+            <a href="https://parsecsreach.org" accesskey="h" title="Parsecs Reach (Alt + H)">Parsecs Reach</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" accesskey="t" title="(Alt + T)">
+                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <ul id="menu">
+            <li>
+                <a rel="" href="https://parsecsreach.org/orbviewer"  target="_blank" title="Orb Viewer">
+                    <span>Orb Viewer</span>
+                    
+                </a>
+            </li>
+            <li>
+                <a rel="me" href="https://tech.lgbt/@emily_s"  target="_blank" title="">
+                    <span><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 417.8 512" class="logo-social" width="18" height="18"><path d="M417.8 179.1c0-97.2-63.7-125.7-63.7-125.7-62.5-28.7-228.5-28.4-290.4 0 0 0-63.7 28.5-63.7 125.7 0 115.7-6.6 259.4 105.6 289.1 40.5 10.7 75.3 13 103.3 11.4 50.8-2.8 79.3-18.1 79.3-18.1l-1.7-36.9s-36.3 11.4-77.1 10.1c-40.4-1.4-83-4.4-89.6-54-.6-4.4-.9-9-.9-13.9 85.6 20.9 158.6 9.1 178.7 6.7 56.1-6.7 105-41.3 111.2-72.9 9.8-49.8 9-121.5 9-121.5zm-75.1 125.2h-46.6V190.1c0-49.7-64-51.6-64 6.9v62.5h-46.3V197c0-58.5-64-56.6-64-6.9v114.2H75.1c0-122.1-5.2-147.9 18.4-175 25.9-28.9 79.8-30.8 103.8 6.1l11.6 19.5 11.6-19.5c24.1-37.1 78.1-34.8 103.8-6.1 23.7 27.3 18.4 53 18.4 175z"/></svg></span>
+                    
+                </a>
+            </li>
+            <li>
+                <a rel="" href="https://github.com/emilyselwood"  target="_blank" title="">
+                    <span><svg width="18" height="18" class="logo-social" stroke="none" viewBox="0 0 11.493062 11.209467" xmlns="http://www.w3.org/2000/svg"><path d="M 5.746044,0 C 2.572808,0 0,2.572808 0,5.74675 c 0,2.538941 1.646414,4.69265 3.929944,5.452886 0.287514,0.05256 0.392289,-0.124883 0.392289,-0.277283 0,-0.136173 -0.0049,-0.49777 -0.0078,-0.977195 C 2.715997,10.292291 2.378741,9.174691 2.378741,9.174691 2.117333,8.511116 1.740566,8.334375 1.740566,8.334375 1.218808,7.977716 1.780076,7.984772 1.780076,7.984772 2.356868,8.025692 2.660257,8.577086 2.660257,8.577086 3.172843,9.45515 4.005398,9.201503 4.332776,9.054747 4.384986,8.683272 4.533154,8.429978 4.697548,8.286397 3.421551,8.141405 2.079937,7.648222 2.079937,5.446183 c 0,-0.627239 0.224014,-1.140178 0.591609,-1.541991 -0.05927,-0.145345 -0.25647,-0.729545 0.05609,-1.520825 0,0 0.4826,-0.154517 1.580445,0.589138 C 4.766339,2.845153 5.258111,2.7813 5.746709,2.779183 6.2346,2.781283 6.726372,2.845153 7.185336,2.972505 8.282475,2.22885 8.764017,2.383367 8.764017,2.383367 c 0.313619,0.79128 0.116416,1.37548 0.05715,1.520825 0.3683,0.401813 0.590903,0.914752 0.590903,1.541991 0,2.207683 -1.343731,2.693458 -2.623961,2.835628 0.206375,0.177447 0.390172,0.528108 0.390172,1.06433 0,0.767998 -0.0071,1.387828 -0.0071,1.576212 0,0.153811 0.103364,0.332669 0.395111,0.276577 2.281767,-0.761647 3.92677,-2.913944 3.92677,-5.45218 C 11.493062,2.572808 8.919901,0 5.745959,0"/></svg></span>
+                    
+                </a>
+            </li>
+            <li>
+                <a rel="" href="https://parsecsreach.org/about"  target="_self" title="About me">
+                    <span>About me</span>
+                    
+                </a>
+            </li>
+            <li>
+                <a rel="" href="https://parsecsreach.org/"  target="_self" title="Home">
+                    <span>Home</span>
+                    
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    
+    <h1 class="post-title">
+      Turning an SVG into a PDF in rust
+    </h1>
+    <div class="post-meta"><span title='2023-01-17 12:11:00 +0000 GMT'>2023 January 17</span>&nbsp;·&nbsp;Emily Selwood
+
+</div>
+  </header> 
+  <div class="post-content"><p>I have some code that creates pages of shapes. My wife uses this to create products for her <a href="https://www.etsy.com/uk/shop/FaerydaeStitches">etsy shop</a>. I originally wrote this in java many years ago. Some time last year I decided to rewrite the entire thing in rust. There were a number of reasons for this. Mostly that I&rsquo;d learned a heck of a lot since I designed the original architecture and wanted some features that would not be possible with out rewriting most of it any way.</p>
+<p>So the rust rewrite happened. Everything was wonderful and lovely. Ish. I did have to build my own SVG classes to do what I needed. Thankfully the <a href="https://docs.rs/quick-xml/latest/quick_xml/">quick_xml</a> library made this reasonably easy. While I don&rsquo;t mind creating readers and writers for SVG files, PDFs are another kettle of fish.</p>
+<p>In java land I used the <code>batik-transcoder</code> which worked wonderfully. In rust I started out using the aptly named <a href="https://docs.rs/svg2pdf/latest/svg2pdf/">svg2pdf</a> library and thought I was done.</p>
+<p>Unfortunately I eventually discovered, when we went to upload a file of pdfs to etsy that was too big, that the svg2pdf library uses <a href="https://docs.rs/usvg/latest/usvg/">usvg</a> under the hood. This is a wonderful library that simplifies the svg down as much as possible to make later operations have to deal with the smallest subset of svg as possible.</p>
+<p>One of the main things it does is convert everything to a path object. This does remove the need for a lot of special handling, circle? its a path, rect? its a path, text? its a path. Wait what? Yeah, it converts every single character of text into a path object. The watermark we put in the background to stop people reselling our files suddenly made the files 5x bigger.</p>
+<p>I know PDFs can handle this, the original java version was handling text in SVGs nicely after all. So back to searching for a library to do this for me. Unfortunately I couldn&rsquo;t find one. I did find <a href="https://docs.rs/printpdf/latest/printpdf/">printpdf</a> which is a more manual way of creating a pdf, and has support for SVGs in a feature flag. Unfortunately it uses <code>usvg</code> and <code>svg2pdf</code> under the hood to do the import.</p>
+<p>However it does also give me access to the pdf generation, so I could create a svg without the text in it, and handle the text separately. This is what I ended up doing. Though it wasn&rsquo;t with out its wrinkles as I&rsquo;ll describe now.</p>
+<p>Step one was to do a depth first search of the svg document tree and find all the text elements. This was easy enough, a recursive tree walk function solves that. Due to rusts memory safety its better to create a new tree to go along with it, so copy everything thats not a text element over to the new tree and add to a vector of text elements. I&rsquo;m not going to show an example here because its using my svg library and won&rsquo;t apply anywhere else.</p>
+<p>Then using the <code>printpdf</code> library we need to create a new document.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-rust" data-lang="rust"><span style="display:flex;"><span>    <span style="color:#66d9ef">let</span> (doc, page1, main_layer) <span style="color:#f92672">=</span> PdfDocument::new(
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;FaerydaeStitches Shape File&#34;</span>, 
+</span></span><span style="display:flex;"><span>        Mm(convert::pixels_to_mm(page.width, page.dpi)), 
+</span></span><span style="display:flex;"><span>        Mm(convert::pixels_to_mm(page.height, page.dpi)), 
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;layer1&#34;</span>
+</span></span><span style="display:flex;"><span>    );
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">let</span> main_layer_ref <span style="color:#f92672">=</span> doc.get_page(page1).get_layer(main_layer);
+</span></span></code></pre></div><p>Note: we also need to get a <code>PDFLayerReference</code> to modify our layer, so we have to look that up after creating it.</p>
+<p>Now we can go through and create our text elements. Wait no, to create a text element we need to tell the library what font we are using. First lets go through and create a cache of fonts we need. Now SVGs can&rsquo;t embed a font, but a pdf can, so we can make sure that our fancy font goes with our documents. This will make them bigger but will also make sure they look right everywhere. I used the <a href="https://docs.rs/font-kit/latest/font_kit/">font_kit</a> library to handle looking up the path for a system font. I&rsquo;m only using the <code>SystemFontSource</code> bit not any of the rendering.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-rust" data-lang="rust"><span style="display:flex;"><span><span style="color:#66d9ef">fn</span> <span style="color:#a6e22e">create_font_cache</span>(doc : <span style="color:#66d9ef">&amp;</span><span style="color:#a6e22e">printpdf</span>::PdfDocumentReference, texts: <span style="color:#66d9ef">&amp;</span>Vec<span style="color:#f92672">&lt;</span>TextElement<span style="color:#f92672">&gt;</span>) -&gt; Result<span style="color:#f92672">&lt;</span>HashMap<span style="color:#f92672">&lt;</span>String, IndirectFontRef<span style="color:#f92672">&gt;</span>, Error<span style="color:#f92672">&gt;</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">let</span> <span style="color:#66d9ef">mut</span> result <span style="color:#f92672">=</span> HashMap::new();
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span> te <span style="color:#66d9ef">in</span> texts {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> <span style="color:#f92672">!</span>result.contains_key(<span style="color:#f92672">&amp;</span>te.font_name) {
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">let</span> font_path <span style="color:#f92672">=</span> find_font(te.font_name.clone())<span style="color:#f92672">?</span>;
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">let</span> font <span style="color:#f92672">=</span> doc.add_external_font(File::open(font_path)<span style="color:#f92672">?</span>)<span style="color:#f92672">?</span>;
+</span></span><span style="display:flex;"><span>            result.insert(te.font_name.clone(), font);
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> Ok(result);
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">fn</span> <span style="color:#a6e22e">find_font</span>(font_name: String) -&gt; Result<span style="color:#f92672">&lt;</span>String, Error<span style="color:#f92672">&gt;</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">let</span> handle <span style="color:#f92672">=</span> SystemSource::new().select_by_postscript_name(font_name.as_str())<span style="color:#f92672">?</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">match</span> handle {
+</span></span><span style="display:flex;"><span>        Handle::Path { path, <span style="color:#f92672">..</span>} <span style="color:#f92672">=&gt;</span> <span style="color:#66d9ef">return</span> Ok(path.to_str().unwrap().to_string()),
+</span></span><span style="display:flex;"><span>        _ <span style="color:#f92672">=&gt;</span> Err(Error::FontMemoryFont)
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>Ok Now we have the fonts we can create the text. Awesome&hellip;</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-Rust" data-lang="Rust"><span style="display:flex;"><span>    layer.begin_text_section();
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">let</span> font <span style="color:#f92672">=</span> font_cache.get(<span style="color:#f92672">&amp;</span>text.font_name).unwrap(); <span style="color:#75715e">// we created the font cache from this list of text objects. We know this will exist.
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    layer.set_font(font, text.font_size <span style="color:#66d9ef">as</span> <span style="color:#66d9ef">f64</span>);
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// set text colours
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    layer.set_fill_color(convert_colour(text.fill.as_str())<span style="color:#f92672">?</span>);
+</span></span><span style="display:flex;"><span>    layer.set_outline_color(convert_colour(text.stroke.as_str())<span style="color:#f92672">?</span>);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    layer.write_text(text.text.clone(), font);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    layer.end_text_section();
+</span></span></code></pre></div><p>Please note: I skipped over the part where we got the colours and font names from the text elements style attributes. Its all just text parsing, <code>convert_colour</code> is a helper function to go from <code>#0CAB0AFF</code> type hex colour codes to <code>printpdf</code>&rsquo;s rgb colour objects.</p>
+<p>Aaaaahhhhh, why is our text at the bottom of the page not the top? PDF&rsquo;s (0,0) origin point is in the bottom left corner of the page. SVG&rsquo;s is in the top right. So our text won&rsquo;t appear where we want. To solve this we need to create a <code>TextMatrix</code> to feed our layer. This can just be a translation or rotation or both.</p>
+<p>I know I&rsquo;ll need to do a rotation later so lets solve all of this at once. But, the svg rotation isn&rsquo;t applied on the text elements. Its applied on a group above the text elements. So when we walk the tree we are going to need to keep track of the current rotation as we go, so we can apply the right rotation values to the text elements we create.</p>
+<p>The next fun thing is the coordinates applied to the text element in the svg get transformed by the group above them. So they think they are printing to a normal x,y coordinate plane, but that entire plane then gets rotated by the group. This doesn&rsquo;t happen in the PDF so we need to undo it. Go from group coordinates to page coordinates. Functionally this is rotating the axis, which is reasonably easy to do with some trigonometry</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-rust" data-lang="rust"><span style="display:flex;"><span><span style="color:#75715e">// function for finding the coords in the page axis when there has been a rotation applied to the coords
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">fn</span> <span style="color:#a6e22e">get_effective_location</span>(rotation:<span style="color:#66d9ef">f64</span>, x:<span style="color:#66d9ef">i32</span>, y:<span style="color:#66d9ef">i32</span>) -&gt; (<span style="color:#66d9ef">i32</span>, <span style="color:#66d9ef">i32</span>) {
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> rotation <span style="color:#f92672">==</span> <span style="color:#ae81ff">0.0</span> {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> (x, y)
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">let</span> rad_rotation <span style="color:#f92672">=</span> rotation.to_radians();
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">let</span> new_x <span style="color:#f92672">=</span> ((x <span style="color:#66d9ef">as</span> <span style="color:#66d9ef">f64</span>) <span style="color:#f92672">*</span> rad_rotation.cos()) <span style="color:#f92672">-</span> ((y <span style="color:#66d9ef">as</span> <span style="color:#66d9ef">f64</span>) <span style="color:#f92672">*</span> rad_rotation.sin());
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">let</span> new_y <span style="color:#f92672">=</span> ((x <span style="color:#66d9ef">as</span> <span style="color:#66d9ef">f64</span>) <span style="color:#f92672">*</span> rad_rotation.sin()) <span style="color:#f92672">+</span> ((y <span style="color:#66d9ef">as</span> <span style="color:#66d9ef">f64</span>) <span style="color:#f92672">*</span> rad_rotation.cos());
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">let</span> rx <span style="color:#f92672">=</span> new_x.round() <span style="color:#66d9ef">as</span> <span style="color:#66d9ef">i32</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">let</span> ry <span style="color:#f92672">=</span> new_y.round() <span style="color:#66d9ef">as</span> <span style="color:#66d9ef">i32</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> (rx, ry)
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>I&rsquo;m not going to explain how to get here. I don&rsquo;t want to write another couple of thousand words. It just does what we need and gives us a point in page space as though the group was not there.</p>
+<p>Now we need to tell the pdf that this is where we want our text. So we add a <code>TextMatrix</code> to our code from before</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-rust" data-lang="rust"><span style="display:flex;"><span>    layer.begin_text_section();
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">let</span> font <span style="color:#f92672">=</span> font_cache.get(<span style="color:#f92672">&amp;</span>text.font_name).unwrap();
+</span></span><span style="display:flex;"><span>    layer.set_font(font, text.font_size <span style="color:#66d9ef">as</span> <span style="color:#66d9ef">f64</span>);
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// set text rotation
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// set text colours
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    layer.set_fill_color(convert_colour(text.fill.as_str())<span style="color:#f92672">?</span>);
+</span></span><span style="display:flex;"><span>    layer.set_outline_color(convert_colour(text.stroke.as_str())<span style="color:#f92672">?</span>);
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    layer.set_text_matrix(TextMatrix::TranslateRotate(
+</span></span><span style="display:flex;"><span>        Mm(convert::pixels_to_mm(text.x, page.dpi)).into_pt(),
+</span></span><span style="display:flex;"><span>        convert_y(text.y, page).into_pt(),
+</span></span><span style="display:flex;"><span>        convert_angle(text.rotation)
+</span></span><span style="display:flex;"><span>    ));
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    layer.write_text(text.text.clone(), font);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    layer.end_text_section();
+</span></span></code></pre></div><p>The x axis is still the same values, just at the bottom of the page rather than the top. We do need to convert the y axis though. Reasonably straight forward, take the existing y value away from the height of the page, with a bunch of unit conversions thrown in for good measure. My SVGs operate in pixels, the <code>printpdf</code> library likes millimeters (its <code>Mm</code> objects)</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-rust" data-lang="rust"><span style="display:flex;"><span><span style="color:#66d9ef">fn</span> <span style="color:#a6e22e">convert_y</span>(y:<span style="color:#66d9ef">i32</span>, page: <span style="color:#66d9ef">&amp;</span><span style="color:#a6e22e">Page</span>) -&gt; <span style="color:#a6e22e">Mm</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">let</span> page_height <span style="color:#f92672">=</span> convert::pixels_to_mm(page.height, page.dpi);
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">let</span> y_mm <span style="color:#f92672">=</span> convert::pixels_to_mm(y, page.dpi);
+</span></span><span style="display:flex;"><span>    Mm(page_height <span style="color:#f92672">-</span> y_mm)
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>The other wrinkle is because of the flipped axis the rotation angle is different. Instead of positive values rotating clockwise from the top of the page, positive values now rotate counter clockwise from the bottom of the page, again easy to solve, multiply by -1</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-rust" data-lang="rust"><span style="display:flex;"><span><span style="color:#66d9ef">fn</span> <span style="color:#a6e22e">convert_angle</span>(angle:<span style="color:#66d9ef">f64</span>) -&gt; <span style="color:#66d9ef">f64</span> {
+</span></span><span style="display:flex;"><span>    angle <span style="color:#f92672">*</span> <span style="color:#f92672">-</span><span style="color:#ae81ff">1.0</span>
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>Hurrah! Now our text is the right font, in the right place and going in the right direction. Excellent.</p>
+<p>Now we just need to add our svg with out the text elements.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-rust" data-lang="rust"><span style="display:flex;"><span>    <span style="color:#66d9ef">let</span> svg_string <span style="color:#f92672">=</span> svg_filtered.to_pretty_string();
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">let</span> pdf_svg <span style="color:#f92672">=</span> Svg::parse(svg_string.as_str())<span style="color:#f92672">?</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">let</span> svg_transform <span style="color:#f92672">=</span> SvgTransform{
+</span></span><span style="display:flex;"><span>        translate_x: None,
+</span></span><span style="display:flex;"><span>        translate_y: None,
+</span></span><span style="display:flex;"><span>        scale_x: None,
+</span></span><span style="display:flex;"><span>        scale_y: None,
+</span></span><span style="display:flex;"><span>        rotate: None,
+</span></span><span style="display:flex;"><span>        dpi: Some(page.dpi <span style="color:#66d9ef">as</span> <span style="color:#66d9ef">f64</span>),
+</span></span><span style="display:flex;"><span>    };
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    pdf_svg.add_to_layer(<span style="color:#f92672">&amp;</span>main_layer_ref, svg_transform);
+</span></span></code></pre></div><p>First we turn our svg object tree into a string so it can be parsed by the pdf library. This is the down side to using our own objects for this, but at least we can do everything we want. Next we parse the string, this is where the text would get converted into paths if we hadn&rsquo;t removed it all.</p>
+<p>We set up a transform, mostly this is just need to set the dpi. If we don&rsquo;t do this it defaults to 300dpi which is almost certainly wrong. While my code handles any dpi the most common uses are 96 and 72 dpi.</p>
+<p>Finally we add the svg to our layer. Tada!</p>
+<p>Oh we should probably save our pdf too.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-rust" data-lang="rust"><span style="display:flex;"><span>    Ok(doc.save(<span style="color:#f92672">&amp;</span><span style="color:#66d9ef">mut</span> BufWriter::new(File::create(path)<span style="color:#f92672">?</span>))<span style="color:#f92672">?</span>)
+</span></span></code></pre></div><p>Ok now we are finally done. My PDF&rsquo;s have gone from 1mb ish to 200kb ish. Perfect.</p>
+<p>May all this rambling be of no use to you. There is a bunch of stuff I didn&rsquo;t cover that would be possible to solve. I only handle rotation transforms, not any other kind. It would be easy enough to do so, but my code does not ever generate any thing but rotations. It also doesn&rsquo;t handle style cascading from group elements and probably a thousand other things. This is one of those problems that the more you look at it the harder it gets.</p>
+<p>I&rsquo;m glad I got this far and am very happy to put it down now. As usual this is as much documentation for my self as any one else.</p>
+
+
+  </div>
+
+  <footer class="post-footer">
+    <ul class="post-tags">
+      <li><a href="https://parsecsreach.org/tags/svg/">svg</a></li>
+      <li><a href="https://parsecsreach.org/tags/rust/">rust</a></li>
+      <li><a href="https://parsecsreach.org/tags/pdf/">pdf</a></li>
+    </ul>
+<nav class="paginav">
+  <a class="next" href="https://parsecsreach.org/post/stories/explorers_end/">
+    <span class="title">Next »</span>
+    <br>
+    <span>Explorers End</span>
+  </a>
+</nav>
+
+  </footer>
+</article>
+    </main>
+    
+<footer class="footer">
+    <span>All rights reserved - 2022</span>
+    <span>
+        Powered by
+        <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
+        <path d="M12 6H0l6-6z" />
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu')
+    if (menu) {
+        menu.scrollLeft = localStorage.getItem("menu-scroll-position");
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var mybutton = document.getElementById("top-link");
+    window.onscroll = function () {
+        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
+            mybutton.style.visibility = "visible";
+            mybutton.style.opacity = "1";
+        } else {
+            mybutton.style.visibility = "hidden";
+            mybutton.style.opacity = "0";
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        if (document.body.className.includes("dark")) {
+            document.body.classList.remove('dark');
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            document.body.classList.add('dark');
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+</body>
+
+</html>

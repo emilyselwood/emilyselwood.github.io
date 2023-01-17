@@ -2,22 +2,34 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
+    <loc>https://parsecsreach.org/</loc>
+    <lastmod>2023-01-17T12:11:00+00:00</lastmod>
+  </url><url>
+    <loc>https://parsecsreach.org/tags/pdf/</loc>
+    <lastmod>2023-01-17T12:11:00+00:00</lastmod>
+  </url><url>
+    <loc>https://parsecsreach.org/post/</loc>
+    <lastmod>2023-01-17T12:11:00+00:00</lastmod>
+  </url><url>
+    <loc>https://parsecsreach.org/tags/rust/</loc>
+    <lastmod>2023-01-17T12:11:00+00:00</lastmod>
+  </url><url>
+    <loc>https://parsecsreach.org/tags/svg/</loc>
+    <lastmod>2023-01-17T12:11:00+00:00</lastmod>
+  </url><url>
+    <loc>https://parsecsreach.org/tags/</loc>
+    <lastmod>2023-01-17T12:11:00+00:00</lastmod>
+  </url><url>
+    <loc>https://parsecsreach.org/post/rust_svg_to_pdf/</loc>
+    <lastmod>2023-01-17T12:11:00+00:00</lastmod>
+  </url><url>
     <loc>https://parsecsreach.org/post/stories/explorers_end/</loc>
     <lastmod>2022-12-04T12:17:00+01:00</lastmod>
   </url><url>
     <loc>https://parsecsreach.org/tags/fiction/</loc>
     <lastmod>2022-12-04T12:17:00+01:00</lastmod>
   </url><url>
-    <loc>https://parsecsreach.org/</loc>
-    <lastmod>2022-12-04T12:17:00+01:00</lastmod>
-  </url><url>
-    <loc>https://parsecsreach.org/post/</loc>
-    <lastmod>2022-12-04T12:17:00+01:00</lastmod>
-  </url><url>
     <loc>https://parsecsreach.org/tags/story/</loc>
-    <lastmod>2022-12-04T12:17:00+01:00</lastmod>
-  </url><url>
-    <loc>https://parsecsreach.org/tags/</loc>
     <lastmod>2022-12-04T12:17:00+01:00</lastmod>
   </url><url>
     <loc>https://parsecsreach.org/tags/geospatial/</loc>

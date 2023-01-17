@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>pdf on Parsecs Reach</title>
+    <link>https://parsecsreach.org/tags/pdf/</link>
+    <description>Recent content in pdf on Parsecs Reach</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>All rights reserved - 2022</copyright>
+    <lastBuildDate>Tue, 17 Jan 2023 12:11:00 +0000</lastBuildDate><atom:link href="https://parsecsreach.org/tags/pdf/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Turning an SVG into a PDF in rust</title>
+      <link>https://parsecsreach.org/post/rust_svg_to_pdf/</link>
+      <pubDate>Tue, 17 Jan 2023 12:11:00 +0000</pubDate>
+      
+      <guid>https://parsecsreach.org/post/rust_svg_to_pdf/</guid>
+      <description>I have some code that creates pages of shapes. My wife uses this to create products for her etsy shop. I originally wrote this in java many years ago. Some time last year I decided to rewrite the entire thing in rust. There were a number of reasons for this. Mostly that I&amp;rsquo;d learned a heck of a lot since I designed the original architecture and wanted some features that would not be possible with out rewriting most of it any way.</description>
+    </item>
+    
+  </channel>
+</rss>
