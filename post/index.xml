@@ -7,7 +7,16 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>All rights reserved - 2022</copyright>
-    <lastBuildDate>Tue, 17 Jan 2023 12:11:00 +0000</lastBuildDate><atom:link href="https://parsecsreach.org/post/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Wed, 15 Feb 2023 12:11:00 +0000</lastBuildDate><atom:link href="https://parsecsreach.org/post/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Creating a command line mastodon archive search tool in rust</title>
+      <link>https://parsecsreach.org/post/rust_mastodon_search/</link>
+      <pubDate>Wed, 15 Feb 2023 12:11:00 +0000</pubDate>
+      
+      <guid>https://parsecsreach.org/post/rust_mastodon_search/</guid>
+      <description>Today lets step through creating a new command line tool in rust. Recently I wanted to find one of my old toots, but it was from several months ago and mastodon doesn&amp;rsquo;t have the ability to search for anything other than usernames and hashtags. I couldn&amp;rsquo;t remember if I&amp;rsquo;d put hash tags in the post I was after so I couldn&amp;rsquo;t use the built in thing. What I did have however is my backup archive.</description>
+    </item>
+    
     <item>
       <title>Turning an SVG into a PDF in rust</title>
       <link>https://parsecsreach.org/post/rust_svg_to_pdf/</link>

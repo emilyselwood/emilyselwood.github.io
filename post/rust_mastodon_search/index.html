@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto">
+
+<head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>Creating a command line mastodon archive search tool in rust | Parsecs Reach</title>
+<meta name="keywords" content="search, rust, mastodon">
+<meta name="description" content="Today lets step through creating a new command line tool in rust. Recently I wanted to find one of my old toots, but it was from several months ago and mastodon doesn&rsquo;t have the ability to search for anything other than usernames and hashtags. I couldn&rsquo;t remember if I&rsquo;d put hash tags in the post I was after so I couldn&rsquo;t use the built in thing. What I did have however is my backup archive.">
+<meta name="author" content="Emily Selwood">
+<link rel="canonical" href="https://parsecsreach.org/post/rust_mastodon_search/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.979d31a757b649bf90615e658aedd46e2896dc33bf05775ea99697ce5b3e4fe4.css" integrity="sha256-l50xp1e2Sb&#43;QYV5liu3UbiiW3DO/BXdeqZaXzls&#43;T&#43;Q=" rel="preload stylesheet" as="style">
+<script defer crossorigin="anonymous" src="/assets/js/highlight.f413e19d0714851f6474e7ee9632408e58ac146fbdbe62747134bea2fa3415e0.js" integrity="sha256-9BPhnQcUhR9kdOfuljJAjlisFG&#43;9vmJ0cTS&#43;ovo0FeA="
+    onload="hljs.initHighlightingOnLoad();"></script>
+<link rel="icon" href="https://parsecsreach.org/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="https://parsecsreach.org/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://parsecsreach.org/favicon-32x32.png">
+<link rel="apple-touch-icon" href="https://parsecsreach.org/apple-touch-icon.png">
+<link rel="mask-icon" href="https://parsecsreach.org/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --hljs-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-track {
+                background: 0 0;
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-thumb {
+                border-color: var(--theme);
+            }
+        }
+
+    </style>
+</noscript><meta property="og:title" content="Creating a command line mastodon archive search tool in rust" />
+<meta property="og:description" content="Today lets step through creating a new command line tool in rust. Recently I wanted to find one of my old toots, but it was from several months ago and mastodon doesn&rsquo;t have the ability to search for anything other than usernames and hashtags. I couldn&rsquo;t remember if I&rsquo;d put hash tags in the post I was after so I couldn&rsquo;t use the built in thing. What I did have however is my backup archive." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://parsecsreach.org/post/rust_mastodon_search/" /><meta property="article:section" content="post" />
+<meta property="article:published_time" content="2023-02-15T12:11:00+00:00" />
+<meta property="article:modified_time" content="2023-02-15T12:11:00+00:00" />
+
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Creating a command line mastodon archive search tool in rust"/>
+<meta name="twitter:description" content="Today lets step through creating a new command line tool in rust. Recently I wanted to find one of my old toots, but it was from several months ago and mastodon doesn&rsquo;t have the ability to search for anything other than usernames and hashtags. I couldn&rsquo;t remember if I&rsquo;d put hash tags in the post I was after so I couldn&rsquo;t use the built in thing. What I did have however is my backup archive."/>
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "Posts",
+      "item": "https://parsecsreach.org/post/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  3 ,
+      "name": "Creating a command line mastodon archive search tool in rust",
+      "item": "https://parsecsreach.org/post/rust_mastodon_search/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "Creating a command line mastodon archive search tool in rust",
+  "name": "Creating a command line mastodon archive search tool in rust",
+  "description": "Today lets step through creating a new command line tool in rust. Recently I wanted to find one of my old toots, but it was from several months ago and mastodon doesn\u0026rsquo;t have the ability to search for anything other than usernames and hashtags. I couldn\u0026rsquo;t remember if I\u0026rsquo;d put hash tags in the post I was after so I couldn\u0026rsquo;t use the built in thing. What I did have however is my backup archive.",
+  "keywords": [
+    "search", "rust", "mastodon"
+  ],
+  "articleBody": "Today lets step through creating a new command line tool in rust. Recently I wanted to find one of my old toots, but it was from several months ago and mastodon doesn’t have the ability to search for anything other than usernames and hashtags. I couldn’t remember if I’d put hash tags in the post I was after so I couldn’t use the built in thing. What I did have however is my backup archive. I’d downloaded it earlier for unrelated reasons. Wouldn’t it be good if I could run a search on that archive and get back the url for a toot I was looking for? Yep, lets build it. I’m going to step through this in horrible detail as a kind of tutorial on creating a command line tool in rust. So here we go!\nOk, before we start there are some pre-requisites that I already have setup and I’m not going to talk about.\nI already have rust installed I have downloaded my archive (the option is in your settings under import/export, you may need to tap the hamburger button on mobile to find it) I have a text editor and coding environment set up. In my case VS Code and the Rust analyser plugins. Now, lets have a terminal open and create our new tool.\ncargo new magrep Created binary (application) `magrep2` package This will create a new folder in the current directory called magrep (Mastodon Archive Grep) open that directory in your favourite text editor,\ncd magrep code . There will be a cargo.toml a .gitignore and a src/ directory with a main.rs. First thing we need is to run this. Ok, we don’t strictly need to run this, but it is a good idea to make sure everything works.\ncargo run Compiling magrep v0.1.0 (C:\\Users\\emily\\git\\magrep)\rFinished dev [unoptimized + debuginfo] target(s) in 1.86s\rRunning `target\\debug\\magrep.exe`\rHello, world! Hurrah it worked as expected. Now we need to have a quick think about what we want this tool to do and how it should work. We want to search the outbox.json file in the tar.gz archive file and look for any toots with a provided string in them. So we need to know where the archive file is, and what string to search for. When the thing runs it should open up the archive file, decode the outbox.json file, filter out anything thats not a toot (it includes likes and boosts too), and print out any that contain our search string.\nNow we know that, the first thing the program is going to need to do is read the command line arguments and find out where the archive is and what we are searching for.\nTo do that we will use a library called Clap. This provides a bunch of command line parsing logic. We just need to add the following to the dependencies section of our cargo.toml file\nclap = { version = \"3.0\", features = [\"derive\"] } Then we can go to our src/main.rs file and start to write some code. We want an argument that is something like -a so we need to create a new command and then add an argument to it. First add an import for the types we need,\nuse clap::{Arg, Command}; Then add the following to your main function\nlet matches = Command::new(\"magrep\") .arg( Arg::new(\"archive\") .required(true) .short('a') .long(\"archive\") .help(\"file path for the archive to search\"), ) .get_matches(); This creates a command magrep and an argument with a short name of -a and a long name of --archive that is required. Now the next argument we need to create is the search term. Now it would be nice if we didn’t have to specify that this was the search term, like when you use sed or grep you just type the search parameter. So lets create a positional argument.\nlet matches = Command::new(\"magrep\") .arg( Arg::new(\"archive\") .required(true) .short('a') .long(\"archive\") .default_value(\"./archive.tar.gz\") .help(\"file path for the archive to search\"), ) .arg( Arg::with_name(\"query\") .index(1) .help(\"match string\") .required(true), ) .get_matches(); Now the matches variable will have our parsed command line arguments in it. We can pull them out into variables for us to use later like so\nlet archive_path = matches.value_of(\"archive\").unwrap(); let pattern = matches.value_of(\"query\").unwrap(); Lets do a quick test and print those out to make sure things are working…\nprintln!(\"path: {}, pattern: {}\", archive_path, pattern); cargo run -- -a something.gz \"some pattern\" This will take a bit longer than before as it will need to build clap and all of its dependencies too. You should see something like this\nCompiling hashbrown v0.12.3\rCompiling os_str_bytes v6.4.1\rCompiling once_cell v1.17.1\rCompiling bitflags v1.3.2\rCompiling strsim v0.10.0\rCompiling textwrap v0.16.0\rCompiling winapi v0.3.9\rCompiling clap_lex v0.2.4\rCompiling indexmap v1.9.2\rCompiling winapi-util v0.1.5\rCompiling atty v0.2.14\rCompiling termcolor v1.2.0\rCompiling clap v3.2.23\rCompiling magrep v0.1.0 (C:\\Users\\emily\\git\\magrep)\rFinished dev [unoptimized + debuginfo] target(s) in 9.00s\rRunning `target\\debug\\magrep.exe -a something.gz \"some pattern\"`\rpath: something.gz, pattern: some pattern As you can see at the end we got our arguments printed out nicely. Good. Now we can move on to trying to open the archive file. Now this is a tar.gz file, if you’ve not encountered these before they are a compressed wrapper around a tar file, which is just some metadata and a bunch of files concatenated together. We’ll use a couple of libraries to handle these. Add the following to your dependencies in your cargo.toml\nflate2 = \"1.0.25\" tar = \"0.4.38\" We can import the bits we will shortly need,\nuse std::fs::File; use flate2::read::GzDecoder; use tar::Archive; Now we can open the file, wrap that file in a gz decoder, and wrap that in a tar archive decoder, like so:\nlet tar_gz = File::open(archive_path).unwrap(); let tar = GzDecoder::new(tar_gz); let mut archive = Archive::new(tar); Lets do a test and print out the filenames in the archive, to make sure things are working as we expect.\nfor entry in archive.entries().unwrap() { let e = entry.unwrap(); let path_path = e.path().unwrap(); let path_string = path_path.to_str().unwrap(); println!(\"file: {}\", path_string); } Now if we run it we should get a list of filenames printed out…\ncargo run -- -a ../../Downloads/archive-20230214153535-daa49fde73e802447b521186ba95c8af.tar.gz \"some pattern\" Compiling cfg-if v1.0.0\rCompiling adler v1.0.2\rCompiling windows_x86_64_msvc v0.42.1\rCompiling windows-targets v0.42.1\rCompiling crc32fast v1.3.2\rCompiling windows-sys v0.45.0\rCompiling miniz_oxide v0.6.2\rCompiling flate2 v1.0.25\rCompiling filetime v0.2.20\rCompiling tar v0.4.38\rCompiling magrep2 v0.1.0 (C:\\Users\\emily\\git\\magrep2)\rFinished dev [unoptimized + debuginfo] target(s) in 4.58s\rRunning `target\\debug\\magrep2.exe -a ..\\..\\Downloads\\archive-20230214153535-daa49fde73e802447b521186ba95c8af.tar.gz \"some pattern\"`\rpath: ..\\..\\Downloads\\archive-20230214153535-daa49fde73e802447b521186ba95c8af.tar.gz, pattern: some pattern\rfile: media_attachments/files/000/857/528/original/f55902524814b2f2.jpeg\r... cropped for brevity but there is a load more media attachments in my archive...\rfile: media_attachments/files/109/834/160/834/865/079/original/ce8fe16924be4b35.jpg\rfile: outbox.json\rfile: likes.json\rfile: bookmarks.json\rfile: avatar.jpg\rfile: actor.json There is the outbox.json file we want to have a look inside of, so lets see whats inside. The entry object we have above acts like a reader so we can read it to a string like any other file. Lets modify our loop from the previous entry to something like this\nfor entry in archive.entries().unwrap() { let mut e = entry.unwrap(); let path_path = e.path().unwrap(); let path_string = path_path.to_str().unwrap(); if path_string == \"outbox.json\" { let mut buffer = String::new(); e.read_to_string(\u0026mut buffer).unwrap(); println!(\"{buffer}\"); } } Note we need to make the entry e mutable here as the read_to_string method changes the position of of the read pointer in the “file”\nI won’t show the output here, suffice to say its a single giant line of json. So our next task is going to be decoding it. For this we need yet another dependency. This time serde_json. serde is a collection of libraries for encoding and decoding rust structs. The json library deals with json encoding and decoding.\nserde_json = \"1.0.93\" At this point we could define a set of structs that could represent the json object structure inside the outbox.json file. However that seems like a lot of work considering we really only need to pick out a couple of fields, the content, and the url. Helpfully serde_json has a built in Value type that can represent any arbitrary json object. So we can use that and save a bunch of typing and code.\nFirst as usual import the library\nuse serde_json::Value; Then we can modify our loop:\nlet mut outbox : Option\u003cValue\u003e = None; for entry in archive.entries().unwrap() { let e = entry.unwrap(); let path_path = e.path().unwrap(); let path_string = path_path.to_str().unwrap(); if path_string == \"outbox.json\" \u0026\u0026 outbox.is_none() { outbox = Some(serde_json::from_reader(e).unwrap()); } } if outbox.is_none() { println!(\"no outbox file in archive !invalid!\"); return } Small change to our loop here to decode the json object. I’m making a style choice here to store the decoded outbox json object for later. I don’t like to have things too deeply nested, they get difficult to understand and this allows us to handle the next bit outside the loop. We do have to take care of the case where we get a tar.gz file that doesn’t contain an outbox.json file so we store it in a option and check that the option is not none after the loop.\nSo now we have the decoded json object out of the tar ball with out writing anything temporary to disk, which is nice, so now we can start searching for toots that match our pattern. Lets take a look at this json object we have and see what we can do with it. We could print it out but we already know that its huge and going to roll off the end of our shell if we try and print it all out. So lets have a look at what keys are in the top level and see if that helps.\nfor key in outbox.unwrap().as_object().unwrap().keys() { println!(\"{}\", key); } Much unwrapping later… so we take our Option and unwrap it to a Value we know this is safe because we checked is_none() above and exited if it was. We then convert the Value to an object representation with the as_object call. This returns an Option\u003c\u0026Map\u003e, we kind of know this will work and is safe to unwrap, but if it wasn’t it would be ok to panic here as we are just playing around to figure out our data structure. Then we can get an iterator of the keys and loop over them.\nIf we run this we should get something like:\nCompiling ryu v1.0.12\rCompiling serde v1.0.152\rCompiling itoa v1.0.5\rCompiling serde_json v1.0.93\rCompiling magrep2 v0.1.0 (C:\\Users\\emily\\git\\magrep2)\rFinished dev [unoptimized + debuginfo] target(s) in 7.86s\rRunning `target\\debug\\magrep2.exe -a ..\\..\\Downloads\\archive-20230214153535-daa49fde73e802447b521186ba95c8af.tar.gz \"some pattern\"`\rpath: ..\\..\\Downloads\\archive-20230214153535-daa49fde73e802447b521186ba95c8af.tar.gz, pattern: some pattern\r@context\rid\rorderedItems\rtotalItems\rtype That orderedItems key looks promising. Lets take a closer look. Hopefully its an array (if the world makes any sense … we should probably check) lets try it and see what explodes\nprintln!(\"{}\", outbox.unwrap()[\"orderedItems\"].as_array().unwrap()[0]); This should output something like this, my first ever toot! (Hay nothing exploded!)\n{\"actor\":\"https://tech.lgbt/users/Emily_S\",\"cc\":[\"https://tech.lgbt/users/Emily_S/followers\"],\"id\":\"https://tech.lgbt/users/Emily_S/statuses/103363936687819074/activity\",\"object\":{\"atomUri\":\"https://tech.lgbt/users/Emily_S/statuses/103363936687819074\",\"attachment\":[],\"attributedTo\":\"https://tech.lgbt/users/Emily_S\",\"cc\":[\"https://tech.lgbt/users/Emily_S/followers\"],\"content\":\"Going to try this mastodon thing again. Hello everyone. I\u0026#39;m Emily. A trans lady from the UK. (Yes we made a mess of things lately didn\u0026#39;t we) software engineer, space nerd, maker of things and maps, parent and wife.\nI\u0026#39;m interested in lots of data processing stuff, I work in a geographic field so you\u0026#39;ll probably get rants about projection systems, buggy code, interesting code tricks, and other general stuff.\n\",\"contentMap\":{\"en\":\"Going to try this mastodon thing again. Hello everyone. I\u0026#39;m Emily. A trans lady from the UK. (Yes we made a mess of things lately didn\u0026#39;t we) software engineer, space nerd, maker of things and maps, parent and wife.\nI\u0026#39;m interested in lots of data processing stuff, I work in a geographic field so you\u0026#39;ll probably get rants about projection systems, buggy code, interesting code tricks, and other general stuff.\n\"},\"conversation\":\"tag:tech.lgbt,2019-12-24:objectId=3818591:objectType=Conversation\",\"id\":\"https://tech.lgbt/users/Emily_S/statuses/103363936687819074\",\"inReplyTo\":null,\"inReplyToAtomUri\":null,\"published\":\"2019-12-24T17:28:26Z\",\"replies\":{\"first\":{\"items\":[],\"next\":\"https://tech.lgbt/users/Emily_S/statuses/103363936687819074/replies?only_other_accounts=true\u0026page=true\",\"partOf\":\"https://tech.lgbt/users/Emily_S/statuses/103363936687819074/replies\",\"type\":\"CollectionPage\"},\"id\":\"https://tech.lgbt/users/Emily_S/statuses/103363936687819074/replies\",\"type\":\"Collection\"},\"sensitive\":false,\"summary\":null,\"tag\":[],\"to\":[\"https://www.w3.org/ns/activitystreams#Public\"],\"type\":\"Note\",\"url\":\"https://tech.lgbt/@Emily_S/103363936687819074\"},\"published\":\"2019-12-24T17:28:26Z\",\"signature\":{\"created\":\"2023-02-14T15:32:30Z\",\"creator\":\"https://tech.lgbt/users/Emily_S#main-key\",\"signatureValue\":\"sdTf+YO4x3og1ApJWIOZ5sEsRq49cCJe35ZJdUzOX+jfna6nMzaWUeAgv4Maz0Iig3SJ7ODNqrONghfQPUdfp6ObwUKwWsSmIfA3mvGZsgElfpkkKFLzqCHGWnW+dOLN6CebFKUCMf5YpWwPvFrxAX4bzs/EAnjCnMK43VWFS/srQo7BEBYnv9qkNeBfR2UNz0xkjQ0HP2YeGOXavNlCovNyN6zSyenFA66h3vNehX3un4szMCdM/u0LodU3pKSonyw8kTBaBpkzkqFHmlTQ5jX+0ZyA/+szFE6FkdTR8zG16bjuvxXoBezyq1rKRxjvGPhWehThYk8YpLtsVl28Yg==\",\"type\":\"RsaSignature2017\"},\"to\":[\"https://www.w3.org/ns/activitystreams#Public\"],\"type\":\"Create\"} Ok, so we have the content of our toot twice for internationalisation reasons by the look of it. (I guess something got extended at some point in the history of activity pub and now we have both content and contentMap fields) the other one that looks promising is the atomUri which looks a lot like a toot url. It is, we can put that into a browser and it brings up the toot in question.\nSo lets finish this thing and be done.\nfor item in outbox.unwrap()[\"orderedItems\"].as_array().unwrap() { if item[\"object\"][\"content\"].as_str().unwrap().contains(pattern) { println!(\"*************\"); println!(\"{} : {}\",item[\"object\"][\"atomUri\"], item[\"object\"][\"content\"]); } } So we loop over all the items in the orderedItems list and then get the content as a string and see if it contains the pattern. If so print out its atomUri and the content so we can see it.\nUnfortunately if we run this we’ll get a panic\nCompiling magrep v0.1.0 (C:\\Users\\emily\\git\\magrep)\rFinished dev [unoptimized + debuginfo] target(s) in 1.47s\rRunning `target\\debug\\magrep.exe -a ..\\..\\Downloads\\archive-20230214153535-daa49fde73e802447b521186ba95c8af.tar.gz \"some pattern\"`\rpath: ..\\..\\Downloads\\archive-20230214153535-daa49fde73e802447b521186ba95c8af.tar.gz, pattern: some pattern\rthread 'main' panicked at 'called `Option::unwrap()` on a `None` value', src\\main.rs:52:37\rnote: run with `RUST_BACKTRACE=1` environment variable to display a backtrace\rerror: process didn't exit successfully: `target\\debug\\magrep.exe -a ..\\..\\Downloads\\archive-20230214153535-daa49fde73e802447b521186ba95c8af.tar.gz \"some pattern\"` (exit code: 101) What this is telling us is we tried to call unwrap on a option that was None, on line 52 of main.rs. Which is the if statement in the above block. The only unwrap in there is the as_str() call so we got a content that wasn’t a string? More likely we got an item that didn’t have a content field at all. Lets print some things out and see what happens.\nfor item in outbox.unwrap()[\"orderedItems\"].as_array().unwrap() { println!(\"%%%%%%%%%%%%%%%%\"); println!(\"{}\", item); if item[\"object\"][\"content\"].as_str().unwrap().contains(pattern) { println!(\"*************\"); println!(\"{} : {}\", item[\"object\"][\"atomUri\"], item[\"object\"][\"content\"]); } } I like to include separators so its easy to see whats going on, hence the ‘%’ symbols. With luck when we run this now we should be able to see the cause of the panic.\n...\r%%%%%%%%%%%%%%%%\r{\"@context\":\"https://www.w3.org/ns/activitystreams\",\"actor\":\"https://tech.lgbt/users/Emily_S\",\"cc\":[\"https://tiny.tilde.website/users/selfsame\",\"https://tech.lgbt/users/Emily_S/followers\"],\"id\":\"https://tech.lgbt/users/Emily_S/statuses/103370741914550623/activity\",\"object\":\"https://tiny.tilde.website/users/selfsame/statuses/101789047613657946\",\"published\":\"2019-12-25T22:19:06Z\",\"to\":[\"https://www.w3.org/ns/activitystreams#Public\"],\"type\":\"Announce\"}\rthread 'main' panicked at 'called `Option::unwrap()` on a `None` value', src\\main.rs:54:47\rnote: run with `RUST_BACKTRACE=1` environment variable to display a backtrace\rerror: process didn't exit successfully: `target\\debug\\magrep.exe -a ..\\..\\Downloads\\archive-20230214153535-daa49fde73e802447b521186ba95c8af.tar.gz \"some pattern\"` (exit code: 101) Ah, its something that doesn’t have a content field inside the object. In fact the object is just a string. I think this is a boost, which is not something we want to search so we can ignore them. I remember now I did mention this way way back at the start of this post, oops. That type field looks like a good candidate for picking out what we need. Lets add a filter on that being “Create”\nfor item in outbox.unwrap()[\"orderedItems\"].as_array().unwrap() { if item[\"type\"].as_str().unwrap() == \"Create\" { if item[\"object\"][\"content\"].as_str().unwrap().contains(pattern) { println!(\"*************\"); println!(\"{} : {}\", item[\"object\"][\"atomUri\"], item[\"object\"][\"content\"]); } } } And if we run it now we get…\nCompiling magrep v0.1.0 (C:\\Users\\emily\\git\\magrep)\rFinished dev [unoptimized + debuginfo] target(s) in 1.20s\rRunning `target\\debug\\magrep.exe -a ..\\..\\Downloads\\archive-20230214153535-daa49fde73e802447b521186ba95c8af.tar.gz \"some pattern\"`\rpath: ..\\..\\Downloads\\archive-20230214153535-daa49fde73e802447b521186ba95c8af.tar.gz, pattern: some pattern Ah I’ve never tooted “some pattern” lets try something else…\nPS C:\\Users\\emily\\git\\magrep\u003e cargo run -- -a ..\\..\\Downloads\\archive-20230214153535-daa49fde73e802447b521186ba95c8af.tar.gz \"fish\"\rCompiling magrep v0.1.0 (C:\\Users\\emily\\git\\magrep)\rFinished dev [unoptimized + debuginfo] target(s) in 1.66s\rRunning `target\\debug\\magrep.exe -a ..\\..\\Downloads\\archive-20230214153535-daa49fde73e802447b521186ba95c8af.tar.gz fish`\rpath: ..\\..\\Downloads\\archive-20230214153535-daa49fde73e802447b521186ba95c8af.tar.gz, pattern: fish\r*************\r\"https://tech.lgbt/users/Emily_S/statuses/109295945016110296\" : \"So let\u0026#39;s dig in to some usecases: Say your country has a system to license vessels to fish in your waters, but also can\u0026#39;t really afford a big navy. With ais data you can track vessels in your waters and deal with any that look like they are fishing.\nBoats that are fishing move very differently to a cargo ship trying to get to the next port, so even if it lies about being a fishing vessel you can tell.\n\"\r*************\r\"https://tech.lgbt/users/Emily_S/statuses/109295960022052842\" : \"What about verification that the fish you are selling in your super market is caught legally? This is a good one because it\u0026#39;s just making sure vessels are doing what they say they are, so they will want to keep their transmitters on to prove they are good and can sell their fish.\nYou can also keep track of your cargo containers and know where the shipments are out side of what the shipping company says. That snafu in the suez was fun to watch.\n\"\r*************\r\"https://tech.lgbt/users/Emily_S/statuses/109451801563109639\" : \"",
+  "wordCount" : "2788",
+  "inLanguage": "en",
+  "datePublished": "2023-02-15T12:11:00Z",
+  "dateModified": "2023-02-15T12:11:00Z",
+  "author":{
+    "@type": "Person",
+    "name": "Emily Selwood"
+  },
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://parsecsreach.org/post/rust_mastodon_search/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Parsecs Reach",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://parsecsreach.org/favicon.ico"
+    }
+  }
+}
+</script>
+</head>
+
+<body class="" id="top">
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.body.classList.add('dark');
+    } else if (localStorage.getItem("pref-theme") === "light") {
+        document.body.classList.remove('dark')
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.body.classList.add('dark');
+    }
+
+</script>
+
+<header class="header">
+    <nav class="nav">
+        <div class="logo">
+            <a href="https://parsecsreach.org" accesskey="h" title="Parsecs Reach (Alt + H)">Parsecs Reach</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" accesskey="t" title="(Alt + T)">
+                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <ul id="menu">
+            <li>
+                <a rel="" href="https://parsecsreach.org/orbviewer"  target="_blank" title="Orb Viewer">
+                    <span>Orb Viewer</span>
+                    
+                </a>
+            </li>
+            <li>
+                <a rel="me" href="https://tech.lgbt/@emily_s"  target="_blank" title="">
+                    <span><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 417.8 512" class="logo-social" width="18" height="18"><path d="M417.8 179.1c0-97.2-63.7-125.7-63.7-125.7-62.5-28.7-228.5-28.4-290.4 0 0 0-63.7 28.5-63.7 125.7 0 115.7-6.6 259.4 105.6 289.1 40.5 10.7 75.3 13 103.3 11.4 50.8-2.8 79.3-18.1 79.3-18.1l-1.7-36.9s-36.3 11.4-77.1 10.1c-40.4-1.4-83-4.4-89.6-54-.6-4.4-.9-9-.9-13.9 85.6 20.9 158.6 9.1 178.7 6.7 56.1-6.7 105-41.3 111.2-72.9 9.8-49.8 9-121.5 9-121.5zm-75.1 125.2h-46.6V190.1c0-49.7-64-51.6-64 6.9v62.5h-46.3V197c0-58.5-64-56.6-64-6.9v114.2H75.1c0-122.1-5.2-147.9 18.4-175 25.9-28.9 79.8-30.8 103.8 6.1l11.6 19.5 11.6-19.5c24.1-37.1 78.1-34.8 103.8-6.1 23.7 27.3 18.4 53 18.4 175z"/></svg></span>
+                    
+                </a>
+            </li>
+            <li>
+                <a rel="" href="https://github.com/emilyselwood"  target="_blank" title="">
+                    <span><svg width="18" height="18" class="logo-social" stroke="none" viewBox="0 0 11.493062 11.209467" xmlns="http://www.w3.org/2000/svg"><path d="M 5.746044,0 C 2.572808,0 0,2.572808 0,5.74675 c 0,2.538941 1.646414,4.69265 3.929944,5.452886 0.287514,0.05256 0.392289,-0.124883 0.392289,-0.277283 0,-0.136173 -0.0049,-0.49777 -0.0078,-0.977195 C 2.715997,10.292291 2.378741,9.174691 2.378741,9.174691 2.117333,8.511116 1.740566,8.334375 1.740566,8.334375 1.218808,7.977716 1.780076,7.984772 1.780076,7.984772 2.356868,8.025692 2.660257,8.577086 2.660257,8.577086 3.172843,9.45515 4.005398,9.201503 4.332776,9.054747 4.384986,8.683272 4.533154,8.429978 4.697548,8.286397 3.421551,8.141405 2.079937,7.648222 2.079937,5.446183 c 0,-0.627239 0.224014,-1.140178 0.591609,-1.541991 -0.05927,-0.145345 -0.25647,-0.729545 0.05609,-1.520825 0,0 0.4826,-0.154517 1.580445,0.589138 C 4.766339,2.845153 5.258111,2.7813 5.746709,2.779183 6.2346,2.781283 6.726372,2.845153 7.185336,2.972505 8.282475,2.22885 8.764017,2.383367 8.764017,2.383367 c 0.313619,0.79128 0.116416,1.37548 0.05715,1.520825 0.3683,0.401813 0.590903,0.914752 0.590903,1.541991 0,2.207683 -1.343731,2.693458 -2.623961,2.835628 0.206375,0.177447 0.390172,0.528108 0.390172,1.06433 0,0.767998 -0.0071,1.387828 -0.0071,1.576212 0,0.153811 0.103364,0.332669 0.395111,0.276577 2.281767,-0.761647 3.92677,-2.913944 3.92677,-5.45218 C 11.493062,2.572808 8.919901,0 5.745959,0"/></svg></span>
+                    
+                </a>
+            </li>
+            <li>
+                <a rel="" href="https://parsecsreach.org/about"  target="_self" title="About me">
+                    <span>About me</span>
+                    
+                </a>
+            </li>
+            <li>
+                <a rel="" href="https://parsecsreach.org/"  target="_self" title="Home">
+                    <span>Home</span>
+                    
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    
+    <h1 class="post-title">
+      Creating a command line mastodon archive search tool in rust
+    </h1>
+    <div class="post-meta"><span title='2023-02-15 12:11:00 +0000 GMT'>2023 February 15</span>&nbsp;·&nbsp;Emily Selwood
+
+</div>
+  </header> 
+  <div class="post-content"><p>Today lets step through creating a new command line tool in rust. Recently I wanted to find one of my old toots, but it was from several months ago and mastodon doesn&rsquo;t have the ability to search for anything other than usernames and hashtags. I couldn&rsquo;t remember if I&rsquo;d put hash tags in the post I was after so I couldn&rsquo;t use the built in thing. What I did have however is my backup archive. I&rsquo;d downloaded it earlier for unrelated reasons. Wouldn&rsquo;t it be good if I could run a search on that archive and get back the url for a toot I was looking for? Yep, lets build it. I&rsquo;m going to step through this in horrible detail as a kind of tutorial on creating a command line tool in rust. So here we go!</p>
+<p>Ok, before we start there are some pre-requisites that I already  have setup and I&rsquo;m not going to talk about.</p>
+<ul>
+<li>I already have <a href="https://www.rust-lang.org/tools/install">rust installed</a></li>
+<li>I have downloaded my archive (the option is in your settings under import/export, you may need to tap the hamburger button on mobile to find it)</li>
+<li>I have a text editor and coding environment set up. In my case VS Code and the Rust analyser plugins.</li>
+</ul>
+<p>Now, lets have a terminal open and create our new tool.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>cargo new magrep
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>     Created binary <span style="color:#f92672">(</span>application<span style="color:#f92672">)</span> <span style="color:#e6db74">`</span>magrep2<span style="color:#e6db74">`</span> package
+</span></span></code></pre></div><p>This will create a new folder in the current directory called magrep (Mastodon Archive Grep) open that directory in your favourite text editor,</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>cd magrep
+</span></span><span style="display:flex;"><span>code .
+</span></span></code></pre></div><p>There will be a <code>cargo.toml</code> a <code>.gitignore</code> and a <code>src/</code> directory with a <code>main.rs</code>. First thing we need is to run this. Ok, we don&rsquo;t strictly <em>need</em> to run this, but it is a good idea to make sure everything works.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>cargo run
+</span></span></code></pre></div><pre tabindex="0"><code>   Compiling magrep v0.1.0 (C:\Users\emily\git\magrep)
+    Finished dev [unoptimized + debuginfo] target(s) in 1.86s
+     Running `target\debug\magrep.exe`
+Hello, world!
+</code></pre><p>Hurrah it worked as expected. Now we need to have a quick think about what we want this tool to do and how it should work. We want to search the outbox.json file in the tar.gz archive file and look for any toots with a provided string in them. So we need to know where the archive file is, and what string to search for. When the thing runs it should open up the archive file, decode the outbox.json file, filter out anything thats not a toot (it includes likes and boosts too), and print out any that contain our search string.</p>
+<p>Now we know that, the first thing the program is going to need to do is read the command line arguments and find out where the archive is and what we are searching for.</p>
+<p>To do that we will use a library called Clap. This provides a bunch of command line parsing logic. We just need to add the following to the dependencies section of our <code>cargo.toml</code> file</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-toml" data-lang="toml"><span style="display:flex;"><span><span style="color:#a6e22e">clap</span> = { <span style="color:#a6e22e">version</span> = <span style="color:#e6db74">&#34;3.0&#34;</span>, <span style="color:#a6e22e">features</span> = [<span style="color:#e6db74">&#34;derive&#34;</span>] }
+</span></span></code></pre></div><p>Then we can go to our <code>src/main.rs</code> file and start to write some code. We want an argument that is something like <code>-a &lt;path to archive file&gt;</code> so we need to create a new command and then add an argument to it. First add an import for the types we need,</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-rust" data-lang="rust"><span style="display:flex;"><span><span style="color:#66d9ef">use</span> clap::{Arg, Command};
+</span></span></code></pre></div><p>Then add the following to your main function</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-rust" data-lang="rust"><span style="display:flex;"><span><span style="color:#66d9ef">let</span> matches <span style="color:#f92672">=</span> Command::new(<span style="color:#e6db74">&#34;magrep&#34;</span>)
+</span></span><span style="display:flex;"><span>        .arg(
+</span></span><span style="display:flex;"><span>            Arg::new(<span style="color:#e6db74">&#34;archive&#34;</span>)
+</span></span><span style="display:flex;"><span>                .required(<span style="color:#66d9ef">true</span>)
+</span></span><span style="display:flex;"><span>                .short(<span style="color:#e6db74">&#39;a&#39;</span>)
+</span></span><span style="display:flex;"><span>                .long(<span style="color:#e6db74">&#34;archive&#34;</span>)
+</span></span><span style="display:flex;"><span>                .help(<span style="color:#e6db74">&#34;file path for the archive to search&#34;</span>),
+</span></span><span style="display:flex;"><span>        )
+</span></span><span style="display:flex;"><span>        .get_matches();
+</span></span></code></pre></div><p>This creates a command magrep and an argument with a short name of <code>-a</code> and a long name of <code>--archive</code> that is required. Now the next argument we need to create is the search term. Now it would be nice if we didn&rsquo;t have to specify that this was the search term, like when you use sed or grep you just type the search parameter. So lets create a positional argument.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-rust" data-lang="rust"><span style="display:flex;"><span><span style="color:#66d9ef">let</span> matches <span style="color:#f92672">=</span> Command::new(<span style="color:#e6db74">&#34;magrep&#34;</span>)
+</span></span><span style="display:flex;"><span>        .arg(
+</span></span><span style="display:flex;"><span>            Arg::new(<span style="color:#e6db74">&#34;archive&#34;</span>)
+</span></span><span style="display:flex;"><span>                .required(<span style="color:#66d9ef">true</span>)
+</span></span><span style="display:flex;"><span>                .short(<span style="color:#e6db74">&#39;a&#39;</span>)
+</span></span><span style="display:flex;"><span>                .long(<span style="color:#e6db74">&#34;archive&#34;</span>)
+</span></span><span style="display:flex;"><span>                .default_value(<span style="color:#e6db74">&#34;./archive.tar.gz&#34;</span>)
+</span></span><span style="display:flex;"><span>                .help(<span style="color:#e6db74">&#34;file path for the archive to search&#34;</span>),
+</span></span><span style="display:flex;"><span>        )
+</span></span><span style="display:flex;"><span>        .arg(
+</span></span><span style="display:flex;"><span>            Arg::with_name(<span style="color:#e6db74">&#34;query&#34;</span>)
+</span></span><span style="display:flex;"><span>                .index(<span style="color:#ae81ff">1</span>)
+</span></span><span style="display:flex;"><span>                .help(<span style="color:#e6db74">&#34;match string&#34;</span>)
+</span></span><span style="display:flex;"><span>                .required(<span style="color:#66d9ef">true</span>),
+</span></span><span style="display:flex;"><span>        )
+</span></span><span style="display:flex;"><span>        .get_matches();
+</span></span></code></pre></div><p>Now the matches variable will have our parsed command line arguments in it. We can pull them out into variables for us to use later like so</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-rust" data-lang="rust"><span style="display:flex;"><span>    <span style="color:#66d9ef">let</span> archive_path <span style="color:#f92672">=</span> matches.value_of(<span style="color:#e6db74">&#34;archive&#34;</span>).unwrap();
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">let</span> pattern <span style="color:#f92672">=</span> matches.value_of(<span style="color:#e6db74">&#34;query&#34;</span>).unwrap();
+</span></span></code></pre></div><p>Lets do a quick test and print those out to make sure things are working&hellip;</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-rust" data-lang="rust"><span style="display:flex;"><span>    println!(<span style="color:#e6db74">&#34;path: {}, pattern: {}&#34;</span>, archive_path, pattern);
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>cargo run -- -a something.gz <span style="color:#e6db74">&#34;some pattern&#34;</span>
+</span></span></code></pre></div><p>This will take a bit longer than before as it will need to build clap and all of its dependencies too. You should see something like this</p>
+<pre tabindex="0"><code>   Compiling hashbrown v0.12.3
+   Compiling os_str_bytes v6.4.1
+   Compiling once_cell v1.17.1
+   Compiling bitflags v1.3.2
+   Compiling strsim v0.10.0
+   Compiling textwrap v0.16.0
+   Compiling winapi v0.3.9
+   Compiling clap_lex v0.2.4
+   Compiling indexmap v1.9.2
+   Compiling winapi-util v0.1.5
+   Compiling atty v0.2.14
+   Compiling termcolor v1.2.0
+   Compiling clap v3.2.23
+   Compiling magrep v0.1.0 (C:\Users\emily\git\magrep)
+    Finished dev [unoptimized + debuginfo] target(s) in 9.00s
+     Running `target\debug\magrep.exe -a something.gz &#34;some pattern&#34;`
+path: something.gz, pattern: some pattern
+</code></pre><p>As you can see at the end we got our arguments printed out nicely. Good. Now we can move on to trying to open the archive file. Now this is a tar.gz file, if you&rsquo;ve not encountered these before they are a compressed wrapper around a tar file, which is just some metadata and a bunch of files concatenated together. We&rsquo;ll use a couple of libraries to handle these. Add the following to your dependencies in your <code>cargo.toml</code></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-toml" data-lang="toml"><span style="display:flex;"><span><span style="color:#a6e22e">flate2</span> = <span style="color:#e6db74">&#34;1.0.25&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">tar</span> = <span style="color:#e6db74">&#34;0.4.38&#34;</span>
+</span></span></code></pre></div><p>We can import the bits we will shortly need,</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-rust" data-lang="rust"><span style="display:flex;"><span><span style="color:#66d9ef">use</span> std::fs::File;
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">use</span> flate2::read::GzDecoder;
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">use</span> tar::Archive;
+</span></span></code></pre></div><p>Now we can open the file, wrap that file in a gz decoder, and wrap that in a tar archive decoder, like so:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-rust" data-lang="rust"><span style="display:flex;"><span>    <span style="color:#66d9ef">let</span> tar_gz <span style="color:#f92672">=</span> File::open(archive_path).unwrap();
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">let</span> tar <span style="color:#f92672">=</span> GzDecoder::new(tar_gz);
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">let</span> <span style="color:#66d9ef">mut</span> archive <span style="color:#f92672">=</span> Archive::new(tar);
+</span></span></code></pre></div><p>Lets do a test and print out the filenames in the archive, to make sure things are working as we expect.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-rust" data-lang="rust"><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span> entry <span style="color:#66d9ef">in</span> archive.entries().unwrap() {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">let</span> e <span style="color:#f92672">=</span> entry.unwrap();
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">let</span> path_path <span style="color:#f92672">=</span> e.path().unwrap();
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">let</span> path_string <span style="color:#f92672">=</span> path_path.to_str().unwrap();
+</span></span><span style="display:flex;"><span>        println!(<span style="color:#e6db74">&#34;file: {}&#34;</span>, path_string);
+</span></span><span style="display:flex;"><span>    }
+</span></span></code></pre></div><p>Now if we run it we should get a list of filenames printed out&hellip;</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>cargo run -- -a ../../Downloads/archive-20230214153535-daa49fde73e802447b521186ba95c8af.tar.gz <span style="color:#e6db74">&#34;some pattern&#34;</span>
+</span></span></code></pre></div><pre tabindex="0"><code>   Compiling cfg-if v1.0.0
+   Compiling adler v1.0.2
+   Compiling windows_x86_64_msvc v0.42.1
+   Compiling windows-targets v0.42.1
+   Compiling crc32fast v1.3.2
+   Compiling windows-sys v0.45.0
+   Compiling miniz_oxide v0.6.2
+   Compiling flate2 v1.0.25
+   Compiling filetime v0.2.20
+   Compiling tar v0.4.38
+   Compiling magrep2 v0.1.0 (C:\Users\emily\git\magrep2)
+    Finished dev [unoptimized + debuginfo] target(s) in 4.58s
+     Running `target\debug\magrep2.exe -a ..\..\Downloads\archive-20230214153535-daa49fde73e802447b521186ba95c8af.tar.gz &#34;some pattern&#34;`
+path: ..\..\Downloads\archive-20230214153535-daa49fde73e802447b521186ba95c8af.tar.gz, pattern: some pattern
+file: media_attachments/files/000/857/528/original/f55902524814b2f2.jpeg
+... cropped for brevity but there is a load more media attachments in my archive...
+file: media_attachments/files/109/834/160/834/865/079/original/ce8fe16924be4b35.jpg
+file: outbox.json
+file: likes.json
+file: bookmarks.json
+file: avatar.jpg
+file: actor.json
+</code></pre><p>There is the outbox.json file we want to have a look inside of, so lets see whats inside. The entry object we have above acts like a reader so we can read it to a string like any other file. Lets modify our loop from the previous entry to something like this</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-rust" data-lang="rust"><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span> entry <span style="color:#66d9ef">in</span> archive.entries().unwrap() {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">let</span> <span style="color:#66d9ef">mut</span> e <span style="color:#f92672">=</span> entry.unwrap();
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">let</span> path_path <span style="color:#f92672">=</span> e.path().unwrap();
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">let</span> path_string <span style="color:#f92672">=</span> path_path.to_str().unwrap();
+</span></span><span style="display:flex;"><span>        
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> path_string <span style="color:#f92672">==</span> <span style="color:#e6db74">&#34;outbox.json&#34;</span> {
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">let</span> <span style="color:#66d9ef">mut</span> buffer <span style="color:#f92672">=</span> String::new();
+</span></span><span style="display:flex;"><span>            e.read_to_string(<span style="color:#f92672">&amp;</span><span style="color:#66d9ef">mut</span> buffer).unwrap();
+</span></span><span style="display:flex;"><span>            println!(<span style="color:#e6db74">&#34;{buffer}&#34;</span>);
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>    }
+</span></span></code></pre></div><p>Note we need to make the entry e mutable here as the read_to_string method changes the position of of the read pointer in the &ldquo;file&rdquo;</p>
+<p>I won&rsquo;t show the output here, suffice to say its a single giant line of json. So our next task is going to be decoding it. For this we need yet another dependency. This time <code>serde_json</code>. <code>serde</code> is a collection of libraries for encoding and decoding rust structs. The json library deals with json encoding and decoding.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-toml" data-lang="toml"><span style="display:flex;"><span><span style="color:#a6e22e">serde_json</span> = <span style="color:#e6db74">&#34;1.0.93&#34;</span>
+</span></span></code></pre></div><p>At this point we could define a set of structs that could represent the json object structure inside the <code>outbox.json</code> file. However that seems like a lot of work considering we really only need to pick out a couple of fields, the content, and the url. Helpfully serde_json has a built in Value type that can represent any arbitrary json object. So we can use that and save a bunch of typing and code.</p>
+<p>First as usual import the library</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-rust" data-lang="rust"><span style="display:flex;"><span><span style="color:#66d9ef">use</span> serde_json::Value;
+</span></span></code></pre></div><p>Then we can modify our loop:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-rust" data-lang="rust"><span style="display:flex;"><span>    <span style="color:#66d9ef">let</span> <span style="color:#66d9ef">mut</span> outbox : Option<span style="color:#f92672">&lt;</span>Value<span style="color:#f92672">&gt;</span> <span style="color:#f92672">=</span> None;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span> entry <span style="color:#66d9ef">in</span> archive.entries().unwrap() {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">let</span> e <span style="color:#f92672">=</span> entry.unwrap();
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">let</span> path_path <span style="color:#f92672">=</span> e.path().unwrap();
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">let</span> path_string <span style="color:#f92672">=</span> path_path.to_str().unwrap();
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> path_string <span style="color:#f92672">==</span> <span style="color:#e6db74">&#34;outbox.json&#34;</span> <span style="color:#f92672">&amp;&amp;</span> outbox.is_none() {
+</span></span><span style="display:flex;"><span>            outbox <span style="color:#f92672">=</span> Some(serde_json::from_reader(e).unwrap());
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> outbox.is_none() {
+</span></span><span style="display:flex;"><span>        println!(<span style="color:#e6db74">&#34;no outbox file in archive !invalid!&#34;</span>);
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span>
+</span></span><span style="display:flex;"><span>    }
+</span></span></code></pre></div><p>Small change to our loop here to decode the json object. I&rsquo;m making a style choice here to store the decoded outbox json object for later. I don&rsquo;t like to have things too deeply nested, they get difficult to understand and this allows us to handle the next bit outside the loop. We do have to take care of the case where we get a tar.gz file that doesn&rsquo;t contain an <code>outbox.json</code> file so we store it in a option and check that the option is not none after the loop.</p>
+<p>So now we have the decoded json object out of the tar ball with out writing anything temporary to disk, which is nice, so now we can start searching for toots that match our <code>pattern</code>. Lets take a look at this json object we have and see what we can do with it. We could print it out but we already know that its huge and going to roll off the end of our shell if we try and print it all out. So lets have a look at what keys are in the top level and see if that helps.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-rust" data-lang="rust"><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span> key <span style="color:#66d9ef">in</span> outbox.unwrap().as_object().unwrap().keys() {
+</span></span><span style="display:flex;"><span>        println!(<span style="color:#e6db74">&#34;{}&#34;</span>, key);
+</span></span><span style="display:flex;"><span>    }
+</span></span></code></pre></div><p>Much unwrapping later&hellip; so we take our <code>Option&lt;Value&gt;</code> and unwrap it to a <code>Value</code> we know this is safe because we checked is_none() above and exited if it was. We then convert the Value to an object representation with the <code>as_object</code> call. This returns an <code>Option&lt;&amp;Map&lt;String, Value&gt;&gt;</code>, we kind of know this will work and is safe to unwrap, but if it wasn&rsquo;t it would be ok to panic here as we are just playing around to figure out our data structure. Then we can get an iterator of the keys and loop over them.</p>
+<p>If we run this we should get something like:</p>
+<pre tabindex="0"><code>   Compiling ryu v1.0.12
+   Compiling serde v1.0.152
+   Compiling itoa v1.0.5
+   Compiling serde_json v1.0.93
+   Compiling magrep2 v0.1.0 (C:\Users\emily\git\magrep2)
+    Finished dev [unoptimized + debuginfo] target(s) in 7.86s
+     Running `target\debug\magrep2.exe -a ..\..\Downloads\archive-20230214153535-daa49fde73e802447b521186ba95c8af.tar.gz &#34;some pattern&#34;`
+path: ..\..\Downloads\archive-20230214153535-daa49fde73e802447b521186ba95c8af.tar.gz, pattern: some pattern
+@context
+id
+orderedItems
+totalItems
+type
+</code></pre><p>That <code>orderedItems</code> key looks promising. Lets take a closer look. Hopefully its an array (if the world makes any sense &hellip; we should probably check) lets try it and see what explodes</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-rust" data-lang="rust"><span style="display:flex;"><span>println!(<span style="color:#e6db74">&#34;{}&#34;</span>, outbox.unwrap()[<span style="color:#e6db74">&#34;orderedItems&#34;</span>].as_array().unwrap()[<span style="color:#ae81ff">0</span>]);
+</span></span></code></pre></div><p>This should output something like this, my first ever toot! (Hay nothing exploded!)</p>
+<pre tabindex="0"><code>{&#34;actor&#34;:&#34;https://tech.lgbt/users/Emily_S&#34;,&#34;cc&#34;:[&#34;https://tech.lgbt/users/Emily_S/followers&#34;],&#34;id&#34;:&#34;https://tech.lgbt/users/Emily_S/statuses/103363936687819074/activity&#34;,&#34;object&#34;:{&#34;atomUri&#34;:&#34;https://tech.lgbt/users/Emily_S/statuses/103363936687819074&#34;,&#34;attachment&#34;:[],&#34;attributedTo&#34;:&#34;https://tech.lgbt/users/Emily_S&#34;,&#34;cc&#34;:[&#34;https://tech.lgbt/users/Emily_S/followers&#34;],&#34;content&#34;:&#34;&lt;p&gt;Going to try this mastodon thing again. &lt;/p&gt;&lt;p&gt;Hello everyone. I&amp;#39;m Emily. A trans lady from the UK. (Yes we made a mess of things lately didn&amp;#39;t we) software engineer, space nerd, maker of things and maps, parent and wife.&lt;/p&gt;&lt;p&gt;I&amp;#39;m interested in lots of data processing stuff, I work in a geographic field so you&amp;#39;ll probably get rants about projection systems, buggy code, interesting code tricks, and other general stuff.&lt;/p&gt;&#34;,&#34;contentMap&#34;:{&#34;en&#34;:&#34;&lt;p&gt;Going to try this mastodon thing again. &lt;/p&gt;&lt;p&gt;Hello everyone. I&amp;#39;m Emily. A trans lady from the UK. (Yes we made a mess of things lately didn&amp;#39;t we) software engineer, space nerd, maker of things and maps, parent and wife.&lt;/p&gt;&lt;p&gt;I&amp;#39;m interested in lots of data processing stuff, I work in a geographic field so you&amp;#39;ll probably get rants about projection systems, buggy code, interesting code tricks, and other general stuff.&lt;/p&gt;&#34;},&#34;conversation&#34;:&#34;tag:tech.lgbt,2019-12-24:objectId=3818591:objectType=Conversation&#34;,&#34;id&#34;:&#34;https://tech.lgbt/users/Emily_S/statuses/103363936687819074&#34;,&#34;inReplyTo&#34;:null,&#34;inReplyToAtomUri&#34;:null,&#34;published&#34;:&#34;2019-12-24T17:28:26Z&#34;,&#34;replies&#34;:{&#34;first&#34;:{&#34;items&#34;:[],&#34;next&#34;:&#34;https://tech.lgbt/users/Emily_S/statuses/103363936687819074/replies?only_other_accounts=true&amp;page=true&#34;,&#34;partOf&#34;:&#34;https://tech.lgbt/users/Emily_S/statuses/103363936687819074/replies&#34;,&#34;type&#34;:&#34;CollectionPage&#34;},&#34;id&#34;:&#34;https://tech.lgbt/users/Emily_S/statuses/103363936687819074/replies&#34;,&#34;type&#34;:&#34;Collection&#34;},&#34;sensitive&#34;:false,&#34;summary&#34;:null,&#34;tag&#34;:[],&#34;to&#34;:[&#34;https://www.w3.org/ns/activitystreams#Public&#34;],&#34;type&#34;:&#34;Note&#34;,&#34;url&#34;:&#34;https://tech.lgbt/@Emily_S/103363936687819074&#34;},&#34;published&#34;:&#34;2019-12-24T17:28:26Z&#34;,&#34;signature&#34;:{&#34;created&#34;:&#34;2023-02-14T15:32:30Z&#34;,&#34;creator&#34;:&#34;https://tech.lgbt/users/Emily_S#main-key&#34;,&#34;signatureValue&#34;:&#34;sdTf+YO4x3og1ApJWIOZ5sEsRq49cCJe35ZJdUzOX+jfna6nMzaWUeAgv4Maz0Iig3SJ7ODNqrONghfQPUdfp6ObwUKwWsSmIfA3mvGZsgElfpkkKFLzqCHGWnW+dOLN6CebFKUCMf5YpWwPvFrxAX4bzs/EAnjCnMK43VWFS/srQo7BEBYnv9qkNeBfR2UNz0xkjQ0HP2YeGOXavNlCovNyN6zSyenFA66h3vNehX3un4szMCdM/u0LodU3pKSonyw8kTBaBpkzkqFHmlTQ5jX+0ZyA/+szFE6FkdTR8zG16bjuvxXoBezyq1rKRxjvGPhWehThYk8YpLtsVl28Yg==&#34;,&#34;type&#34;:&#34;RsaSignature2017&#34;},&#34;to&#34;:[&#34;https://www.w3.org/ns/activitystreams#Public&#34;],&#34;type&#34;:&#34;Create&#34;}
+</code></pre><p>Ok, so we have the content of our toot twice for internationalisation reasons by the look of it. (I guess something got extended at some point in the history of activity pub and now we have both content and contentMap fields) the other one that looks promising is the <code>atomUri</code> which looks a lot like a toot url. It is, we can put that into a browser and it brings up the toot in question.</p>
+<p>So lets finish this thing and be done.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-rust" data-lang="rust"><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span> item <span style="color:#66d9ef">in</span> outbox.unwrap()[<span style="color:#e6db74">&#34;orderedItems&#34;</span>].as_array().unwrap() {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> item[<span style="color:#e6db74">&#34;object&#34;</span>][<span style="color:#e6db74">&#34;content&#34;</span>].as_str().unwrap().contains(pattern) {
+</span></span><span style="display:flex;"><span>            println!(<span style="color:#e6db74">&#34;*************&#34;</span>);
+</span></span><span style="display:flex;"><span>            println!(<span style="color:#e6db74">&#34;{} : {}&#34;</span>,item[<span style="color:#e6db74">&#34;object&#34;</span>][<span style="color:#e6db74">&#34;atomUri&#34;</span>], item[<span style="color:#e6db74">&#34;object&#34;</span>][<span style="color:#e6db74">&#34;content&#34;</span>]);
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>    }
+</span></span></code></pre></div><p>So we loop over all the items in the orderedItems list and then get the content as a string and see if it contains the pattern. If so print out its atomUri and the content so we can see it.</p>
+<p>Unfortunately if we run this we&rsquo;ll get a panic</p>
+<pre tabindex="0"><code>   Compiling magrep v0.1.0 (C:\Users\emily\git\magrep)
+    Finished dev [unoptimized + debuginfo] target(s) in 1.47s
+     Running `target\debug\magrep.exe -a ..\..\Downloads\archive-20230214153535-daa49fde73e802447b521186ba95c8af.tar.gz &#34;some pattern&#34;`
+path: ..\..\Downloads\archive-20230214153535-daa49fde73e802447b521186ba95c8af.tar.gz, pattern: some pattern
+thread &#39;main&#39; panicked at &#39;called `Option::unwrap()` on a `None` value&#39;, src\main.rs:52:37
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+error: process didn&#39;t exit successfully: `target\debug\magrep.exe -a ..\..\Downloads\archive-20230214153535-daa49fde73e802447b521186ba95c8af.tar.gz &#34;some pattern&#34;` (exit code: 101)
+</code></pre><p>What this is telling us is we tried to call unwrap on a option that was None, on line 52 of main.rs. Which is the if statement in the above block. The only unwrap in there is the as_str() call so we got a content that wasn&rsquo;t a string? More likely we got an item that didn&rsquo;t have a content field at all. Lets print some things out and see what happens.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-rust" data-lang="rust"><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span> item <span style="color:#66d9ef">in</span> outbox.unwrap()[<span style="color:#e6db74">&#34;orderedItems&#34;</span>].as_array().unwrap() {
+</span></span><span style="display:flex;"><span>        println!(<span style="color:#e6db74">&#34;%%%%%%%%%%%%%%%%&#34;</span>);
+</span></span><span style="display:flex;"><span>        println!(<span style="color:#e6db74">&#34;{}&#34;</span>, item);
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> item[<span style="color:#e6db74">&#34;object&#34;</span>][<span style="color:#e6db74">&#34;content&#34;</span>].as_str().unwrap().contains(pattern) {
+</span></span><span style="display:flex;"><span>            println!(<span style="color:#e6db74">&#34;*************&#34;</span>);
+</span></span><span style="display:flex;"><span>            println!(<span style="color:#e6db74">&#34;{} : {}&#34;</span>, item[<span style="color:#e6db74">&#34;object&#34;</span>][<span style="color:#e6db74">&#34;atomUri&#34;</span>], item[<span style="color:#e6db74">&#34;object&#34;</span>][<span style="color:#e6db74">&#34;content&#34;</span>]);
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>    }
+</span></span></code></pre></div><p>I like to include separators so its easy to see whats going on, hence the &lsquo;%&rsquo; symbols. With luck when we run this now we should be able to see the cause of the panic.</p>
+<pre tabindex="0"><code>...
+%%%%%%%%%%%%%%%%
+{&#34;@context&#34;:&#34;https://www.w3.org/ns/activitystreams&#34;,&#34;actor&#34;:&#34;https://tech.lgbt/users/Emily_S&#34;,&#34;cc&#34;:[&#34;https://tiny.tilde.website/users/selfsame&#34;,&#34;https://tech.lgbt/users/Emily_S/followers&#34;],&#34;id&#34;:&#34;https://tech.lgbt/users/Emily_S/statuses/103370741914550623/activity&#34;,&#34;object&#34;:&#34;https://tiny.tilde.website/users/selfsame/statuses/101789047613657946&#34;,&#34;published&#34;:&#34;2019-12-25T22:19:06Z&#34;,&#34;to&#34;:[&#34;https://www.w3.org/ns/activitystreams#Public&#34;],&#34;type&#34;:&#34;Announce&#34;}
+thread &#39;main&#39; panicked at &#39;called `Option::unwrap()` on a `None` value&#39;, src\main.rs:54:47
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+error: process didn&#39;t exit successfully: `target\debug\magrep.exe -a ..\..\Downloads\archive-20230214153535-daa49fde73e802447b521186ba95c8af.tar.gz &#34;some pattern&#34;` (exit code: 101)
+</code></pre><p>Ah, its something that doesn&rsquo;t have a content field inside the object. In fact the object is just a string. I think this is a boost, which is not something we want to search so we can ignore them. I remember now I did mention this way way back at the start of this post, oops. That <code>type</code> field looks like a good candidate for picking out what we need. Lets add a filter on that being &ldquo;Create&rdquo;</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-rust" data-lang="rust"><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span> item <span style="color:#66d9ef">in</span> outbox.unwrap()[<span style="color:#e6db74">&#34;orderedItems&#34;</span>].as_array().unwrap() {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> item[<span style="color:#e6db74">&#34;type&#34;</span>].as_str().unwrap() <span style="color:#f92672">==</span> <span style="color:#e6db74">&#34;Create&#34;</span> {
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">if</span> item[<span style="color:#e6db74">&#34;object&#34;</span>][<span style="color:#e6db74">&#34;content&#34;</span>].as_str().unwrap().contains(pattern) {
+</span></span><span style="display:flex;"><span>                println!(<span style="color:#e6db74">&#34;*************&#34;</span>);
+</span></span><span style="display:flex;"><span>                println!(<span style="color:#e6db74">&#34;{} : {}&#34;</span>, item[<span style="color:#e6db74">&#34;object&#34;</span>][<span style="color:#e6db74">&#34;atomUri&#34;</span>], item[<span style="color:#e6db74">&#34;object&#34;</span>][<span style="color:#e6db74">&#34;content&#34;</span>]);
+</span></span><span style="display:flex;"><span>            }
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>    }
+</span></span></code></pre></div><p>And if we run it now we get&hellip;</p>
+<pre tabindex="0"><code>   Compiling magrep v0.1.0 (C:\Users\emily\git\magrep)
+    Finished dev [unoptimized + debuginfo] target(s) in 1.20s
+     Running `target\debug\magrep.exe -a ..\..\Downloads\archive-20230214153535-daa49fde73e802447b521186ba95c8af.tar.gz &#34;some pattern&#34;`
+path: ..\..\Downloads\archive-20230214153535-daa49fde73e802447b521186ba95c8af.tar.gz, pattern: some pattern
+</code></pre><p>Ah I&rsquo;ve never tooted &ldquo;some pattern&rdquo; lets try something else&hellip;</p>
+<pre tabindex="0"><code>PS C:\Users\emily\git\magrep&gt; cargo run -- -a ..\..\Downloads\archive-20230214153535-daa49fde73e802447b521186ba95c8af.tar.gz &#34;fish&#34;
+   Compiling magrep v0.1.0 (C:\Users\emily\git\magrep)
+    Finished dev [unoptimized + debuginfo] target(s) in 1.66s
+     Running `target\debug\magrep.exe -a ..\..\Downloads\archive-20230214153535-daa49fde73e802447b521186ba95c8af.tar.gz fish`
+path: ..\..\Downloads\archive-20230214153535-daa49fde73e802447b521186ba95c8af.tar.gz, pattern: fish
+*************
+&#34;https://tech.lgbt/users/Emily_S/statuses/109295945016110296&#34; : &#34;&lt;p&gt;So let&amp;#39;s dig in to some usecases: &lt;/p&gt;&lt;p&gt;Say your country has a system to license vessels to fish in your waters, but also can&amp;#39;t really afford a big navy. With ais data you can track vessels in your waters and deal with any that look like they are fishing.&lt;/p&gt;&lt;p&gt;Boats that are fishing move very differently to a cargo ship trying to get to the next port, so even if it lies about being a fishing vessel you can tell.&lt;/p&gt;&#34;
+*************
+&#34;https://tech.lgbt/users/Emily_S/statuses/109295960022052842&#34; : &#34;&lt;p&gt;What about verification that the fish you are selling in your super market is caught legally? This is a good one because it&amp;#39;s just making sure vessels are doing what they say they are, so they will want to keep their transmitters on to prove they are good and can sell their fish.&lt;/p&gt;&lt;p&gt;You can also keep track of your cargo containers and know where the shipments are out side of what the shipping company says. That snafu in the suez was fun to watch.&lt;/p&gt;&#34;
+*************
+&#34;https://tech.lgbt/users/Emily_S/statuses/109451801563109639&#34; : &#34;&lt;p&gt;&lt;span class=\&#34;h-card\&#34;&gt;&lt;a href=\&#34;https://scicomm.xyz/@delibrarian\&#34; class=\&#34;u-url mention\&#34;&gt;@&lt;span&gt;delibrarian&lt;/span&gt;&lt;/a&gt;&lt;/span&gt; good question. For the purposes of story telling I&amp;#39;d go with nothing, but it acting like a fish bowl where they can&amp;#39;t come here and we can&amp;#39;t leave would be interesting.&lt;/p&gt;&#34;
+</code></pre><p>Apparently I&rsquo;ve tooted the word fish three times. And thats our problem solved. Now there is a bunch of stuff that can be improved here. Error handling being the big one. We are unwrapping a bunch of things here, which we should likely be checking. Also it could happily be broken down into more reusable functions, but if I ever actually need this code again I&rsquo;ll do that. Right now it would be a waste of time, and I need to go toot &ldquo;some pattern&rdquo;.</p>
+<p>If you want to see the entire thing the code is on <a href="https://github.com/emilyselwood/magrep">github</a> Any questions or comments you can find me on <a href="https://tech.lgbt/@Emily_S">mastodon</a>.</p>
+
+
+  </div>
+
+  <footer class="post-footer">
+    <ul class="post-tags">
+      <li><a href="https://parsecsreach.org/tags/search/">search</a></li>
+      <li><a href="https://parsecsreach.org/tags/rust/">rust</a></li>
+      <li><a href="https://parsecsreach.org/tags/mastodon/">mastodon</a></li>
+    </ul>
+<nav class="paginav">
+  <a class="next" href="https://parsecsreach.org/post/rust_svg_to_pdf/">
+    <span class="title">Next »</span>
+    <br>
+    <span>Turning an SVG into a PDF in rust</span>
+  </a>
+</nav>
+
+  </footer>
+</article>
+    </main>
+    
+<footer class="footer">
+    <span>All rights reserved - 2022</span>
+    <span>
+        Powered by
+        <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
+        <path d="M12 6H0l6-6z" />
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu')
+    if (menu) {
+        menu.scrollLeft = localStorage.getItem("menu-scroll-position");
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var mybutton = document.getElementById("top-link");
+    window.onscroll = function () {
+        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
+            mybutton.style.visibility = "visible";
+            mybutton.style.opacity = "1";
+        } else {
+            mybutton.style.visibility = "hidden";
+            mybutton.style.opacity = "0";
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        if (document.body.className.includes("dark")) {
+            document.body.classList.remove('dark');
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            document.body.classList.add('dark');
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+</body>
+
+</html>

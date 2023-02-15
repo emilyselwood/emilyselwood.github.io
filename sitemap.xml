@@ -2,22 +2,31 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
+    <loc>https://parsecsreach.org/post/rust_mastodon_search/</loc>
+    <lastmod>2023-02-15T12:11:00+00:00</lastmod>
+  </url><url>
+    <loc>https://parsecsreach.org/tags/mastodon/</loc>
+    <lastmod>2023-02-15T12:11:00+00:00</lastmod>
+  </url><url>
     <loc>https://parsecsreach.org/</loc>
-    <lastmod>2023-01-17T12:11:00+00:00</lastmod>
+    <lastmod>2023-02-15T12:11:00+00:00</lastmod>
+  </url><url>
+    <loc>https://parsecsreach.org/post/</loc>
+    <lastmod>2023-02-15T12:11:00+00:00</lastmod>
+  </url><url>
+    <loc>https://parsecsreach.org/tags/rust/</loc>
+    <lastmod>2023-02-15T12:11:00+00:00</lastmod>
+  </url><url>
+    <loc>https://parsecsreach.org/tags/search/</loc>
+    <lastmod>2023-02-15T12:11:00+00:00</lastmod>
+  </url><url>
+    <loc>https://parsecsreach.org/tags/</loc>
+    <lastmod>2023-02-15T12:11:00+00:00</lastmod>
   </url><url>
     <loc>https://parsecsreach.org/tags/pdf/</loc>
     <lastmod>2023-01-17T12:11:00+00:00</lastmod>
   </url><url>
-    <loc>https://parsecsreach.org/post/</loc>
-    <lastmod>2023-01-17T12:11:00+00:00</lastmod>
-  </url><url>
-    <loc>https://parsecsreach.org/tags/rust/</loc>
-    <lastmod>2023-01-17T12:11:00+00:00</lastmod>
-  </url><url>
     <loc>https://parsecsreach.org/tags/svg/</loc>
-    <lastmod>2023-01-17T12:11:00+00:00</lastmod>
-  </url><url>
-    <loc>https://parsecsreach.org/tags/</loc>
     <lastmod>2023-01-17T12:11:00+00:00</lastmod>
   </url><url>
     <loc>https://parsecsreach.org/post/rust_svg_to_pdf/</loc>
