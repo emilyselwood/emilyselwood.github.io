@@ -6,7 +6,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <meta name="robots" content="index, follow">
 <title>SVG | Parsecs Reach</title>
-<meta name="keywords" content="file formats">
+<meta name="keywords" content="file formats, svg">
 <meta name="description" content="lets talk about SVGs as an image format.
 You may have heard of them called a vector format. This means that instead of defining a grid of pixels and having about what colour every pixel is, it defines the features of the image.
 There is a red line from 12,45 to 26,78 The text &ldquo;hello&rdquo; is in front ariel, 14pt and blue etc.
@@ -105,7 +105,7 @@ The advantage of this is you can scale the image with out losing any quality."/>
   "name": "SVG",
   "description": "lets talk about SVGs as an image format.\nYou may have heard of them called a vector format. This means that instead of defining a grid of pixels and having about what colour every pixel is, it defines the features of the image.\nThere is a red line from 12,45 to 26,78 The text \u0026ldquo;hello\u0026rdquo; is in front ariel, 14pt and blue etc.\nThe advantage of this is you can scale the image with out losing any quality.",
   "keywords": [
-    "file formats"
+    "file formats", "svg"
   ],
   "articleBody": "lets talk about SVGs as an image format.\nYou may have heard of them called a vector format. This means that instead of defining a grid of pixels and having about what colour every pixel is, it defines the features of the image.\nThere is a red line from 12,45 to 26,78 The text “hello” is in front ariel, 14pt and blue etc.\nThe advantage of this is you can scale the image with out losing any quality. Hence the name Scalable Vector Graphics\nIf you double the size of the image you still have a red line, the edges of it will still be just as crisp, unlike if you double the size of a raster image, you end up with 4 pixels for every one in the original, it starts to look blocky unless you do some magic maths to add extra information where there wasn’t before. AKA, make stuff up.\nInternally an SVG file is an xml document. Just like any webpage you view its a series of “tags” which tell your computer what to display. There are a lot of similar concepts too, both have text, links, ids, even CSS.\nSVGs have lines, rectangles, circles. You can draw almost anything as an SVG, but it can be a little more complex than painting a raster image.\nInstead of div tags to group bits of an html document you have g or group tags. This is almost always just an ease of use thing rather than actually meaning anything in the picture. You can apply transformations and styles at the group level though to make your life easier. “rotate all of these things by 60 degrees” or “make all the lines red and fill with green”\nWhere the SVG language gets away from xml is in the definitions of paths and lines. Paths are a series of points joined by lines or curves. Once you start to deal with curves in computers things start to get complex. Mathematically there are a bunch of different ways to define curves. Some based on circles, some based on Bezier curves, which a bunch of helpful shortcuts.\nIf you want to know more Mozilla’s documentation on SVG’s is excellent.\nLike HTML I’d argue that anything more complex than a simple image, you should not be hand crafting it. Inkscape is an excellent and free opensource tool to edit SVG files. Because they are basically an XML document internally there are libraries available for almost every programming language that exists. Even if you just end up editing the raw XML\nOne thing to keep in mind when working with SVG images is eventually it will be pixels on a screen or on a page. When you get there you will need to define your Pixels per inch. There is no defined standard, Inkscape uses 96ppi by default. The Cricut used 72. This causes no end of headaches. You can use physical units inside an SVG if you want. You can also set the size of the image, e.g. to the size of an A4 page.\nWhile I said they will be pixels on a screen, the other really useful thing about SVGs is because they are made up of paths mostly they can be fed into things like laser cutters, plotters, and draw knife machines like the Cricut. The thing to watch out for though is the level of detail. You usually have a minimum feature size so you want to make sure your detail isn’t below that.\n",
   "wordCount" : "586",
@@ -179,7 +179,7 @@ The advantage of this is you can scale the image with out losing any quality."/>
                 </a>
             </li>
             <li>
-                <a rel="me" href="https://tech.lgbt/@emily_s"  target="_blank" title="">
+                <a rel="me" href="https://mastodon.me.uk/@emily_s"  target="_blank" title="">
                     <span><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 417.8 512" class="logo-social" width="18" height="18"><path d="M417.8 179.1c0-97.2-63.7-125.7-63.7-125.7-62.5-28.7-228.5-28.4-290.4 0 0 0-63.7 28.5-63.7 125.7 0 115.7-6.6 259.4 105.6 289.1 40.5 10.7 75.3 13 103.3 11.4 50.8-2.8 79.3-18.1 79.3-18.1l-1.7-36.9s-36.3 11.4-77.1 10.1c-40.4-1.4-83-4.4-89.6-54-.6-4.4-.9-9-.9-13.9 85.6 20.9 158.6 9.1 178.7 6.7 56.1-6.7 105-41.3 111.2-72.9 9.8-49.8 9-121.5 9-121.5zm-75.1 125.2h-46.6V190.1c0-49.7-64-51.6-64 6.9v62.5h-46.3V197c0-58.5-64-56.6-64-6.9v114.2H75.1c0-122.1-5.2-147.9 18.4-175 25.9-28.9 79.8-30.8 103.8 6.1l11.6 19.5 11.6-19.5c24.1-37.1 78.1-34.8 103.8-6.1 23.7 27.3 18.4 53 18.4 175z"/></svg></span>
                     
                 </a>
@@ -241,6 +241,7 @@ etc.</p>
   <footer class="post-footer">
     <ul class="post-tags">
       <li><a href="https://parsecsreach.org/tags/file-formats/">file formats</a></li>
+      <li><a href="https://parsecsreach.org/tags/svg/">svg</a></li>
     </ul>
 <nav class="paginav">
   <a class="prev" href="https://parsecsreach.org/post/plotting/">

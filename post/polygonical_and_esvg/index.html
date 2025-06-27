@@ -1,0 +1,591 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto">
+
+<head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>An introduction to Polygonical and ESVG | Parsecs Reach</title>
+<meta name="keywords" content="svg, polygonical, esvg, rust">
+<meta name="description" content="For the last ${scairy_number_of_years} years I&rsquo;ve been working on some library tooling to create SVG files using rust. There are some libraries that existed already but they either didn&rsquo;t work for what I needed to do or they had limitations. So I build two libraries of my own. Polygonical and ESVG. Polygonical focuses on 2d geometry operations. Points, lines, polygons and doing things to them. It does not concern its self with how they are shown, what format they are written to disk or anything like that.">
+<meta name="author" content="Emily Selwood">
+<link rel="canonical" href="https://parsecsreach.org/post/polygonical_and_esvg/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.979d31a757b649bf90615e658aedd46e2896dc33bf05775ea99697ce5b3e4fe4.css" integrity="sha256-l50xp1e2Sb&#43;QYV5liu3UbiiW3DO/BXdeqZaXzls&#43;T&#43;Q=" rel="preload stylesheet" as="style">
+<script defer crossorigin="anonymous" src="/assets/js/highlight.f413e19d0714851f6474e7ee9632408e58ac146fbdbe62747134bea2fa3415e0.js" integrity="sha256-9BPhnQcUhR9kdOfuljJAjlisFG&#43;9vmJ0cTS&#43;ovo0FeA="
+    onload="hljs.initHighlightingOnLoad();"></script>
+<link rel="icon" href="https://parsecsreach.org/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="https://parsecsreach.org/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://parsecsreach.org/favicon-32x32.png">
+<link rel="apple-touch-icon" href="https://parsecsreach.org/apple-touch-icon.png">
+<link rel="mask-icon" href="https://parsecsreach.org/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --hljs-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-track {
+                background: 0 0;
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-thumb {
+                border-color: var(--theme);
+            }
+        }
+
+    </style>
+</noscript><meta property="og:title" content="An introduction to Polygonical and ESVG" />
+<meta property="og:description" content="For the last ${scairy_number_of_years} years I&rsquo;ve been working on some library tooling to create SVG files using rust. There are some libraries that existed already but they either didn&rsquo;t work for what I needed to do or they had limitations. So I build two libraries of my own. Polygonical and ESVG. Polygonical focuses on 2d geometry operations. Points, lines, polygons and doing things to them. It does not concern its self with how they are shown, what format they are written to disk or anything like that." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://parsecsreach.org/post/polygonical_and_esvg/" /><meta property="article:section" content="post" />
+<meta property="article:published_time" content="2025-06-07T12:11:00+00:00" />
+<meta property="article:modified_time" content="2025-06-07T12:11:00+00:00" />
+
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="An introduction to Polygonical and ESVG"/>
+<meta name="twitter:description" content="For the last ${scairy_number_of_years} years I&rsquo;ve been working on some library tooling to create SVG files using rust. There are some libraries that existed already but they either didn&rsquo;t work for what I needed to do or they had limitations. So I build two libraries of my own. Polygonical and ESVG. Polygonical focuses on 2d geometry operations. Points, lines, polygons and doing things to them. It does not concern its self with how they are shown, what format they are written to disk or anything like that."/>
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "Posts",
+      "item": "https://parsecsreach.org/post/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  3 ,
+      "name": "An introduction to Polygonical and ESVG",
+      "item": "https://parsecsreach.org/post/polygonical_and_esvg/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "An introduction to Polygonical and ESVG",
+  "name": "An introduction to Polygonical and ESVG",
+  "description": "For the last ${scairy_number_of_years} years I\u0026rsquo;ve been working on some library tooling to create SVG files using rust. There are some libraries that existed already but they either didn\u0026rsquo;t work for what I needed to do or they had limitations. So I build two libraries of my own. Polygonical and ESVG. Polygonical focuses on 2d geometry operations. Points, lines, polygons and doing things to them. It does not concern its self with how they are shown, what format they are written to disk or anything like that.",
+  "keywords": [
+    "svg", "polygonical", "esvg", "rust"
+  ],
+  "articleBody": "For the last ${scairy_number_of_years} years I’ve been working on some library tooling to create SVG files using rust. There are some libraries that existed already but they either didn’t work for what I needed to do or they had limitations. So I build two libraries of my own. Polygonical and ESVG. Polygonical focuses on 2d geometry operations. Points, lines, polygons and doing things to them. It does not concern its self with how they are shown, what format they are written to disk or anything like that. Its job is to make handling geometries easy. ESVG is a Document Object Model (DOM) based svg creation library, while it can read an svg it is mostly designed to build an svg in memory and write it out to disk or some where else.\nOriginally both of the libraries were inside another project that is used to create pages of shapes for my wife’s etsy shop. However I realized they were useful for other things and wanted to be able to use them in different projects. So a great extraction and refactoring occurred and two new libraries were born.\nRecently I’ve been playing with procedual and random generation to create interesting patterns and realized this would make a good introduction tutorial to both libraries. This is what we are going to be aiming to create\nAssumptions You know some rust You have a rust coding environment set up You know a little about the SVG format. I wrote a very basic intro a few years ago Creating a blank SVG While we work we are going to want to see some stuff. This kind of thing I find easier to debug visually. So lets start by creating a blank svg document. A bit like a hello world.\nFirst up create the project and add esvg and polygonical to the project.\ncargo new svg_patterns cd svg_patterns cargo add esvg cargo add polygonical Now we need to add the document creation and file handling. Open the main.rs file, it should look like this\nfn main() { println!(\"Hello, world!\"); } There are two things we need to define before we can create a document. The first is the Dots Per Inch (DPI) we will be using. This defines the number of pixels per inch of space we will end up with in the final image. Common DPI values are 96 for things appearing on screen, 72 for some cutting machines, or around 300 for print work. For this I’m going to set it to 96. The second thing we need is a definition of the “paper” we are going to be drawing on. I’m not american so I’m going to pick A4, but esvg has support for a range of paper sizes and custom ones.\nuse esvg::page::Page; const DPI: i32 = 96; fn main() { let page = Page::A4(DPI); } Now we can create our document.\nuse esvg::page::Page; const DPI: i32 = 96; fn main() { let page = Page::A4(DPI); let document = esvg::create_document(\u0026page); } Finally we can write our document to a file.\nuse esvg::page::Page; const DPI: i32 = 96; fn main() { let page = Page::A4(DPI); let document = esvg::create_document(\u0026page); esvg::save(\"output_path.svg\", \u0026document).expect(\"Could not save SVG\"); } Obviously this could could do with some improvements, but it proves the point. When run it will create a svg file in the working directory called output_path.svg that will look like this internally\n\u003c?xml version=\"1.0\" encoding=\"UTF-8\"?\u003e \u003c!DOCTYPE svg PUBLIC \"-//W3C//DTD SVG 1.0//EN\" \"http://www.w3.org/TR/2001/REC-SVG-20010904/DTD/svg10.dtd\"\u003e ",
+  "wordCount" : "2421",
+  "inLanguage": "en",
+  "datePublished": "2025-06-07T12:11:00Z",
+  "dateModified": "2025-06-07T12:11:00Z",
+  "author":{
+    "@type": "Person",
+    "name": "Emily Selwood"
+  },
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://parsecsreach.org/post/polygonical_and_esvg/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Parsecs Reach",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://parsecsreach.org/favicon.ico"
+    }
+  }
+}
+</script>
+</head>
+
+<body class="" id="top">
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.body.classList.add('dark');
+    } else if (localStorage.getItem("pref-theme") === "light") {
+        document.body.classList.remove('dark')
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.body.classList.add('dark');
+    }
+
+</script>
+
+<header class="header">
+    <nav class="nav">
+        <div class="logo">
+            <a href="https://parsecsreach.org" accesskey="h" title="Parsecs Reach (Alt + H)">Parsecs Reach</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" accesskey="t" title="(Alt + T)">
+                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <ul id="menu">
+            <li>
+                <a rel="" href="https://parsecsreach.org/orbviewer"  target="_blank" title="Orb Viewer">
+                    <span>Orb Viewer</span>
+                    
+                </a>
+            </li>
+            <li>
+                <a rel="me" href="https://mastodon.me.uk/@emily_s"  target="_blank" title="">
+                    <span><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 417.8 512" class="logo-social" width="18" height="18"><path d="M417.8 179.1c0-97.2-63.7-125.7-63.7-125.7-62.5-28.7-228.5-28.4-290.4 0 0 0-63.7 28.5-63.7 125.7 0 115.7-6.6 259.4 105.6 289.1 40.5 10.7 75.3 13 103.3 11.4 50.8-2.8 79.3-18.1 79.3-18.1l-1.7-36.9s-36.3 11.4-77.1 10.1c-40.4-1.4-83-4.4-89.6-54-.6-4.4-.9-9-.9-13.9 85.6 20.9 158.6 9.1 178.7 6.7 56.1-6.7 105-41.3 111.2-72.9 9.8-49.8 9-121.5 9-121.5zm-75.1 125.2h-46.6V190.1c0-49.7-64-51.6-64 6.9v62.5h-46.3V197c0-58.5-64-56.6-64-6.9v114.2H75.1c0-122.1-5.2-147.9 18.4-175 25.9-28.9 79.8-30.8 103.8 6.1l11.6 19.5 11.6-19.5c24.1-37.1 78.1-34.8 103.8-6.1 23.7 27.3 18.4 53 18.4 175z"/></svg></span>
+                    
+                </a>
+            </li>
+            <li>
+                <a rel="" href="https://github.com/emilyselwood"  target="_blank" title="">
+                    <span><svg width="18" height="18" class="logo-social" stroke="none" viewBox="0 0 11.493062 11.209467" xmlns="http://www.w3.org/2000/svg"><path d="M 5.746044,0 C 2.572808,0 0,2.572808 0,5.74675 c 0,2.538941 1.646414,4.69265 3.929944,5.452886 0.287514,0.05256 0.392289,-0.124883 0.392289,-0.277283 0,-0.136173 -0.0049,-0.49777 -0.0078,-0.977195 C 2.715997,10.292291 2.378741,9.174691 2.378741,9.174691 2.117333,8.511116 1.740566,8.334375 1.740566,8.334375 1.218808,7.977716 1.780076,7.984772 1.780076,7.984772 2.356868,8.025692 2.660257,8.577086 2.660257,8.577086 3.172843,9.45515 4.005398,9.201503 4.332776,9.054747 4.384986,8.683272 4.533154,8.429978 4.697548,8.286397 3.421551,8.141405 2.079937,7.648222 2.079937,5.446183 c 0,-0.627239 0.224014,-1.140178 0.591609,-1.541991 -0.05927,-0.145345 -0.25647,-0.729545 0.05609,-1.520825 0,0 0.4826,-0.154517 1.580445,0.589138 C 4.766339,2.845153 5.258111,2.7813 5.746709,2.779183 6.2346,2.781283 6.726372,2.845153 7.185336,2.972505 8.282475,2.22885 8.764017,2.383367 8.764017,2.383367 c 0.313619,0.79128 0.116416,1.37548 0.05715,1.520825 0.3683,0.401813 0.590903,0.914752 0.590903,1.541991 0,2.207683 -1.343731,2.693458 -2.623961,2.835628 0.206375,0.177447 0.390172,0.528108 0.390172,1.06433 0,0.767998 -0.0071,1.387828 -0.0071,1.576212 0,0.153811 0.103364,0.332669 0.395111,0.276577 2.281767,-0.761647 3.92677,-2.913944 3.92677,-5.45218 C 11.493062,2.572808 8.919901,0 5.745959,0"/></svg></span>
+                    
+                </a>
+            </li>
+            <li>
+                <a rel="" href="https://parsecsreach.org/about"  target="_self" title="About me">
+                    <span>About me</span>
+                    
+                </a>
+            </li>
+            <li>
+                <a rel="" href="https://parsecsreach.org/"  target="_self" title="Home">
+                    <span>Home</span>
+                    
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    
+    <h1 class="post-title">
+      An introduction to Polygonical and ESVG
+    </h1>
+    <div class="post-meta"><span title='2025-06-07 12:11:00 +0000 +0000'>2025 June 7</span>&nbsp;·&nbsp;Emily Selwood
+
+</div>
+  </header> 
+  <div class="post-content"><p>For the last ${scairy_number_of_years} years I&rsquo;ve been working on some library tooling to create SVG files using rust. There are some libraries that existed already but they either didn&rsquo;t work for what I needed to do or they had limitations. So I build two libraries of my own. <a href="https://crates.io/crates/polygonical">Polygonical</a> and <a href="https://crates.io/crates/esvg">ESVG</a>. Polygonical focuses on 2d geometry operations. Points, lines, polygons and doing things to them. It does not concern its self with how they are shown, what format they are written to disk or anything like that. Its job is to make handling geometries easy. ESVG is a Document Object Model (DOM) based svg creation library, while it can read an svg it is mostly designed to build an svg in memory and write it out to disk or some where else.</p>
+<p>Originally both of the libraries were inside another project that is used to create pages of shapes for my wife&rsquo;s etsy shop. However I realized they were useful for other things and wanted to be able to use them in different projects. So a great extraction and refactoring occurred and two new libraries were born.</p>
+<p>Recently I&rsquo;ve been playing with procedual and random generation to create interesting patterns and realized this would make a good introduction tutorial to both libraries. This is what we are going to be aiming to create</p>
+<p><img loading="lazy" src="/img/polygonical_and_esvg/square_grid_result.png" alt="Square grid result"  />
+</p>
+<h2 id="assumptions">Assumptions<a hidden class="anchor" aria-hidden="true" href="#assumptions">#</a></h2>
+<ul>
+<li>You know some rust</li>
+<li>You have a rust coding environment set up</li>
+<li>You know a little about the SVG format. <a href="/post/svgs/">I wrote a very basic intro a few years ago</a></li>
+</ul>
+<h2 id="creating-a-blank-svg">Creating a blank SVG<a hidden class="anchor" aria-hidden="true" href="#creating-a-blank-svg">#</a></h2>
+<p>While we work we are going to want to see some stuff. This kind of thing I find easier to debug visually. So lets start by creating a blank svg document. A bit like a hello world.</p>
+<p>First up create the project and add <code>esvg</code> and <code>polygonical</code> to the project.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>cargo new svg_patterns
+</span></span><span style="display:flex;"><span>cd svg_patterns
+</span></span><span style="display:flex;"><span>cargo add esvg
+</span></span><span style="display:flex;"><span>cargo add polygonical
+</span></span></code></pre></div><p>Now we need to add the document creation and file handling. Open the <code>main.rs</code> file, it should look like this</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-rust" data-lang="rust"><span style="display:flex;"><span><span style="color:#66d9ef">fn</span> <span style="color:#a6e22e">main</span>() {
+</span></span><span style="display:flex;"><span>    println!(<span style="color:#e6db74">&#34;Hello, world!&#34;</span>);
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>There are two things we need to define before we can create a document. The first is the Dots Per Inch (DPI) we will be using. This defines the number of pixels per inch of space we will end up with in the final image. Common DPI values are 96 for things appearing on screen, 72 for some cutting machines, or around 300 for print work. For this I&rsquo;m going to set it to 96. The second thing we need is a definition of the &ldquo;paper&rdquo; we are going to be drawing on. I&rsquo;m not american so I&rsquo;m going to pick A4, but esvg has support for a <a href="https://docs.rs/esvg/0.5.0/esvg/page/struct.Page.html#method.A5">range of paper sizes</a> and <a href="https://docs.rs/esvg/0.5.0/esvg/page/struct.Page.html#method.build_page">custom ones</a>.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-rust" data-lang="rust"><span style="display:flex;"><span><span style="color:#66d9ef">use</span> esvg::page::Page;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">const</span> <span style="color:#66d9ef">DPI</span>: <span style="color:#66d9ef">i32</span> <span style="color:#f92672">=</span> <span style="color:#ae81ff">96</span>;
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">fn</span> <span style="color:#a6e22e">main</span>() {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">let</span> page <span style="color:#f92672">=</span> Page::A4(<span style="color:#66d9ef">DPI</span>);
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>Now we can create our document.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-rust" data-lang="rust"><span style="display:flex;"><span><span style="color:#66d9ef">use</span> esvg::page::Page;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">const</span> <span style="color:#66d9ef">DPI</span>: <span style="color:#66d9ef">i32</span> <span style="color:#f92672">=</span> <span style="color:#ae81ff">96</span>;
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">fn</span> <span style="color:#a6e22e">main</span>() {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">let</span> page <span style="color:#f92672">=</span> Page::A4(<span style="color:#66d9ef">DPI</span>);
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">let</span> document <span style="color:#f92672">=</span> esvg::create_document(<span style="color:#f92672">&amp;</span>page);
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>Finally we can write our document to a file.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-rust" data-lang="rust"><span style="display:flex;"><span><span style="color:#66d9ef">use</span> esvg::page::Page;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">const</span> <span style="color:#66d9ef">DPI</span>: <span style="color:#66d9ef">i32</span> <span style="color:#f92672">=</span> <span style="color:#ae81ff">96</span>;
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">fn</span> <span style="color:#a6e22e">main</span>() {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">let</span> page <span style="color:#f92672">=</span> Page::A4(<span style="color:#66d9ef">DPI</span>);
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">let</span> document <span style="color:#f92672">=</span> esvg::create_document(<span style="color:#f92672">&amp;</span>page);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    esvg::save(<span style="color:#e6db74">&#34;output_path.svg&#34;</span>, <span style="color:#f92672">&amp;</span>document).expect(<span style="color:#e6db74">&#34;Could not save SVG&#34;</span>);
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>Obviously this could could do with some improvements, but it proves the point. When run it will create a svg file in the working directory called <code>output_path.svg</code> that will look like this internally</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-svg" data-lang="svg"><span style="display:flex;"><span><span style="color:#75715e">&lt;?xml version=&#34;1.0&#34; encoding=&#34;UTF-8&#34;?&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">&lt;!DOCTYPE svg PUBLIC &#34;-//W3C//DTD SVG 1.0//EN&#34; &#34;http://www.w3.org/TR/2001/REC-SVG-20010904/DTD/svg10.dtd&#34;&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;svg</span> <span style="color:#a6e22e">height=</span><span style="color:#e6db74">&#34;297.1270833333333mm&#34;</span> <span style="color:#a6e22e">viewBox=</span><span style="color:#e6db74">&#34;0, 0, 794, 1123&#34;</span> <span style="color:#a6e22e">width=</span><span style="color:#e6db74">&#34;210.07916666666668mm&#34;</span> <span style="color:#a6e22e">xmlns=</span><span style="color:#e6db74">&#34;http://www.w3.org/2000/svg&#34;</span> <span style="color:#a6e22e">xmlns:xlink=</span><span style="color:#e6db74">&#34;http://www.w3.org/1999/xlink&#34;</span> <span style="color:#f92672">/&gt;</span>
+</span></span></code></pre></div><p>This doesn&rsquo;t do much. It sets up the doc type, and root <code>svg</code> tag, along with a couple of common namespaces.</p>
+<p>It is usually worth setting some default style up on the root tag so that anything inside your image that doesn&rsquo;t have a style explicitly set will get something. Lets pull document creation out into a function.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-rust" data-lang="rust"><span style="display:flex;"><span><span style="color:#66d9ef">use</span> esvg::Element;
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">use</span> esvg::page::Page;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">const</span> <span style="color:#66d9ef">DPI</span>: <span style="color:#66d9ef">i32</span> <span style="color:#f92672">=</span> <span style="color:#ae81ff">96</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">fn</span> <span style="color:#a6e22e">main</span>() {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">let</span> page <span style="color:#f92672">=</span> Page::A4(<span style="color:#66d9ef">DPI</span>);
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">let</span> document <span style="color:#f92672">=</span> create_document(<span style="color:#f92672">&amp;</span>page);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    esvg::save(<span style="color:#e6db74">&#34;output_path.svg&#34;</span>, <span style="color:#f92672">&amp;</span>document).expect(<span style="color:#e6db74">&#34;Could not save SVG&#34;</span>);
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">fn</span> <span style="color:#a6e22e">create_document</span>(page: <span style="color:#66d9ef">&amp;</span><span style="color:#a6e22e">Page</span>) -&gt; <span style="color:#a6e22e">Element</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">let</span> <span style="color:#66d9ef">mut</span> doc <span style="color:#f92672">=</span> esvg::create_document(page);
+</span></span><span style="display:flex;"><span>    doc.set(<span style="color:#e6db74">&#34;stroke&#34;</span>, <span style="color:#e6db74">&#34;#8c8c8c&#34;</span>);
+</span></span><span style="display:flex;"><span>    doc.set(<span style="color:#e6db74">&#34;fill&#34;</span>, <span style="color:#e6db74">&#34;none&#34;</span>);
+</span></span><span style="display:flex;"><span>    doc.set(<span style="color:#e6db74">&#34;fill-opacity&#34;</span>, <span style="color:#e6db74">&#34;1&#34;</span>);
+</span></span><span style="display:flex;"><span>    doc.set(<span style="color:#e6db74">&#34;stroke-opacity&#34;</span>, <span style="color:#e6db74">&#34;1&#34;</span>);
+</span></span><span style="display:flex;"><span>    doc.set(<span style="color:#e6db74">&#34;stroke-width&#34;</span>, <span style="color:#e6db74">&#34;0.5mm&#34;</span>);
+</span></span><span style="display:flex;"><span>    doc.set(<span style="color:#e6db74">&#34;stroke-linejoin&#34;</span>, <span style="color:#e6db74">&#34;miter&#34;</span>);
+</span></span><span style="display:flex;"><span>    doc.set(<span style="color:#e6db74">&#34;stroke-dasharray&#34;</span>, <span style="color:#e6db74">&#34;none&#34;</span>);
+</span></span><span style="display:flex;"><span>    doc.set(<span style="color:#e6db74">&#34;stroke-linecap&#34;</span>, <span style="color:#e6db74">&#34;square&#34;</span>);
+</span></span><span style="display:flex;"><span>    doc.set(<span style="color:#e6db74">&#34;stroke-miterlimit&#34;</span>, <span style="color:#e6db74">&#34;10&#34;</span>);
+</span></span><span style="display:flex;"><span>    doc.set(<span style="color:#e6db74">&#34;stroke-dashoffset&#34;</span>, <span style="color:#e6db74">&#34;0&#34;</span>);
+</span></span><span style="display:flex;"><span>    doc.set(<span style="color:#e6db74">&#34;color-rendering&#34;</span>, <span style="color:#e6db74">&#34;auto&#34;</span>);
+</span></span><span style="display:flex;"><span>    doc.set(<span style="color:#e6db74">&#34;color-interpolation&#34;</span>, <span style="color:#e6db74">&#34;auto&#34;</span>);
+</span></span><span style="display:flex;"><span>    doc.set(<span style="color:#e6db74">&#34;text-rendering&#34;</span>, <span style="color:#e6db74">&#34;auto&#34;</span>);
+</span></span><span style="display:flex;"><span>    doc.set(<span style="color:#e6db74">&#34;shape-rendering&#34;</span>, <span style="color:#e6db74">&#34;auto&#34;</span>);
+</span></span><span style="display:flex;"><span>    doc.set(<span style="color:#e6db74">&#34;image-rendering&#34;</span>, <span style="color:#e6db74">&#34;auto&#34;</span>);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    doc
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>I orgiginally cribbed most of these settings from what inkscape generates when you create a new image. The important ones are near the top. <code>stroke</code> controls the colour of the lines, <code>fill</code> controls the colour used inside shapes, <code>fill-opacity</code> and <code>stroke-opacity</code> control how transparant a shape is, they are a number between 0 for completely clear and 1 for completely solid. <code>stroke-width</code> controls how thick the paramiter line is. You can use any units here, if you don&rsquo;t provide units it will be in pixels. The rest are not so important and can be ignored mostly. If you need to look one up mozilla provide excellent <a href="https://developer.mozilla.org/en-US/docs/Web/SVG/Reference/Element/svg">svg reference docs</a>.</p>
+<p>If we run the code now we&rsquo;ll get, but it&rsquo;ll still look like a blank page.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-svg" data-lang="svg"><span style="display:flex;"><span><span style="color:#75715e">&lt;?xml version=&#34;1.0&#34; encoding=&#34;UTF-8&#34;?&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">&lt;!DOCTYPE svg PUBLIC &#34;-//W3C//DTD SVG 1.0//EN&#34; &#34;http://www.w3.org/TR/2001/REC-SVG-20010904/DTD/svg10.dtd&#34;&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;svg</span> <span style="color:#a6e22e">color-interpolation=</span><span style="color:#e6db74">&#34;auto&#34;</span> <span style="color:#a6e22e">color-rendering=</span><span style="color:#e6db74">&#34;auto&#34;</span> <span style="color:#a6e22e">fill=</span><span style="color:#e6db74">&#34;none&#34;</span> <span style="color:#a6e22e">fill-opacity=</span><span style="color:#e6db74">&#34;1&#34;</span> <span style="color:#a6e22e">height=</span><span style="color:#e6db74">&#34;297.1270833333333mm&#34;</span> <span style="color:#a6e22e">image-rendering=</span><span style="color:#e6db74">&#34;auto&#34;</span> <span style="color:#a6e22e">shape-rendering=</span><span style="color:#e6db74">&#34;auto&#34;</span> <span style="color:#a6e22e">stroke=</span><span style="color:#e6db74">&#34;#8c8c8c&#34;</span> <span style="color:#a6e22e">stroke-dasharray=</span><span style="color:#e6db74">&#34;none&#34;</span> <span style="color:#a6e22e">stroke-dashoffset=</span><span style="color:#e6db74">&#34;0&#34;</span> <span style="color:#a6e22e">stroke-linecap=</span><span style="color:#e6db74">&#34;square&#34;</span> <span style="color:#a6e22e">stroke-linejoin=</span><span style="color:#e6db74">&#34;miter&#34;</span> <span style="color:#a6e22e">stroke-miterlimit=</span><span style="color:#e6db74">&#34;10&#34;</span> <span style="color:#a6e22e">stroke-opacity=</span><span style="color:#e6db74">&#34;1&#34;</span> <span style="color:#a6e22e">stroke-width=</span><span style="color:#e6db74">&#34;0.5mm&#34;</span> <span style="color:#a6e22e">text-rendering=</span><span style="color:#e6db74">&#34;auto&#34;</span> <span style="color:#a6e22e">viewBox=</span><span style="color:#e6db74">&#34;0, 0, 794, 1123&#34;</span> <span style="color:#a6e22e">width=</span><span style="color:#e6db74">&#34;210.07916666666668mm&#34;</span> <span style="color:#a6e22e">xmlns=</span><span style="color:#e6db74">&#34;http://www.w3.org/2000/svg&#34;</span> <span style="color:#a6e22e">xmlns:xlink=</span><span style="color:#e6db74">&#34;http://www.w3.org/1999/xlink&#34;</span> <span style="color:#f92672">/&gt;</span>
+</span></span></code></pre></div><p>Lets draw something. The page we created at the start has helper methods to give the pixel locations of various points, top left corner, bottom right, etc. Lets draw a line across the page.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-rust" data-lang="rust"><span style="display:flex;"><span><span style="color:#66d9ef">fn</span> <span style="color:#a6e22e">main</span>() {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">let</span> page <span style="color:#f92672">=</span> Page::A4(<span style="color:#66d9ef">DPI</span>);
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">let</span> <span style="color:#66d9ef">mut</span> document <span style="color:#f92672">=</span> create_document(<span style="color:#f92672">&amp;</span>page);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">let</span> line <span style="color:#f92672">=</span> esvg::path::create(<span style="color:#f92672">&amp;</span>[page.top_left(), page.bottom_right()]);
+</span></span><span style="display:flex;"><span>    document.add(<span style="color:#f92672">&amp;</span>line);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    esvg::save(<span style="color:#e6db74">&#34;output_path.svg&#34;</span>, <span style="color:#f92672">&amp;</span>document).expect(<span style="color:#e6db74">&#34;Could not save SVG&#34;</span>);
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>(note I&rsquo;ve only included main now to save space)</p>
+<p>The path module in esvg provides helpers for creating path elements. In this case we pass in a slice that contains the coordinates we want to draw between. Note that the <code>top_left</code> method and its siblings all follow the margins applied to the page. They default to half an inch.  If you need to control the margins you can use the <code>A4_with_boarder</code> and similar functions.</p>
+<p>One thing to note, when you add an element to a parent element it is cloned into the dom tree. Changes made to the element after it has been added will not be applied to the version that gets saved at the end. This is due to the DOM tree needing to take owner ship of the element to make sure it doesn&rsquo;t vanish when the original element variable goes out of scope.</p>
+<p>If you open up the image you&rsquo;ll see something like this, where the line doesn&rsquo;t extend all the way to the edges.</p>
+<p><img loading="lazy" src="/img/polygonical_and_esvg/line_result.png" alt="an svg with a line diagonally across the middle"  />
+</p>
+<p>Now we can start creating some patterns. We&rsquo;ll start with the square grid because its slightly simpler. First we need to decide what size of grid we want to create. The one I showed a screenshot of near the top used half centimeter spacing. ESVG provides a collection of <a href="https://docs.rs/esvg/0.5.0/esvg/convert/index.html">conversion functions</a> in the <code>convert</code> module. The useful one for us here is <code>parse_length</code>. This will take a string like <code>0.5cm</code> or <code>2.25in</code> and convert it into a number of pixels. With that number of pixels for the grid we can work out how many rows and columns we should have for the given page.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-rust" data-lang="rust"><span style="display:flex;"><span><span style="color:#66d9ef">fn</span> <span style="color:#a6e22e">main</span>() {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">let</span> page <span style="color:#f92672">=</span> Page::A4(<span style="color:#66d9ef">DPI</span>);
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">let</span> <span style="color:#66d9ef">mut</span> document <span style="color:#f92672">=</span> create_document(<span style="color:#f92672">&amp;</span>page);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">let</span> grid_spacing <span style="color:#f92672">=</span> convert::parse_length(<span style="color:#e6db74">&#34;0.5cm&#34;</span>, <span style="color:#66d9ef">DPI</span>).expect(<span style="color:#e6db74">&#34;could not parse length&#34;</span>);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">let</span> num_rows <span style="color:#f92672">=</span> page.display_height_px() <span style="color:#f92672">/</span> grid_spacing;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">let</span> num_columns <span style="color:#f92672">=</span> page.display_width_px() <span style="color:#f92672">/</span> grid_spacing;
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    esvg::save(<span style="color:#e6db74">&#34;output_path.svg&#34;</span>, <span style="color:#f92672">&amp;</span>document).expect(<span style="color:#e6db74">&#34;Could not save SVG&#34;</span>);
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>Now we can start actually using the polygonical library. We need to work out a grid of points across the page. We can use a pair of for loops to do the rows and columns. Then we need to create a <code>Point</code> on the page where we want to draw a corner.</p>
+<p><code>Point</code> is the most basic type in polygonical. It represents a point in 2d space. The <code>page.top_left()</code> function we used earlier returns one, but we didn&rsquo;t need to worry about it then. They have an <code>x</code> and <code>y</code> value and can be translated or moved by other points, rotated around the origin.</p>
+<p>Lets have a look at the code and then go through the important parts.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-rust" data-lang="rust"><span style="display:flex;"><span><span style="color:#66d9ef">fn</span> <span style="color:#a6e22e">main</span>() {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">let</span> page <span style="color:#f92672">=</span> Page::A4(<span style="color:#66d9ef">DPI</span>);
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">let</span> <span style="color:#66d9ef">mut</span> document <span style="color:#f92672">=</span> create_document(<span style="color:#f92672">&amp;</span>page);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">let</span> grid_spacing <span style="color:#f92672">=</span> convert::parse_length(<span style="color:#e6db74">&#34;0.5cm&#34;</span>, <span style="color:#66d9ef">DPI</span>).expect(<span style="color:#e6db74">&#34;could not parse length&#34;</span>);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">let</span> num_rows <span style="color:#f92672">=</span> page.display_height_px() <span style="color:#f92672">/</span> grid_spacing;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">let</span> num_columns <span style="color:#f92672">=</span> page.display_width_px() <span style="color:#f92672">/</span> grid_spacing;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span> y <span style="color:#66d9ef">in</span> <span style="color:#ae81ff">0</span><span style="color:#f92672">..</span>num_rows {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">for</span> x <span style="color:#66d9ef">in</span> <span style="color:#ae81ff">0</span><span style="color:#f92672">..</span>num_columns {
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">let</span> point <span style="color:#f92672">=</span> page
+</span></span><span style="display:flex;"><span>                .top_left()
+</span></span><span style="display:flex;"><span>                .translate(<span style="color:#f92672">&amp;</span>Point::new(x <span style="color:#f92672">*</span> grid_spacing, y <span style="color:#f92672">*</span> grid_spacing));
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">let</span> circle <span style="color:#f92672">=</span> esvg::shapes::circle(point, grid_spacing <span style="color:#f92672">/</span> <span style="color:#ae81ff">5</span>);
+</span></span><span style="display:flex;"><span>            document.add(<span style="color:#f92672">&amp;</span>circle);
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    esvg::save(<span style="color:#e6db74">&#34;output_path.svg&#34;</span>, <span style="color:#f92672">&amp;</span>document).expect(<span style="color:#e6db74">&#34;Could not save SVG&#34;</span>);
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>In the middle of that code we work out the point we want to draw a circle.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-rust" data-lang="rust"><span style="display:flex;"><span><span style="color:#66d9ef">let</span> point <span style="color:#f92672">=</span> page
+</span></span><span style="display:flex;"><span>    .top_left()
+</span></span><span style="display:flex;"><span>    .translate(<span style="color:#f92672">&amp;</span>Point::new(x <span style="color:#f92672">*</span> grid_spacing, y <span style="color:#f92672">*</span> grid_spacing));
+</span></span></code></pre></div><p>This takes the point of the top left of the page, then moves it by a new point with its x and y coords set appropriately. We could keep a running variable and move it by <code>grid_spacing</code> each iteration but I find this slightly easier to understand personally.</p>
+<p>After that we create a circle element and add it to the document, just like we did with our line previously. If we run this we should see something like this</p>
+<p><img loading="lazy" src="/img/polygonical_and_esvg/circle_grid_result.png" alt="a grid of small circles at the points we defined in the code"  />
+</p>
+<p>Note that we have what looks like different margins on the right and bottom. This is because we are creating one less than the rows and columns calculated at the start. It&rsquo;ll become clear why later.</p>
+<p>Let&rsquo;s draw some lines. We&rsquo;ve already seen how to do this so all we need is the end point of the line and we can create these reasonably easily. For each point we visit, if we draw a line to the right and a line downwards we will end up with a nice grid. While yes, we could draw lines all the way along the page and have a smaller SVG at the end, later we are going to want to be able to turn individual sections off so this will be easier if we do it like this.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-rust" data-lang="rust"><span style="display:flex;"><span><span style="color:#66d9ef">fn</span> <span style="color:#a6e22e">main</span>() {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">let</span> page <span style="color:#f92672">=</span> Page::A4(<span style="color:#66d9ef">DPI</span>);
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">let</span> <span style="color:#66d9ef">mut</span> document <span style="color:#f92672">=</span> create_document(<span style="color:#f92672">&amp;</span>page);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">let</span> grid_spacing <span style="color:#f92672">=</span> convert::parse_length(<span style="color:#e6db74">&#34;0.5cm&#34;</span>, <span style="color:#66d9ef">DPI</span>).expect(<span style="color:#e6db74">&#34;could not parse length&#34;</span>);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">let</span> num_rows <span style="color:#f92672">=</span> page.display_height_px() <span style="color:#f92672">/</span> grid_spacing;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">let</span> num_columns <span style="color:#f92672">=</span> page.display_width_px() <span style="color:#f92672">/</span> grid_spacing;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">let</span> move_right <span style="color:#f92672">=</span> Point::new(grid_spacing, <span style="color:#ae81ff">0</span>);
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">let</span> move_down <span style="color:#f92672">=</span> Point::new(<span style="color:#ae81ff">0</span>, grid_spacing);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span> y <span style="color:#66d9ef">in</span> <span style="color:#ae81ff">0</span><span style="color:#f92672">..</span>num_rows {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">for</span> x <span style="color:#66d9ef">in</span> <span style="color:#ae81ff">0</span><span style="color:#f92672">..</span>num_columns {
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">let</span> point <span style="color:#f92672">=</span> page
+</span></span><span style="display:flex;"><span>                .top_left()
+</span></span><span style="display:flex;"><span>                .translate(<span style="color:#f92672">&amp;</span>Point::new(x <span style="color:#f92672">*</span> grid_spacing, y <span style="color:#f92672">*</span> grid_spacing));
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">let</span> circle <span style="color:#f92672">=</span> esvg::shapes::circle(point, grid_spacing <span style="color:#f92672">/</span> <span style="color:#ae81ff">5</span>);
+</span></span><span style="display:flex;"><span>            document.add(<span style="color:#f92672">&amp;</span>circle);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">let</span> right_point <span style="color:#f92672">=</span> point.translate(<span style="color:#f92672">&amp;</span>move_right);
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">let</span> right_line <span style="color:#f92672">=</span> esvg::path::create(<span style="color:#f92672">&amp;</span>[point, right_point]);
+</span></span><span style="display:flex;"><span>            document.add(<span style="color:#f92672">&amp;</span>right_line);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">let</span> down_point <span style="color:#f92672">=</span> point.translate(<span style="color:#f92672">&amp;</span>move_down);
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">let</span> down_line <span style="color:#f92672">=</span> esvg::path::create(<span style="color:#f92672">&amp;</span>[point, down_point]);
+</span></span><span style="display:flex;"><span>            document.add(<span style="color:#f92672">&amp;</span>down_line);
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    esvg::save(<span style="color:#e6db74">&#34;output_path.svg&#34;</span>, <span style="color:#f92672">&amp;</span>document).expect(<span style="color:#e6db74">&#34;Could not save SVG&#34;</span>);
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>To save a bit on object churn I created a pair of points for moving right and moving down, so we could translate by the same points each time. There is nothing really stopping you creating new points in the loop, but I think this is a little clearer.</p>
+<p>When you open this you&rsquo;ll notice that the right and bottom edges are not filled in correctly. Lets take care of that now. There are a few ways we could do this. Extra loops after the main loop, or adding a check to see if we are on the last row, and increasing the iteration counts by one. This is what I&rsquo;m going to go with.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-rust" data-lang="rust"><span style="display:flex;"><span><span style="color:#66d9ef">fn</span> <span style="color:#a6e22e">main</span>() {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">let</span> page <span style="color:#f92672">=</span> Page::A4(<span style="color:#66d9ef">DPI</span>);
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">let</span> <span style="color:#66d9ef">mut</span> document <span style="color:#f92672">=</span> create_document(<span style="color:#f92672">&amp;</span>page);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">let</span> grid_spacing <span style="color:#f92672">=</span> convert::parse_length(<span style="color:#e6db74">&#34;0.5cm&#34;</span>, <span style="color:#66d9ef">DPI</span>).expect(<span style="color:#e6db74">&#34;could not parse length&#34;</span>);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">let</span> num_rows <span style="color:#f92672">=</span> page.display_height_px() <span style="color:#f92672">/</span> grid_spacing;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">let</span> num_columns <span style="color:#f92672">=</span> page.display_width_px() <span style="color:#f92672">/</span> grid_spacing;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">let</span> move_right <span style="color:#f92672">=</span> Point::new(grid_spacing, <span style="color:#ae81ff">0</span>);
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">let</span> move_down <span style="color:#f92672">=</span> Point::new(<span style="color:#ae81ff">0</span>, grid_spacing);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span> y <span style="color:#66d9ef">in</span> <span style="color:#ae81ff">0</span><span style="color:#f92672">..=</span>num_rows {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">for</span> x <span style="color:#66d9ef">in</span> <span style="color:#ae81ff">0</span><span style="color:#f92672">..=</span>num_columns {
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">let</span> point <span style="color:#f92672">=</span> page
+</span></span><span style="display:flex;"><span>                .top_left()
+</span></span><span style="display:flex;"><span>                .translate(<span style="color:#f92672">&amp;</span>Point::new(x <span style="color:#f92672">*</span> grid_spacing, y <span style="color:#f92672">*</span> grid_spacing));
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">let</span> circle <span style="color:#f92672">=</span> esvg::shapes::circle(point, grid_spacing <span style="color:#f92672">/</span> <span style="color:#ae81ff">5</span>);
+</span></span><span style="display:flex;"><span>            document.add(<span style="color:#f92672">&amp;</span>circle);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">if</span> x <span style="color:#f92672">&lt;</span> num_columns {
+</span></span><span style="display:flex;"><span>                <span style="color:#66d9ef">let</span> right_point <span style="color:#f92672">=</span> point.translate(<span style="color:#f92672">&amp;</span>move_right);
+</span></span><span style="display:flex;"><span>                <span style="color:#66d9ef">let</span> right_line <span style="color:#f92672">=</span> esvg::path::create(<span style="color:#f92672">&amp;</span>[point, right_point]);
+</span></span><span style="display:flex;"><span>                document.add(<span style="color:#f92672">&amp;</span>right_line);
+</span></span><span style="display:flex;"><span>            }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">if</span> y <span style="color:#f92672">&lt;</span> num_rows {
+</span></span><span style="display:flex;"><span>                <span style="color:#66d9ef">let</span> down_point <span style="color:#f92672">=</span> point.translate(<span style="color:#f92672">&amp;</span>move_down);
+</span></span><span style="display:flex;"><span>                <span style="color:#66d9ef">let</span> down_line <span style="color:#f92672">=</span> esvg::path::create(<span style="color:#f92672">&amp;</span>[point, down_point]);
+</span></span><span style="display:flex;"><span>                document.add(<span style="color:#f92672">&amp;</span>down_line);
+</span></span><span style="display:flex;"><span>            }
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    esvg::save(<span style="color:#e6db74">&#34;output_path.svg&#34;</span>, <span style="color:#f92672">&amp;</span>document).expect(<span style="color:#e6db74">&#34;Could not save SVG&#34;</span>);
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>Note that we switched from non inclusive ranges on the for loops to inclusive ranges. <code>..</code> to <code>..=</code></p>
+<p>Now that we have built the grid we can make it randomly decide to skip some of the entries. For this we will use the <code>rand</code> library. However, it would be good if we could get the same result repeatedly so that we can test things easily. For that we need a random number generator that we can seed with a known value. Rust&rsquo;s rand crate doesn&rsquo;t have one, so we&rsquo;ll also need to bring in <code>rand_chacha</code></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>cargo add rand
+</span></span><span style="display:flex;"><span>cargo add rand_chacha
+</span></span></code></pre></div><p>Now we need to create a rng and then use it to decide if we want to render our lines and circles.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-rust" data-lang="rust"><span style="display:flex;"><span><span style="color:#66d9ef">use</span> esvg::page::Page;
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">use</span> esvg::{Element, convert};
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">use</span> polygonical::point::Point;
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">use</span> rand::{Rng, SeedableRng <span style="color:#66d9ef">as</span> _};
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">use</span> rand_chacha::ChaCha8Rng;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">const</span> <span style="color:#66d9ef">DPI</span>: <span style="color:#66d9ef">i32</span> <span style="color:#f92672">=</span> <span style="color:#ae81ff">96</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">fn</span> <span style="color:#a6e22e">main</span>() {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">let</span> page <span style="color:#f92672">=</span> Page::A4(<span style="color:#66d9ef">DPI</span>);
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">let</span> <span style="color:#66d9ef">mut</span> document <span style="color:#f92672">=</span> create_document(<span style="color:#f92672">&amp;</span>page);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">let</span> <span style="color:#66d9ef">mut</span> rng <span style="color:#f92672">=</span> ChaCha8Rng::seed_from_u64(<span style="color:#ae81ff">123456789</span>);
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">let</span> circle_chance <span style="color:#f92672">=</span> <span style="color:#ae81ff">0.5</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">let</span> line_chance <span style="color:#f92672">=</span> <span style="color:#ae81ff">0.75</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">let</span> grid_spacing <span style="color:#f92672">=</span> convert::parse_length(<span style="color:#e6db74">&#34;0.5cm&#34;</span>, <span style="color:#66d9ef">DPI</span>).expect(<span style="color:#e6db74">&#34;could not parse length&#34;</span>);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">let</span> num_rows <span style="color:#f92672">=</span> page.display_height_px() <span style="color:#f92672">/</span> grid_spacing;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">let</span> num_columns <span style="color:#f92672">=</span> page.display_width_px() <span style="color:#f92672">/</span> grid_spacing;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">let</span> move_right <span style="color:#f92672">=</span> Point::new(grid_spacing, <span style="color:#ae81ff">0</span>);
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">let</span> move_down <span style="color:#f92672">=</span> Point::new(<span style="color:#ae81ff">0</span>, grid_spacing);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span> y <span style="color:#66d9ef">in</span> <span style="color:#ae81ff">0</span><span style="color:#f92672">..=</span>num_rows {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">for</span> x <span style="color:#66d9ef">in</span> <span style="color:#ae81ff">0</span><span style="color:#f92672">..=</span>num_columns {
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">let</span> point <span style="color:#f92672">=</span> page
+</span></span><span style="display:flex;"><span>                .top_left()
+</span></span><span style="display:flex;"><span>                .translate(<span style="color:#f92672">&amp;</span>Point::new(x <span style="color:#f92672">*</span> grid_spacing, y <span style="color:#f92672">*</span> grid_spacing));
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">if</span> rng.random_bool(circle_chance) {
+</span></span><span style="display:flex;"><span>                <span style="color:#66d9ef">let</span> circle <span style="color:#f92672">=</span> esvg::shapes::circle(point, grid_spacing <span style="color:#f92672">/</span> <span style="color:#ae81ff">5</span>);
+</span></span><span style="display:flex;"><span>                document.add(<span style="color:#f92672">&amp;</span>circle);
+</span></span><span style="display:flex;"><span>            }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">if</span> x <span style="color:#f92672">&lt;</span> num_columns <span style="color:#f92672">&amp;&amp;</span> rng.random_bool(line_chance) {
+</span></span><span style="display:flex;"><span>                <span style="color:#66d9ef">let</span> right_point <span style="color:#f92672">=</span> point.translate(<span style="color:#f92672">&amp;</span>move_right);
+</span></span><span style="display:flex;"><span>                <span style="color:#66d9ef">let</span> right_line <span style="color:#f92672">=</span> esvg::path::create(<span style="color:#f92672">&amp;</span>[point, right_point]);
+</span></span><span style="display:flex;"><span>                document.add(<span style="color:#f92672">&amp;</span>right_line);
+</span></span><span style="display:flex;"><span>            }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">if</span> y <span style="color:#f92672">&lt;</span> num_rows <span style="color:#f92672">&amp;&amp;</span> rng.random_bool(line_chance) {
+</span></span><span style="display:flex;"><span>                <span style="color:#66d9ef">let</span> down_point <span style="color:#f92672">=</span> point.translate(<span style="color:#f92672">&amp;</span>move_down);
+</span></span><span style="display:flex;"><span>                <span style="color:#66d9ef">let</span> down_line <span style="color:#f92672">=</span> esvg::path::create(<span style="color:#f92672">&amp;</span>[point, down_point]);
+</span></span><span style="display:flex;"><span>                document.add(<span style="color:#f92672">&amp;</span>down_line);
+</span></span><span style="display:flex;"><span>            }
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    esvg::save(<span style="color:#e6db74">&#34;output_path.svg&#34;</span>, <span style="color:#f92672">&amp;</span>document).expect(<span style="color:#e6db74">&#34;Could not save SVG&#34;</span>);
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>Things to note here: we had to import SeedableRng to get the trait that allows us to set the seed on the chacha8 random number generator. The rng has to be mutable, its internal state gets updated when it generates a random number so that the next one is different. I created two variables to hold the probability of lines and circles being created, this just makes it easier to alter them when playing around.</p>
+<p>Now when we run this we should get something that looks like this</p>
+<p><img loading="lazy" src="/img/polygonical_and_esvg/final_square_result.png" alt="final square grid that looks a bit like the one I posted back at the start"  />
+</p>
+<p>There is still plenty to do to this little program. Command line arguments, tidying up into functions, but the core is there. It produces the output we wanted. Hopefully its given you a small taste of whats possible when programmatically creating SVG files.</p>
+<p>If you give this a try I&rsquo;d love to see the things you create. Drop me a message on <a href="https://mastodon.me.uk/@emily_s">mastodon</a></p>
+
+
+  </div>
+
+  <footer class="post-footer">
+    <ul class="post-tags">
+      <li><a href="https://parsecsreach.org/tags/svg/">svg</a></li>
+      <li><a href="https://parsecsreach.org/tags/polygonical/">polygonical</a></li>
+      <li><a href="https://parsecsreach.org/tags/esvg/">esvg</a></li>
+      <li><a href="https://parsecsreach.org/tags/rust/">rust</a></li>
+    </ul>
+<nav class="paginav">
+  <a class="next" href="https://parsecsreach.org/post/rust_mastodon_search/">
+    <span class="title">Next »</span>
+    <br>
+    <span>Creating a command line mastodon archive search tool in rust</span>
+  </a>
+</nav>
+
+  </footer>
+</article>
+    </main>
+    
+<footer class="footer">
+    <span>All rights reserved - 2022</span>
+    <span>
+        Powered by
+        <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
+        <path d="M12 6H0l6-6z" />
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu')
+    if (menu) {
+        menu.scrollLeft = localStorage.getItem("menu-scroll-position");
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var mybutton = document.getElementById("top-link");
+    window.onscroll = function () {
+        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
+            mybutton.style.visibility = "visible";
+            mybutton.style.opacity = "1";
+        } else {
+            mybutton.style.visibility = "hidden";
+            mybutton.style.opacity = "0";
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        if (document.body.className.includes("dark")) {
+            document.body.classList.remove('dark');
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            document.body.classList.add('dark');
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+</body>
+
+</html>
