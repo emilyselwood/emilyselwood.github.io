@@ -8,32 +8,8 @@
     <language>en-us</language>
     <copyright>All rights reserved - 2022</copyright>
     <lastBuildDate>Sat, 07 Jun 2025 12:11:00 +0000</lastBuildDate><atom:link href="https://parsecsreach.org/tags/rust/index.xml" rel="self" type="application/rss+xml" />
-    <item>
-      <title>An introduction to Polygonical and ESVG</title>
-      <link>https://parsecsreach.org/post/polygonical_and_esvg/</link>
-      <pubDate>Sat, 07 Jun 2025 12:11:00 +0000</pubDate>
-      
-      <guid>https://parsecsreach.org/post/polygonical_and_esvg/</guid>
-      <description>For the last ${scairy_number_of_years} years I&amp;rsquo;ve been working on some library tooling to create SVG files using rust. There are some libraries that existed already but they either didn&amp;rsquo;t work for what I needed to do or they had limitations. So I build two libraries of my own. Polygonical and ESVG. Polygonical focuses on 2d geometry operations. Points, lines, polygons and doing things to them. It does not concern its self with how they are shown, what format they are written to disk or anything like that.</description>
-    </item>
     
-    <item>
-      <title>Creating a command line mastodon archive search tool in rust</title>
-      <link>https://parsecsreach.org/post/rust_mastodon_search/</link>
-      <pubDate>Wed, 15 Feb 2023 12:11:00 +0000</pubDate>
-      
-      <guid>https://parsecsreach.org/post/rust_mastodon_search/</guid>
-      <description>Today lets step through creating a new command line tool in rust. Recently I wanted to find one of my old toots, but it was from several months ago and mastodon doesn&amp;rsquo;t have the ability to search for anything other than usernames and hashtags. I couldn&amp;rsquo;t remember if I&amp;rsquo;d put hash tags in the post I was after so I couldn&amp;rsquo;t use the built in thing. What I did have however is my backup archive.</description>
-    </item>
     
-    <item>
-      <title>Turning an SVG into a PDF in rust</title>
-      <link>https://parsecsreach.org/post/rust_svg_to_pdf/</link>
-      <pubDate>Tue, 17 Jan 2023 12:11:00 +0000</pubDate>
-      
-      <guid>https://parsecsreach.org/post/rust_svg_to_pdf/</guid>
-      <description>I have some code that creates pages of shapes. My wife uses this to create products for her etsy shop. I originally wrote this in java many years ago. Some time last year I decided to rewrite the entire thing in rust. There were a number of reasons for this. Mostly that I&amp;rsquo;d learned a heck of a lot since I designed the original architecture and wanted some features that would not be possible with out rewriting most of it any way.</description>
-    </item>
     
   </channel>
 </rss>

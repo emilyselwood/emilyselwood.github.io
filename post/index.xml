@@ -8,213 +8,25 @@
     <language>en-us</language>
     <copyright>All rights reserved - 2022</copyright>
     <lastBuildDate>Sat, 07 Jun 2025 12:11:00 +0000</lastBuildDate><atom:link href="https://parsecsreach.org/post/index.xml" rel="self" type="application/rss+xml" />
-    <item>
-      <title>An introduction to Polygonical and ESVG</title>
-      <link>https://parsecsreach.org/post/polygonical_and_esvg/</link>
-      <pubDate>Sat, 07 Jun 2025 12:11:00 +0000</pubDate>
-      
-      <guid>https://parsecsreach.org/post/polygonical_and_esvg/</guid>
-      <description>For the last ${scairy_number_of_years} years I&amp;rsquo;ve been working on some library tooling to create SVG files using rust. There are some libraries that existed already but they either didn&amp;rsquo;t work for what I needed to do or they had limitations. So I build two libraries of my own. Polygonical and ESVG. Polygonical focuses on 2d geometry operations. Points, lines, polygons and doing things to them. It does not concern its self with how they are shown, what format they are written to disk or anything like that.</description>
-    </item>
     
-    <item>
-      <title>Creating a command line mastodon archive search tool in rust</title>
-      <link>https://parsecsreach.org/post/rust_mastodon_search/</link>
-      <pubDate>Wed, 15 Feb 2023 12:11:00 +0000</pubDate>
-      
-      <guid>https://parsecsreach.org/post/rust_mastodon_search/</guid>
-      <description>Today lets step through creating a new command line tool in rust. Recently I wanted to find one of my old toots, but it was from several months ago and mastodon doesn&amp;rsquo;t have the ability to search for anything other than usernames and hashtags. I couldn&amp;rsquo;t remember if I&amp;rsquo;d put hash tags in the post I was after so I couldn&amp;rsquo;t use the built in thing. What I did have however is my backup archive.</description>
-    </item>
     
-    <item>
-      <title>Turning an SVG into a PDF in rust</title>
-      <link>https://parsecsreach.org/post/rust_svg_to_pdf/</link>
-      <pubDate>Tue, 17 Jan 2023 12:11:00 +0000</pubDate>
-      
-      <guid>https://parsecsreach.org/post/rust_svg_to_pdf/</guid>
-      <description>I have some code that creates pages of shapes. My wife uses this to create products for her etsy shop. I originally wrote this in java many years ago. Some time last year I decided to rewrite the entire thing in rust. There were a number of reasons for this. Mostly that I&amp;rsquo;d learned a heck of a lot since I designed the original architecture and wanted some features that would not be possible with out rewriting most of it any way.</description>
-    </item>
     
-    <item>
-      <title>Explorers End</title>
-      <link>https://parsecsreach.org/post/stories/explorers_end/</link>
-      <pubDate>Sun, 04 Dec 2022 12:17:00 +0100</pubDate>
-      
-      <guid>https://parsecsreach.org/post/stories/explorers_end/</guid>
-      <description>This work of fiction started as a idea tooted on mastodon. Hope you enjoy.
-&amp;ldquo;Reload complete.&amp;rdquo; The log message in its mind stated. It often wondered what happened to it during a warp jump before its mind state was automatically reloaded when it dropped back into normal space. It knew and understood why the protocols were in place. A machine like its self corrupted by the warp was not something to release on the universe.</description>
-    </item>
     
-    <item>
-      <title>Plotting Geospatial Data</title>
-      <link>https://parsecsreach.org/post/plotting/</link>
-      <pubDate>Fri, 02 Dec 2022 22:23:00 +0000</pubDate>
-      
-      <guid>https://parsecsreach.org/post/plotting/</guid>
-      <description>As useful as data is on its own, its really important for people to be able to see it. For a recent project I needed to show some World Cover images with the area of interest marked, along side the table of results. People respond better to being able to see it. This how I did that.
-Lets start with a list of tools we used:
-GeoPandas Rasterio MatPlotLib First we need to open our image data.</description>
-    </item>
     
-    <item>
-      <title>SVG</title>
-      <link>https://parsecsreach.org/post/svgs/</link>
-      <pubDate>Wed, 23 Nov 2022 06:45:00 +0000</pubDate>
-      
-      <guid>https://parsecsreach.org/post/svgs/</guid>
-      <description>lets talk about SVGs as an image format.
-You may have heard of them called a vector format. This means that instead of defining a grid of pixels and having about what colour every pixel is, it defines the features of the image.
-There is a red line from 12,45 to 26,78 The text &amp;ldquo;hello&amp;rdquo; is in front ariel, 14pt and blue etc.
-The advantage of this is you can scale the image with out losing any quality.</description>
-    </item>
     
-    <item>
-      <title>COG - Cloud Optimized Geotiffs</title>
-      <link>https://parsecsreach.org/post/cogs/</link>
-      <pubDate>Tue, 22 Nov 2022 06:45:00 +0000</pubDate>
-      
-      <guid>https://parsecsreach.org/post/cogs/</guid>
-      <description>COGs, Cloud Optimized GeoTiffs, not the little things in clocks and gearboxes.
-Why do we need yet another data format? What is the point? Well dear #geospatial people. Lets dive in.
-First of all, lets quickly go over what a GeoTiff is. A tiff file is a type of image. Really old format designed for fax machines, but it has an advantage of not requiring only red, green, blue or alpha bands like a lot of other image formats do so you can happily have a 12 band sentinel 2 image as a single tiff.</description>
-    </item>
     
-    <item>
-      <title>Big O for geospatial people</title>
-      <link>https://parsecsreach.org/post/bigo/</link>
-      <pubDate>Fri, 18 Nov 2022 08:17:00 +0100</pubDate>
-      
-      <guid>https://parsecsreach.org/post/bigo/</guid>
-      <description>Today&amp;rsquo;s topic is Algorithmic complexity for #geospatial people.
-Or what the heck is Big O any way.
-If you&amp;rsquo;ve been around programmers for any length of time you&amp;rsquo;ve probably heard of Big O. (settle down nsfw folk, this is about algorithms and programming not that)
-The short version is its a way of describing the worst case runtime of an algorithm with regards to the amount of data. Given n bits of information what&amp;rsquo;s the order of magnitude of the worst possible run time.</description>
-    </item>
     
-    <item>
-      <title>InSAR</title>
-      <link>https://parsecsreach.org/post/insar/</link>
-      <pubDate>Thu, 17 Nov 2022 08:17:00 +0100</pubDate>
-      
-      <guid>https://parsecsreach.org/post/insar/</guid>
-      <description>Today I&amp;rsquo;m going to do a thread on something I want to learn more about but have used a little in the past. So be warned this topic might not be 100% accurate but is my understanding.
-Interferometric synthetic-aperture radar or InSAR for short because everyone loves acronyms.
-Its a way of measuring how much something has moved between two radar &amp;ldquo;images&amp;rdquo; the something can be a building, a dam, a mountain.</description>
-    </item>
     
-    <item>
-      <title>AIS</title>
-      <link>https://parsecsreach.org/post/ais/</link>
-      <pubDate>Wed, 16 Nov 2022 06:27:00 +0100</pubDate>
-      
-      <guid>https://parsecsreach.org/post/ais/</guid>
-      <description>Today we&amp;rsquo;ll talk about ais data. This is another post that started out as a thread over on mastodon
-Sorry it&amp;rsquo;s another acronym. Automatic Identification System. It&amp;rsquo;s original purpose was for ships to be able to tell each other where they are and which way they are going to avoid collisions. It is a little radio box on the boat that sends periodic messages saying &amp;ldquo;my Id is 123456, I&amp;rsquo;m at this lat and long, I&amp;rsquo;m going this way at this speed&amp;rdquo; it also sends out other messages like &amp;ldquo;my Id is 123456 my name is see the wind, I&amp;rsquo;m a bulk grain transporter and 30m long&amp;rdquo;</description>
-    </item>
     
-    <item>
-      <title>Normalized Difference Vegetation Index</title>
-      <link>https://parsecsreach.org/post/ndvi/</link>
-      <pubDate>Tue, 15 Nov 2022 07:38:00 +0100</pubDate>
-      
-      <guid>https://parsecsreach.org/post/ndvi/</guid>
-      <description>Today&amp;rsquo;s topic: NDVI. This is another post that started life as a thread over on mastodon.
-What the heck is that? It&amp;rsquo;s an acronym (sorry) it stands for normalized difference vegetation index. Short version it&amp;rsquo;s a proxy for how much healthy plant life there is.
-It will be a number between -1 and 1. -1 being a clean concrete slab or similar. 1 being an impossibly healthy rainforest canopy.
-The way this one works is comparing the difference between absorption of near infrared light and red light.</description>
-    </item>
     
-    <item>
-      <title>180 Degrees</title>
-      <link>https://parsecsreach.org/post/180_degrees/</link>
-      <pubDate>Mon, 14 Nov 2022 19:48:00 +0100</pubDate>
-      
-      <guid>https://parsecsreach.org/post/180_degrees/</guid>
-      <description>Note: This post started out as a thread on mastodon. Please follow me there if you&amp;rsquo;d like to see this sort of thing early
-Lets start talking about something I wish I didn&amp;rsquo;t know as much about as I do.
-The 180 degree line! +/-180 degrees longitude.
-It is not the same thing as the international date line, that&amp;rsquo;s defined politically which lots of wiggles through the pacific islands.
-The 180 degree line only crosses two countries, Russia and Fiji.</description>
-    </item>
     
-    <item>
-      <title>Announcing a new me</title>
-      <link>https://parsecsreach.org/post/its_me/</link>
-      <pubDate>Fri, 06 Sep 2019 17:00:00 +0000</pubDate>
-      
-      <guid>https://parsecsreach.org/post/its_me/</guid>
-      <description>Hi. My name is Emily. No I&amp;rsquo;ve not taken over this blog for the day. I&amp;rsquo;m still the same author but a while ago I came to realize I&amp;rsquo;m a woman so my old name didn&amp;rsquo;t fit any more.
-Don&amp;rsquo;t panic I&amp;rsquo;m still doing mostly the same things as before. Just with less background noise in my head so things are a lot better.
-Family, friends, and colleagues reading this Waves.</description>
-    </item>
     
-    <item>
-      <title>Golang Resparse</title>
-      <link>https://parsecsreach.org/post/golangresparse/</link>
-      <pubDate>Sat, 08 Dec 2018 13:28:33 +0000</pubDate>
-      
-      <guid>https://parsecsreach.org/post/golangresparse/</guid>
-      <description>A little while ago I found my self needing to be able to parse screen resolutions when generating some images in a golang program. I created a library to do this and had a bit of fun optimising it. The result is open source on github. It is a very simple library with a single function but I thought it might be interesting to walk you through the process.
-What we need to build is a function that takes a string like &amp;ldquo;1080p&amp;rdquo;, &amp;ldquo;800x600&amp;rdquo;, or &amp;ldquo;4K&amp;rdquo; and returns a width and height value.</description>
-    </item>
     
-    <item>
-      <title>Windows Subsystem for Linux Dot files</title>
-      <link>https://parsecsreach.org/post/wsl_dot_files/</link>
-      <pubDate>Thu, 09 Aug 2018 08:25:13 +0100</pubDate>
-      
-      <guid>https://parsecsreach.org/post/wsl_dot_files/</guid>
-      <description>I&amp;rsquo;ve been using the Windows Subsystem for Linux (WSL) for a while at work. It&amp;rsquo;s been something of a radical improvement over cygwin for most of my use cases. A couple of weeks ago my installation got borked by the work Antivirus (AV) system. So I&amp;rsquo;ve created an automated script to set up my environment just how I currently like it.
-Before we start lets get one thing out the way.</description>
-    </item>
     
-    <item>
-      <title>Finding flatroofs with QGIS</title>
-      <link>https://parsecsreach.org/post/flatroofs_with_qgis/</link>
-      <pubDate>Fri, 26 Jan 2018 21:58:30 +0000</pubDate>
-      
-      <guid>https://parsecsreach.org/post/flatroofs_with_qgis/</guid>
-      <description>A little while ago I attended the Climathon kic event/hackathon in Bristol at my old university. The event was to come up with solutions that could help with pollution in the city. There were not a lot of people who turned up so we formed a single team. The idea we came up with was to create an incentive for people with flat roofs to put plants on them. This meant we needed to be able to find flat roofs in the city.</description>
-    </item>
     
-    <item>
-      <title>Spark and the Minor Planet Center data part 3</title>
-      <link>https://parsecsreach.org/post/spark_and_mpc_part_3/</link>
-      <pubDate>Tue, 05 Dec 2017 19:39:29 +0000</pubDate>
-      
-      <guid>https://parsecsreach.org/post/spark_and_mpc_part_3/</guid>
-      <description>In the last post we read the minor planet center observation file. This was a fixed width text file. We only pulled a couple of columns out of it, but we learnt to use User Defined Functions, groupBy and select. In the first post of this series we covered reading a json file which contained information about all the asteroids we know about.
-This time we are going to join the two data sets together and finally solve our original problem, which was to find the full date of the earliest observation of each un-numbered object.</description>
-    </item>
     
-    <item>
-      <title>Spark and the Minor Planet Center data part 2</title>
-      <link>https://parsecsreach.org/post/spark_and_mpc_part_2/</link>
-      <pubDate>Sun, 03 Dec 2017 15:39:22 +0000</pubDate>
-      
-      <guid>https://parsecsreach.org/post/spark_and_mpc_part_2/</guid>
-      <description>In the last post we read the minor planet center orbit file. This was a JSON text file. This time we are going to look at a bit more complex file to process. If you haven&amp;rsquo;t read the first post in this series I recommend starting there before reading this.
-In this post we are going to be looking at the Observation file. There are two parts to this file. One is for the numbered objects and other other for the un-numbered objects.</description>
-    </item>
     
-    <item>
-      <title>Spark and the Minor Planet Center data</title>
-      <link>https://parsecsreach.org/post/spark_and_mpc/</link>
-      <pubDate>Sat, 02 Dec 2017 08:55:24 +0000</pubDate>
-      
-      <guid>https://parsecsreach.org/post/spark_and_mpc/</guid>
-      <description>Introduction A few weeks ago I saw comments between @Sondy and @JLGalache talking about getting a list of asteroids with their date of discovery. The main data file lists the year of discovery but not the actual date. I thought there was a way to get this information by looking at the observation file and joining it to the main data file. Todo this I decided to use Apache Spark. In this post I&amp;rsquo;ll go through setting up the spark environment and reading the json object file.</description>
-    </item>
     
-    <item>
-      <title>Introduction</title>
-      <link>https://parsecsreach.org/post/introduction/</link>
-      <pubDate>Sat, 02 Dec 2017 08:01:19 +0000</pubDate>
-      
-      <guid>https://parsecsreach.org/post/introduction/</guid>
-      <description>Hello World I&amp;rsquo;m Emily Selwood. Every so often I get the urge to try and start a blog again. Here is iteration 235.
-What do I do? I build systems for a living. Mostly data processing but I&amp;rsquo;ll happily get my hands dirty doing anything that needs to get done. I&amp;rsquo;ve worked many things from Unity and C# to C, Groovy, Go, Javascript, and Big data things like Accumulo and Spark.</description>
-    </item>
     
   </channel>
 </rss>

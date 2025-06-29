@@ -8,35 +8,8 @@
     <language>en-us</language>
     <copyright>All rights reserved - 2022</copyright>
     <lastBuildDate>Sat, 07 Jun 2025 12:11:00 +0000</lastBuildDate><atom:link href="https://parsecsreach.org/tags/svg/index.xml" rel="self" type="application/rss+xml" />
-    <item>
-      <title>An introduction to Polygonical and ESVG</title>
-      <link>https://parsecsreach.org/post/polygonical_and_esvg/</link>
-      <pubDate>Sat, 07 Jun 2025 12:11:00 +0000</pubDate>
-      
-      <guid>https://parsecsreach.org/post/polygonical_and_esvg/</guid>
-      <description>For the last ${scairy_number_of_years} years I&amp;rsquo;ve been working on some library tooling to create SVG files using rust. There are some libraries that existed already but they either didn&amp;rsquo;t work for what I needed to do or they had limitations. So I build two libraries of my own. Polygonical and ESVG. Polygonical focuses on 2d geometry operations. Points, lines, polygons and doing things to them. It does not concern its self with how they are shown, what format they are written to disk or anything like that.</description>
-    </item>
     
-    <item>
-      <title>Turning an SVG into a PDF in rust</title>
-      <link>https://parsecsreach.org/post/rust_svg_to_pdf/</link>
-      <pubDate>Tue, 17 Jan 2023 12:11:00 +0000</pubDate>
-      
-      <guid>https://parsecsreach.org/post/rust_svg_to_pdf/</guid>
-      <description>I have some code that creates pages of shapes. My wife uses this to create products for her etsy shop. I originally wrote this in java many years ago. Some time last year I decided to rewrite the entire thing in rust. There were a number of reasons for this. Mostly that I&amp;rsquo;d learned a heck of a lot since I designed the original architecture and wanted some features that would not be possible with out rewriting most of it any way.</description>
-    </item>
     
-    <item>
-      <title>SVG</title>
-      <link>https://parsecsreach.org/post/svgs/</link>
-      <pubDate>Wed, 23 Nov 2022 06:45:00 +0000</pubDate>
-      
-      <guid>https://parsecsreach.org/post/svgs/</guid>
-      <description>lets talk about SVGs as an image format.
-You may have heard of them called a vector format. This means that instead of defining a grid of pixels and having about what colour every pixel is, it defines the features of the image.
-There is a red line from 12,45 to 26,78 The text &amp;ldquo;hello&amp;rdquo; is in front ariel, 14pt and blue etc.
-The advantage of this is you can scale the image with out losing any quality.</description>
-    </item>
     
   </channel>
 </rss>

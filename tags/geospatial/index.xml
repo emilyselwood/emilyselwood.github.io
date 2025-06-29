@@ -8,94 +8,13 @@
     <language>en-us</language>
     <copyright>All rights reserved - 2022</copyright>
     <lastBuildDate>Fri, 02 Dec 2022 22:23:00 +0000</lastBuildDate><atom:link href="https://parsecsreach.org/tags/geospatial/index.xml" rel="self" type="application/rss+xml" />
-    <item>
-      <title>Plotting Geospatial Data</title>
-      <link>https://parsecsreach.org/post/plotting/</link>
-      <pubDate>Fri, 02 Dec 2022 22:23:00 +0000</pubDate>
-      
-      <guid>https://parsecsreach.org/post/plotting/</guid>
-      <description>As useful as data is on its own, its really important for people to be able to see it. For a recent project I needed to show some World Cover images with the area of interest marked, along side the table of results. People respond better to being able to see it. This how I did that.
-Lets start with a list of tools we used:
-GeoPandas Rasterio MatPlotLib First we need to open our image data.</description>
-    </item>
     
-    <item>
-      <title>COG - Cloud Optimized Geotiffs</title>
-      <link>https://parsecsreach.org/post/cogs/</link>
-      <pubDate>Tue, 22 Nov 2022 06:45:00 +0000</pubDate>
-      
-      <guid>https://parsecsreach.org/post/cogs/</guid>
-      <description>COGs, Cloud Optimized GeoTiffs, not the little things in clocks and gearboxes.
-Why do we need yet another data format? What is the point? Well dear #geospatial people. Lets dive in.
-First of all, lets quickly go over what a GeoTiff is. A tiff file is a type of image. Really old format designed for fax machines, but it has an advantage of not requiring only red, green, blue or alpha bands like a lot of other image formats do so you can happily have a 12 band sentinel 2 image as a single tiff.</description>
-    </item>
     
-    <item>
-      <title>Big O for geospatial people</title>
-      <link>https://parsecsreach.org/post/bigo/</link>
-      <pubDate>Fri, 18 Nov 2022 08:17:00 +0100</pubDate>
-      
-      <guid>https://parsecsreach.org/post/bigo/</guid>
-      <description>Today&amp;rsquo;s topic is Algorithmic complexity for #geospatial people.
-Or what the heck is Big O any way.
-If you&amp;rsquo;ve been around programmers for any length of time you&amp;rsquo;ve probably heard of Big O. (settle down nsfw folk, this is about algorithms and programming not that)
-The short version is its a way of describing the worst case runtime of an algorithm with regards to the amount of data. Given n bits of information what&amp;rsquo;s the order of magnitude of the worst possible run time.</description>
-    </item>
     
-    <item>
-      <title>InSAR</title>
-      <link>https://parsecsreach.org/post/insar/</link>
-      <pubDate>Thu, 17 Nov 2022 08:17:00 +0100</pubDate>
-      
-      <guid>https://parsecsreach.org/post/insar/</guid>
-      <description>Today I&amp;rsquo;m going to do a thread on something I want to learn more about but have used a little in the past. So be warned this topic might not be 100% accurate but is my understanding.
-Interferometric synthetic-aperture radar or InSAR for short because everyone loves acronyms.
-Its a way of measuring how much something has moved between two radar &amp;ldquo;images&amp;rdquo; the something can be a building, a dam, a mountain.</description>
-    </item>
     
-    <item>
-      <title>AIS</title>
-      <link>https://parsecsreach.org/post/ais/</link>
-      <pubDate>Wed, 16 Nov 2022 06:27:00 +0100</pubDate>
-      
-      <guid>https://parsecsreach.org/post/ais/</guid>
-      <description>Today we&amp;rsquo;ll talk about ais data. This is another post that started out as a thread over on mastodon
-Sorry it&amp;rsquo;s another acronym. Automatic Identification System. It&amp;rsquo;s original purpose was for ships to be able to tell each other where they are and which way they are going to avoid collisions. It is a little radio box on the boat that sends periodic messages saying &amp;ldquo;my Id is 123456, I&amp;rsquo;m at this lat and long, I&amp;rsquo;m going this way at this speed&amp;rdquo; it also sends out other messages like &amp;ldquo;my Id is 123456 my name is see the wind, I&amp;rsquo;m a bulk grain transporter and 30m long&amp;rdquo;</description>
-    </item>
     
-    <item>
-      <title>Normalized Difference Vegetation Index</title>
-      <link>https://parsecsreach.org/post/ndvi/</link>
-      <pubDate>Tue, 15 Nov 2022 07:38:00 +0100</pubDate>
-      
-      <guid>https://parsecsreach.org/post/ndvi/</guid>
-      <description>Today&amp;rsquo;s topic: NDVI. This is another post that started life as a thread over on mastodon.
-What the heck is that? It&amp;rsquo;s an acronym (sorry) it stands for normalized difference vegetation index. Short version it&amp;rsquo;s a proxy for how much healthy plant life there is.
-It will be a number between -1 and 1. -1 being a clean concrete slab or similar. 1 being an impossibly healthy rainforest canopy.
-The way this one works is comparing the difference between absorption of near infrared light and red light.</description>
-    </item>
     
-    <item>
-      <title>180 Degrees</title>
-      <link>https://parsecsreach.org/post/180_degrees/</link>
-      <pubDate>Mon, 14 Nov 2022 19:48:00 +0100</pubDate>
-      
-      <guid>https://parsecsreach.org/post/180_degrees/</guid>
-      <description>Note: This post started out as a thread on mastodon. Please follow me there if you&amp;rsquo;d like to see this sort of thing early
-Lets start talking about something I wish I didn&amp;rsquo;t know as much about as I do.
-The 180 degree line! +/-180 degrees longitude.
-It is not the same thing as the international date line, that&amp;rsquo;s defined politically which lots of wiggles through the pacific islands.
-The 180 degree line only crosses two countries, Russia and Fiji.</description>
-    </item>
     
-    <item>
-      <title>Finding flatroofs with QGIS</title>
-      <link>https://parsecsreach.org/post/flatroofs_with_qgis/</link>
-      <pubDate>Fri, 26 Jan 2018 21:58:30 +0000</pubDate>
-      
-      <guid>https://parsecsreach.org/post/flatroofs_with_qgis/</guid>
-      <description>A little while ago I attended the Climathon kic event/hackathon in Bristol at my old university. The event was to come up with solutions that could help with pollution in the city. There were not a lot of people who turned up so we formed a single team. The idea we came up with was to create an incentive for people with flat roofs to put plants on them. This meant we needed to be able to find flat roofs in the city.</description>
-    </item>
     
   </channel>
 </rss>

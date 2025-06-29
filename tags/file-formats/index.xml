@@ -8,28 +8,7 @@
     <language>en-us</language>
     <copyright>All rights reserved - 2022</copyright>
     <lastBuildDate>Wed, 23 Nov 2022 06:45:00 +0000</lastBuildDate><atom:link href="https://parsecsreach.org/tags/file-formats/index.xml" rel="self" type="application/rss+xml" />
-    <item>
-      <title>SVG</title>
-      <link>https://parsecsreach.org/post/svgs/</link>
-      <pubDate>Wed, 23 Nov 2022 06:45:00 +0000</pubDate>
-      
-      <guid>https://parsecsreach.org/post/svgs/</guid>
-      <description>lets talk about SVGs as an image format.
-You may have heard of them called a vector format. This means that instead of defining a grid of pixels and having about what colour every pixel is, it defines the features of the image.
-There is a red line from 12,45 to 26,78 The text &amp;ldquo;hello&amp;rdquo; is in front ariel, 14pt and blue etc.
-The advantage of this is you can scale the image with out losing any quality.</description>
-    </item>
     
-    <item>
-      <title>COG - Cloud Optimized Geotiffs</title>
-      <link>https://parsecsreach.org/post/cogs/</link>
-      <pubDate>Tue, 22 Nov 2022 06:45:00 +0000</pubDate>
-      
-      <guid>https://parsecsreach.org/post/cogs/</guid>
-      <description>COGs, Cloud Optimized GeoTiffs, not the little things in clocks and gearboxes.
-Why do we need yet another data format? What is the point? Well dear #geospatial people. Lets dive in.
-First of all, lets quickly go over what a GeoTiff is. A tiff file is a type of image. Really old format designed for fax machines, but it has an advantage of not requiring only red, green, blue or alpha bands like a lot of other image formats do so you can happily have a 12 band sentinel 2 image as a single tiff.</description>
-    </item>
     
   </channel>
 </rss>

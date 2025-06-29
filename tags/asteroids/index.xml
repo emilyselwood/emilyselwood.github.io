@@ -8,34 +8,8 @@
     <language>en-us</language>
     <copyright>All rights reserved - 2022</copyright>
     <lastBuildDate>Tue, 05 Dec 2017 19:39:29 +0000</lastBuildDate><atom:link href="https://parsecsreach.org/tags/asteroids/index.xml" rel="self" type="application/rss+xml" />
-    <item>
-      <title>Spark and the Minor Planet Center data part 3</title>
-      <link>https://parsecsreach.org/post/spark_and_mpc_part_3/</link>
-      <pubDate>Tue, 05 Dec 2017 19:39:29 +0000</pubDate>
-      
-      <guid>https://parsecsreach.org/post/spark_and_mpc_part_3/</guid>
-      <description>In the last post we read the minor planet center observation file. This was a fixed width text file. We only pulled a couple of columns out of it, but we learnt to use User Defined Functions, groupBy and select. In the first post of this series we covered reading a json file which contained information about all the asteroids we know about.
-This time we are going to join the two data sets together and finally solve our original problem, which was to find the full date of the earliest observation of each un-numbered object.</description>
-    </item>
     
-    <item>
-      <title>Spark and the Minor Planet Center data part 2</title>
-      <link>https://parsecsreach.org/post/spark_and_mpc_part_2/</link>
-      <pubDate>Sun, 03 Dec 2017 15:39:22 +0000</pubDate>
-      
-      <guid>https://parsecsreach.org/post/spark_and_mpc_part_2/</guid>
-      <description>In the last post we read the minor planet center orbit file. This was a JSON text file. This time we are going to look at a bit more complex file to process. If you haven&amp;rsquo;t read the first post in this series I recommend starting there before reading this.
-In this post we are going to be looking at the Observation file. There are two parts to this file. One is for the numbered objects and other other for the un-numbered objects.</description>
-    </item>
     
-    <item>
-      <title>Spark and the Minor Planet Center data</title>
-      <link>https://parsecsreach.org/post/spark_and_mpc/</link>
-      <pubDate>Sat, 02 Dec 2017 08:55:24 +0000</pubDate>
-      
-      <guid>https://parsecsreach.org/post/spark_and_mpc/</guid>
-      <description>Introduction A few weeks ago I saw comments between @Sondy and @JLGalache talking about getting a list of asteroids with their date of discovery. The main data file lists the year of discovery but not the actual date. I thought there was a way to get this information by looking at the observation file and joining it to the main data file. Todo this I decided to use Apache Spark. In this post I&amp;rsquo;ll go through setting up the spark environment and reading the json object file.</description>
-    </item>
     
   </channel>
 </rss>
