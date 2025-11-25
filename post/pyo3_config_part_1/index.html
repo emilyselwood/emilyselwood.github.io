@@ -1,0 +1,552 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto">
+
+<head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>Using python to configure rust Part 1 | Parsecs Reach</title>
+<meta name="keywords" content="rust, python, pyo3">
+<meta name="description" content="I&rsquo;ve recently been playing with running python code from rust to use as a kind of configuration and extension system. The idea is that my program runs a bunch of python code that the user has defined and that gives it the configuration it needs. The user has the POWER OF THIS FULLY OPERATIONAL PROGRAMMING LANGUAGE cough cough, sorry voice box got stuck on imperial functionary there.
+I&rsquo;m doing this as a personal project and proof of concept so don&rsquo;t expect bullet proof code here.">
+<meta name="author" content="Emily Selwood">
+<link rel="canonical" href="https://parsecsreach.org/post/pyo3_config_part_1/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.979d31a757b649bf90615e658aedd46e2896dc33bf05775ea99697ce5b3e4fe4.css" integrity="sha256-l50xp1e2Sb&#43;QYV5liu3UbiiW3DO/BXdeqZaXzls&#43;T&#43;Q=" rel="preload stylesheet" as="style">
+<script defer crossorigin="anonymous" src="/assets/js/highlight.f413e19d0714851f6474e7ee9632408e58ac146fbdbe62747134bea2fa3415e0.js" integrity="sha256-9BPhnQcUhR9kdOfuljJAjlisFG&#43;9vmJ0cTS&#43;ovo0FeA="
+    onload="hljs.initHighlightingOnLoad();"></script>
+<link rel="icon" href="https://parsecsreach.org/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="https://parsecsreach.org/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://parsecsreach.org/favicon-32x32.png">
+<link rel="apple-touch-icon" href="https://parsecsreach.org/apple-touch-icon.png">
+<link rel="mask-icon" href="https://parsecsreach.org/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --hljs-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-track {
+                background: 0 0;
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-thumb {
+                border-color: var(--theme);
+            }
+        }
+
+    </style>
+</noscript><meta property="og:title" content="Using python to configure rust Part 1" />
+<meta property="og:description"
+  content="I&rsquo;ve recently been playing with running python code from rust to use as a kind of configuration and extension system. The idea is that my program runs a bunch of python code that the user has defined and that gives it the configuration it needs. The user has the POWER OF THIS FULLY OPERATIONAL PROGRAMMING LANGUAGE cough cough, sorry voice box got stuck on imperial functionary there.
+I&rsquo;m doing this as a personal project and proof of concept so don&rsquo;t expect bullet proof code here." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://parsecsreach.org/post/pyo3_config_part_1/" />
+<meta name="fediverse:creator" content="@emily_s@mastodon.me.uk"><meta property="article:section" content="post" />
+
+<meta property="article:published_time" content="2025-11-24T21:02:00+00:00" />
+
+<meta property="article:modified_time" content="2025-11-24T21:02:00+00:00" />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Using python to configure rust Part 1"/>
+<meta name="twitter:description" content="I&rsquo;ve recently been playing with running python code from rust to use as a kind of configuration and extension system. The idea is that my program runs a bunch of python code that the user has defined and that gives it the configuration it needs. The user has the POWER OF THIS FULLY OPERATIONAL PROGRAMMING LANGUAGE cough cough, sorry voice box got stuck on imperial functionary there.
+I&rsquo;m doing this as a personal project and proof of concept so don&rsquo;t expect bullet proof code here."/>
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "Posts",
+      "item": "https://parsecsreach.org/post/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  3 ,
+      "name": "Using python to configure rust Part 1",
+      "item": "https://parsecsreach.org/post/pyo3_config_part_1/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "Using python to configure rust Part 1",
+  "name": "Using python to configure rust Part 1",
+  "description": "I\u0026rsquo;ve recently been playing with running python code from rust to use as a kind of configuration and extension system. The idea is that my program runs a bunch of python code that the user has defined and that gives it the configuration it needs. The user has the POWER OF THIS FULLY OPERATIONAL PROGRAMMING LANGUAGE cough cough, sorry voice box got stuck on imperial functionary there.\nI\u0026rsquo;m doing this as a personal project and proof of concept so don\u0026rsquo;t expect bullet proof code here.",
+  "keywords": [
+    "rust", "python", "pyo3"
+  ],
+  "articleBody": "I’ve recently been playing with running python code from rust to use as a kind of configuration and extension system. The idea is that my program runs a bunch of python code that the user has defined and that gives it the configuration it needs. The user has the POWER OF THIS FULLY OPERATIONAL PROGRAMMING LANGUAGE cough cough, sorry voice box got stuck on imperial functionary there.\nI’m doing this as a personal project and proof of concept so don’t expect bullet proof code here. If you want to do something similar then you will need to put some effort into hardening this. I’ll also be pretty vague about what is being configured here as I don’t think it matters right now. Think of something like helm charts or terraform config. Something that would usually be configured by a bunch of yaml files and maybe some templates. I want to know why they aren’t configured with code, so I’m experimenting to find the reasons.\nThis is going to be a series of posts and to avoid it being a book, I’m going to assume you are familiar with rust and python. You know how to set up a project in both languages and are comfortable with their memory models, module systems, and standard libraries.\nWe can run python code in rust using the library pyo3. To do this we needed to load the users code, find the right functions to call in the users code, and then run them. I could make them name their function something particular, but that doesn’t give much power. It would be way nicer if they could add a decorator to their config functions and that allowed me to find them. What would also be cool is if we could chain them, so if the args to one function meant that it would call the function with that name first. E.g\n@configure def configA(): return Config( name: \"blah\" ) @configure def configB(configA): return Config( name: configA.name + \"_with_something_extra\" ) @configure def configC(configA, configB): return Config( name: configB.name + \"_and_even_more_\" + configA.name, ) Where it is able to work out that it needs the results of configA and configB to be able to call configC\nThere are a few of steps here:\nLoad all the python files in a folder into the python environment Create a rust struct that python code can create for the config objects Find all the functions with the @configure decorator on them Work out what the arguments are for each function Work out the order they should be executed in so we have the results needed as inputs to other functions Execute the functions and save their results so we can pass them as parameters later. This is going to be a lot so I’ll split this into several posts.\nStep 1: Load all the python files into the environment pyo3 works in rust by creating an environment to run in. Python doesn’t have lifetimes and all the other fun and wonderful memory safety we have in rust. So all the python variables and memory gets put inside the pyo3 environment where it gets the lifetime of the environment. If you don’t understand this, don’t worry, its rust memory model stuff, you probably aren’t the intended audience for this (sorry)\nI’m going to expect you’ve got a rust environment set up and a python environment setup. I’m on an old debian currently and have python 3.11.2 but I’ve not seen anything that should break using different versions. I’ve just not tested it.\nStarting with a fresh cargo new project and adding pyo3 to the dependencies.\npyo3 = {version=\"0.27\", features=[\"auto-initialize\"]} Now lets create the python environment inside our rust main.\nuse pyo3::prelude::*; fn main() -\u003e PyResult\u003c()\u003e { Python::attach(|py| { // do something in python here }); } Inside that attached python block we can do things in python, see the pyo3 docs for examples Here I’m going to jump right into loading the users code from a folder somewhere.\npyo3 has a function to create a python module from a string. We can reasonably easily load a file into a string. One wrinkle is we need to use CString rather than the usual rust String because python operates in c land and we have to give it strings it will be able to comprehend.\nfn attach_module\u003c'l\u003e( py: Python\u003c'l\u003e, root_dir: \u0026Path, input_path: \u0026Path, ) -\u003e PyResult\u003c(CString, pyo3::Bound\u003c'l, pyo3::types::PyModule\u003e)\u003e { let file_name = CString::new(input_path.file_name().unwrap().as_encoded_bytes())?; let module_name = CString::new( input_path .strip_prefix(root_dir) .unwrap() .to_str() .unwrap() .replace(\"/\", \".\") .strip_suffix(\".py\") .unwrap(), )?; let content = CString::new(fs::read_to_string(input_path)?)?; let module = PyModule::from_code(py, \u0026content, \u0026file_name, \u0026module_name)?; Ok((module_name, module)) } The first thing is the mess of a type signature. The lifetime parameter 'l tells rust that the life time of the py parameter is going to be the life time of our results as well. We are going to be returning a PyResult, which is like a built in Result but it always returns a PyErr on errors. In the good case we are going to return a tuple of a CString (the module name) and a pyo3::Bound which acts like a rust Rc to the module with a lifetime.\nThen there is a fair chunk of mess in there to convert the file path to a python module name. I’m making the assumption that you are using an operating system that cleanly converts from OsString to String. I’ve worked on windows, linux, and macs and I’ve not seen that conversion fail so for this code I’m ok with this assumption. It also assumes that its been given a string with .py extension, you’ll see why I’m ok with this in a minute.\nReading the file and converting it to a CString is a single line. (Its fun how some really complex things are easy in rust but some things are a pain like taking a file path and replacing all the / with spaces :) )\nOnce we’ve got the text of the file, the filename and the module name we can call the PyModule::from_code to create the module. We have to hand it a reference to the python environment we are using so it knows where to create the module.\nThis handles a single file for us. Easy enough. Lets go one more level and load all the files in a directory, even if they reference each other.\nTo read all the files in a directory, including sub directories we can use the WalkDir crate. This can give us an iterator over a directory and we can use the filter functions to find only the things we are interested in.\nfn attach_modules\u003c'l\u003e( py: Python\u003c'l\u003e, input_path: \u0026str, ) -\u003e PyResult\u003cHashMap\u003cString, pyo3::Bound\u003c'l, pyo3::types::PyModule\u003e\u003e\u003e { let mut result = HashMap::new(); let root_path = Path::new(input_path); let py_str = OsStr::new(\"py\"); for entry in WalkDir::new(input_path) .into_iter() .filter_map(|e| e.ok()) .filter(|e| e.metadata().unwrap().is_file()) .filter(|e| e.path().extension().unwrap_or(OsStr::new(\"\")) == py_str) { let path = entry.path(); let (name, module) = attach_module(py, \u0026root_path, path)?; result.insert(name.into_string()?, module); } Ok(result) } This time our function takes a single path, where we are going to work from to find our python files. We create a HashMap (like a python dictionary) to use as the result then start using WalkDir First we filter out anything that the OS didn’t let us read (permissions fun etc) then we filter for only files, then for paths which have the “py” extension. We then use the entries that gives us to call the attach_module function we created just now.\nSo now we’ve been able to create all our modules. However they aren’t actually available to each other. They are just Module objects, they are not really part of the python “class path” to mix my language concepts. Python manages its modules by keeping a dictionary in the built in sys module called modules when ever you try to import something in your code it looks in that dictionary to find it and errors if its not there.\nWe can do this in rust with a few modifications to the above function\nfn attach_modules\u003c'l\u003e( py: Python\u003c'l\u003e, input_path: \u0026str, ) -\u003e PyResult\u003cHashMap\u003cString, pyo3::Bound\u003c'l, pyo3::types::PyModule\u003e\u003e\u003e { let mut result = HashMap::new(); let sys = PyModule::import(py, \"sys\")?; let py_modules: Bound\u003c'l, PyDict\u003e = sys.getattr(\"modules\")?.cast_into()?; let root_path = Path::new(input_path); let py_str = OsStr::new(\"py\"); for entry in WalkDir::new(input_path) .into_iter() .filter_map(|e| e.ok()) .filter(|e| e.metadata().unwrap().is_file()) .filter(|e| e.path().extension().unwrap_or(OsStr::new(\"\")) == py_str) { let path = entry.path(); let (name, module) = attach_module(py, \u0026root_path, path)?; py_modules.set_item(\u0026name, \u0026module)?; result.insert(name.into_string()?, module); } Ok(result) } We import the “sys” module then get hold of the modules dictionary using the getattr method. We’ll be using this a lot. It returns a PyResult that contains a reference to the python version of the value we asked for. This can be any attribute of the python object in question, in this case a global variable in the sys module. We can then call py_modules.set_item to insert the entry into the dictionary. Now all the modules should be able to find each other when we call them.\nWe’ve successfully loaded all the python files in the directory. So on to Step 2.\nStep 2: Create a rust config struct that can be constructed in python. What we want here is a rust struct that we can do something like this to\nfrom somewhere import Config def construct(): c = Config(name: \"foo\") c.something = \"a value\" return c Unfortunately we can’t just import a rust type and have it work. That would be too much magic. There are some hoops we need to jump though.\nThe first is creating a new python module that we can import. I’ve created a new rust file to put the config related stuff in. config.rs pyo3 has a macro to do this for us.\nuse pyo3::prelude::*; #[pymodule] pub mod pyconfigmod { } Though again, like with us loading the python code this doesn’t add it to the python world so we have do that separately. This needs a line before we attach to python, back in the main.rs file.\npub mod config; use config::pyconfigmod; fn main() -\u003e PyResult\u003c()\u003e { pyo3::append_to_inittab!(pyconfigmod); Python::attach(|py| { Now we can create the class, it looks like a normal rust struct but with some extra macros, back in the config.rs we can add the struct.\nuse pyo3::prelude::*; #[pymodule] pub mod pyconfigmod { use pyo3::prelude::* #[pyclass(set_all, get_all)] #[derive(Debug, Default, Clone)] pub struct Config { pub name: String, } } Note: We need to import the prelude again inside the module. (Don’t ask me why, this is a bit of rust I’ve not figured out yet, and don’t really need to understand right now. This works.)\nBy default pyo3 treats python classes as immutable. It makes it easier to reason about the thread safety of everything. However if you add the set_all and get_all parameters to the pyclass macro then you get generated getters and setters that take care of that synchronization mess for you. The final thing we need for this to work how we want is a constructor. Currently if we try to construct this thing in python it will tell us that it can’t be constructed.\nThis also shows us how to add custom methods to our python class.\nuse pyo3::prelude::*; #[pymodule] pub mod pyconfigmod { use pyo3::prelude::* #[pyclass(set_all, get_all)] #[derive(Debug, Default, Clone)] pub struct Config { pub name: String, } #[pymethods] impl Config { #[new] fn __new__(name: String) -\u003e Config { let result = Config{name: name}; result } } } While this is a very simple function we need to define it our selves.\nAs a result we are able to create a python file that looks like this\nfrom pyconfigmod import Config def something(): print(\"configuring something\") c = Config(\"my name\") # Eventually do some thing more complex to create this here. return c Back in main we should run this for the grand payoff of seeing it print out something from our Config class. Back in our main.rs file we’ve got something like this.\npub mod config; use config::pyconfigmod; // ... module loading code here ... fn main() -\u003e PyResult\u003c()\u003e { pyo3::append_to_inittab!(pyconfigmod); Python::attach(|py| { modules = attach_modules(\"/home/emily/Projects/my_config\"); }); } With the little python script in the previous code block in /home/emily/Projects/my_config we now have the module. So we can test this and see it working we will loop through each of the module and see if we can find an attribute called something and if its callable we will call it.\npub mod config; use config::pyconfigmod; // ... module loading code here ... fn main() -\u003e PyResult\u003c()\u003e { pyo3::append_to_inittab!(pyconfigmod); Python::attach(|py| { modules = attach_modules(\"/home/emily/Projects/my_config\"); for (module_name, module) in modules { if module.hasattr(\"something\")? { let func_something = module.getattr(\"something\")?; println!(\"Found something in {}\", module_name); if func_something.is_callable() { let result: Config = func_something.call((), None)?.extract()?; println!(\"Config received! Name: {}\", result.name); } } } }); } If we run this with cargo run we should see something like\nemily@diamondslab:~/Projects/breezeblock$ cargo run Compiling breezeblock v0.1.0 (/home/emily/Projects/breezeblock) Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.44s Running `target/debug/breezeblock` Found something in something configuring something Config received! Name: my name This is a good start. We’ve got the ability to load a folder full of python files into rust. Create a rust class in python, and call functions in python from rust and get back a rust class. Next time we will work on finding python functions with a custom decorator and then working out what parameters those functions take.\n",
+  "wordCount" : "2214",
+  "inLanguage": "en",
+  "datePublished": "2025-11-24T21:02:00Z",
+  "dateModified": "2025-11-24T21:02:00Z",
+  "author":{
+    "@type": "Person",
+    "name": "Emily Selwood"
+  },
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://parsecsreach.org/post/pyo3_config_part_1/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Parsecs Reach",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://parsecsreach.org/favicon.ico"
+    }
+  }
+}
+</script>
+</head>
+
+<body class="" id="top">
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.body.classList.add('dark');
+    } else if (localStorage.getItem("pref-theme") === "light") {
+        document.body.classList.remove('dark')
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.body.classList.add('dark');
+    }
+
+</script>
+
+<header class="header">
+    <nav class="nav">
+        <div class="logo">
+            <a href="https://parsecsreach.org" accesskey="h" title="Parsecs Reach (Alt + H)">Parsecs Reach</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" accesskey="t" title="(Alt + T)">
+                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <ul id="menu">
+            <li>
+                <a rel="me" href="https://mastodon.me.uk/@emily_s"  target="_blank" title="">
+                    <span><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 417.8 512" class="logo-social" width="18" height="18"><path d="M417.8 179.1c0-97.2-63.7-125.7-63.7-125.7-62.5-28.7-228.5-28.4-290.4 0 0 0-63.7 28.5-63.7 125.7 0 115.7-6.6 259.4 105.6 289.1 40.5 10.7 75.3 13 103.3 11.4 50.8-2.8 79.3-18.1 79.3-18.1l-1.7-36.9s-36.3 11.4-77.1 10.1c-40.4-1.4-83-4.4-89.6-54-.6-4.4-.9-9-.9-13.9 85.6 20.9 158.6 9.1 178.7 6.7 56.1-6.7 105-41.3 111.2-72.9 9.8-49.8 9-121.5 9-121.5zm-75.1 125.2h-46.6V190.1c0-49.7-64-51.6-64 6.9v62.5h-46.3V197c0-58.5-64-56.6-64-6.9v114.2H75.1c0-122.1-5.2-147.9 18.4-175 25.9-28.9 79.8-30.8 103.8 6.1l11.6 19.5 11.6-19.5c24.1-37.1 78.1-34.8 103.8-6.1 23.7 27.3 18.4 53 18.4 175z"/></svg></span>
+                    
+                </a>
+            </li>
+            <li>
+                <a rel="" href="https://github.com/emilyselwood"  target="_blank" title="">
+                    <span><svg width="18" height="18" class="logo-social" stroke="none" viewBox="0 0 11.493062 11.209467" xmlns="http://www.w3.org/2000/svg"><path d="M 5.746044,0 C 2.572808,0 0,2.572808 0,5.74675 c 0,2.538941 1.646414,4.69265 3.929944,5.452886 0.287514,0.05256 0.392289,-0.124883 0.392289,-0.277283 0,-0.136173 -0.0049,-0.49777 -0.0078,-0.977195 C 2.715997,10.292291 2.378741,9.174691 2.378741,9.174691 2.117333,8.511116 1.740566,8.334375 1.740566,8.334375 1.218808,7.977716 1.780076,7.984772 1.780076,7.984772 2.356868,8.025692 2.660257,8.577086 2.660257,8.577086 3.172843,9.45515 4.005398,9.201503 4.332776,9.054747 4.384986,8.683272 4.533154,8.429978 4.697548,8.286397 3.421551,8.141405 2.079937,7.648222 2.079937,5.446183 c 0,-0.627239 0.224014,-1.140178 0.591609,-1.541991 -0.05927,-0.145345 -0.25647,-0.729545 0.05609,-1.520825 0,0 0.4826,-0.154517 1.580445,0.589138 C 4.766339,2.845153 5.258111,2.7813 5.746709,2.779183 6.2346,2.781283 6.726372,2.845153 7.185336,2.972505 8.282475,2.22885 8.764017,2.383367 8.764017,2.383367 c 0.313619,0.79128 0.116416,1.37548 0.05715,1.520825 0.3683,0.401813 0.590903,0.914752 0.590903,1.541991 0,2.207683 -1.343731,2.693458 -2.623961,2.835628 0.206375,0.177447 0.390172,0.528108 0.390172,1.06433 0,0.767998 -0.0071,1.387828 -0.0071,1.576212 0,0.153811 0.103364,0.332669 0.395111,0.276577 2.281767,-0.761647 3.92677,-2.913944 3.92677,-5.45218 C 11.493062,2.572808 8.919901,0 5.745959,0"/></svg></span>
+                    
+                </a>
+            </li>
+            <li>
+                <a rel="" href="https://parsecsreach.org/projects"  target="_self" title="Projects">
+                    <span>Projects</span>
+                    
+                </a>
+            </li>
+            <li>
+                <a rel="" href="https://parsecsreach.org/"  target="_self" title="Home">
+                    <span>Home</span>
+                    
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    
+    <h1 class="post-title">
+      Using python to configure rust Part 1
+    </h1>
+    <div class="post-meta"><span title='2025-11-24 21:02:00 +0000 GMT'>2025 November 24</span>&nbsp;·&nbsp;Emily Selwood
+
+</div>
+  </header> 
+  <div class="post-content"><p>I&rsquo;ve recently been playing with running python code from rust to use as a kind of configuration and extension system. The idea is that my program runs a bunch of python code that the user has defined and that gives it the configuration it needs. The user has the <em>POWER OF THIS FULLY OPERATIONAL PROGRAMMING LANGUAGE</em> cough cough, sorry voice box got stuck on imperial functionary there.</p>
+<p>I&rsquo;m doing this as a personal project and proof of concept so don&rsquo;t expect bullet proof code here. If you want to do something similar then you will need to put some effort into hardening this. I&rsquo;ll also be pretty vague about what is being configured here as I don&rsquo;t think it matters right now. Think of something like helm charts or terraform config. Something that would usually be configured by a bunch of yaml files and maybe some templates. I want to know why they aren&rsquo;t configured with code, so I&rsquo;m experimenting to find the reasons.</p>
+<p>This is going to be a series of posts and to avoid it being a book, I&rsquo;m going to assume you are familiar with rust and python. You know how to set up a project in both languages and are comfortable with their memory models, module systems, and standard libraries.</p>
+<p>We can run python code in rust using the library <a href="https://pyo3.rs">pyo3</a>. To do this we needed to load the users code, find the right functions to call in the users code, and then run them. I could make them name their function something particular, but that doesn&rsquo;t give much power. It would be way nicer if they could add a decorator to their config functions and that allowed me to find them. What would also be cool is if we could chain them, so if the args to one function meant that it would call the function with that name first. E.g</p>
+<pre tabindex="0"><code>@configure
+def configA():
+  return Config(
+    name: &#34;blah&#34;
+  )
+
+@configure
+def configB(configA):
+  return Config(
+    name: configA.name + &#34;_with_something_extra&#34;
+  )
+
+@configure
+def configC(configA, configB):
+  return Config(
+    name: configB.name + &#34;_and_even_more_&#34; + configA.name,
+  )
+</code></pre><p>Where it is able to work out that it needs the results of <code>configA</code> and <code>configB</code> to be able to call <code>configC</code></p>
+<p>There are a few of steps here:</p>
+<ol>
+<li>Load all the python files in a folder into the python environment</li>
+<li>Create a rust struct that python code can create for the config objects</li>
+<li>Find all the functions with the <code>@configure</code> decorator on them</li>
+<li>Work out what the arguments are for each function</li>
+<li>Work out the order they should be executed in so we have the results needed as inputs to other functions</li>
+<li>Execute the functions and save their results so we can pass them as parameters later.</li>
+</ol>
+<p>This is going to be a lot  so I&rsquo;ll split this into several posts.</p>
+<h2 id="step-1-load-all-the-python-files-into-the-environment">Step 1: Load all the python files into the environment<a hidden class="anchor" aria-hidden="true" href="#step-1-load-all-the-python-files-into-the-environment">#</a></h2>
+<p>pyo3 works in rust by creating an environment to run in. Python doesn&rsquo;t have lifetimes and all the other fun and wonderful memory safety we have in rust. So all the python variables and memory gets put inside the pyo3 environment where it gets the lifetime of the environment. If you don&rsquo;t understand this, don&rsquo;t worry, its rust memory model stuff, you probably aren&rsquo;t the intended audience for this (sorry)</p>
+<p>I&rsquo;m going to expect you&rsquo;ve got a rust environment set up and a python environment setup. I&rsquo;m on an old debian currently and have python 3.11.2 but I&rsquo;ve not seen anything that should break using different versions. I&rsquo;ve just not tested it.</p>
+<p>Starting with a fresh <code>cargo new</code> project and adding <code>pyo3</code> to the dependencies.</p>
+<pre tabindex="0"><code>pyo3 = {version=&#34;0.27&#34;, features=[&#34;auto-initialize&#34;]}
+</code></pre><p>Now lets create the python environment inside our rust main.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-rust" data-lang="rust"><span style="display:flex;"><span><span style="color:#66d9ef">use</span> pyo3::prelude::<span style="color:#f92672">*</span>;
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">fn</span> <span style="color:#a6e22e">main</span>() -&gt; <span style="color:#a6e22e">PyResult</span><span style="color:#f92672">&lt;</span>()<span style="color:#f92672">&gt;</span> {
+</span></span><span style="display:flex;"><span>    Python::attach(<span style="color:#f92672">|</span>py<span style="color:#f92672">|</span> {
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">// do something in python here
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    });
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>Inside that attached python block we can do things in python, see the pyo3 docs for <a href="https://pyo3.rs/v0.15.0/python_from_rust">examples</a> Here I&rsquo;m going to jump right into loading the users code from a folder somewhere.</p>
+<p>pyo3 has a function to create a python module from a string. We can reasonably easily load a file into a string. One wrinkle is we need to use <code>CString</code> rather than the usual rust <code>String</code> because python operates in c land and we have to give it strings it will be able to comprehend.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-rust" data-lang="rust"><span style="display:flex;"><span><span style="color:#66d9ef">fn</span> <span style="color:#a6e22e">attach_module</span><span style="color:#f92672">&lt;</span><span style="color:#a6e22e">&#39;l</span><span style="color:#f92672">&gt;</span>(
+</span></span><span style="display:flex;"><span>    py: <span style="color:#a6e22e">Python</span><span style="color:#f92672">&lt;</span><span style="color:#a6e22e">&#39;l</span><span style="color:#f92672">&gt;</span>,
+</span></span><span style="display:flex;"><span>    root_dir: <span style="color:#66d9ef">&amp;</span><span style="color:#a6e22e">Path</span>,
+</span></span><span style="display:flex;"><span>    input_path: <span style="color:#66d9ef">&amp;</span><span style="color:#a6e22e">Path</span>,
+</span></span><span style="display:flex;"><span>) -&gt; <span style="color:#a6e22e">PyResult</span><span style="color:#f92672">&lt;</span>(CString, pyo3::Bound<span style="color:#f92672">&lt;</span><span style="color:#a6e22e">&#39;l</span>, pyo3::types::PyModule<span style="color:#f92672">&gt;</span>)<span style="color:#f92672">&gt;</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">let</span> file_name <span style="color:#f92672">=</span> CString::new(input_path.file_name().unwrap().as_encoded_bytes())<span style="color:#f92672">?</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">let</span> module_name <span style="color:#f92672">=</span> CString::new(
+</span></span><span style="display:flex;"><span>        input_path
+</span></span><span style="display:flex;"><span>            .strip_prefix(root_dir)
+</span></span><span style="display:flex;"><span>            .unwrap()
+</span></span><span style="display:flex;"><span>            .to_str()
+</span></span><span style="display:flex;"><span>            .unwrap()
+</span></span><span style="display:flex;"><span>            .replace(<span style="color:#e6db74">&#34;/&#34;</span>, <span style="color:#e6db74">&#34;.&#34;</span>)
+</span></span><span style="display:flex;"><span>            .strip_suffix(<span style="color:#e6db74">&#34;.py&#34;</span>)
+</span></span><span style="display:flex;"><span>            .unwrap(),
+</span></span><span style="display:flex;"><span>    )<span style="color:#f92672">?</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">let</span> content <span style="color:#f92672">=</span> CString::new(fs::read_to_string(input_path)<span style="color:#f92672">?</span>)<span style="color:#f92672">?</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">let</span> module <span style="color:#f92672">=</span> PyModule::from_code(py, <span style="color:#f92672">&amp;</span>content, <span style="color:#f92672">&amp;</span>file_name, <span style="color:#f92672">&amp;</span>module_name)<span style="color:#f92672">?</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    Ok((module_name, module))
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>The first thing is the mess of a type signature. The lifetime parameter <code>'l</code> tells rust that the life time of the py parameter is going to be the life time of our results as well. We are going to be returning a <code>PyResult</code>, which is like a built in <code>Result</code> but it always returns a <code>PyErr</code> on errors. In the good case we are going to return a tuple of a CString (the module name) and a <code>pyo3::Bound</code> which acts like a rust <code>Rc</code> to the module with a lifetime.</p>
+<p>Then there is a fair chunk of mess in there to convert the file path to a python module name. I&rsquo;m making the assumption that you are using an operating system that cleanly converts from <code>OsString</code> to <code>String</code>. I&rsquo;ve worked on windows, linux, and macs and I&rsquo;ve not seen that conversion fail so for this code I&rsquo;m ok with this assumption. It also assumes that its been given a string with <code>.py</code> extension, you&rsquo;ll see why I&rsquo;m ok with this in a minute.</p>
+<p>Reading the file and converting it to a <code>CString</code> is a single line. (Its fun how some really complex things are easy in rust but some things are a pain like taking a file path and replacing all the / with spaces :) )</p>
+<p>Once we&rsquo;ve got the text of the file, the filename and the module name we can call the <code>PyModule::from_code</code> to create the module. We have to hand it a reference to the python environment we are using so it knows where to create the module.</p>
+<p>This handles a single file for us. Easy enough. Lets go one more level and load all the files in a directory, even if they reference each other.</p>
+<p>To read all the files in a directory, including sub directories we can use the <a href="https://docs.rs/walkdir/latest/walkdir/">WalkDir</a> crate. This can give us an iterator over a directory and we can use the filter functions to find only the things we are interested in.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-rust" data-lang="rust"><span style="display:flex;"><span><span style="color:#66d9ef">fn</span> <span style="color:#a6e22e">attach_modules</span><span style="color:#f92672">&lt;</span><span style="color:#a6e22e">&#39;l</span><span style="color:#f92672">&gt;</span>(
+</span></span><span style="display:flex;"><span>    py: <span style="color:#a6e22e">Python</span><span style="color:#f92672">&lt;</span><span style="color:#a6e22e">&#39;l</span><span style="color:#f92672">&gt;</span>,
+</span></span><span style="display:flex;"><span>    input_path: <span style="color:#66d9ef">&amp;</span><span style="color:#66d9ef">str</span>,
+</span></span><span style="display:flex;"><span>) -&gt; <span style="color:#a6e22e">PyResult</span><span style="color:#f92672">&lt;</span>HashMap<span style="color:#f92672">&lt;</span>String, pyo3::Bound<span style="color:#f92672">&lt;</span><span style="color:#a6e22e">&#39;l</span>, pyo3::types::PyModule<span style="color:#f92672">&gt;&gt;&gt;</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">let</span> <span style="color:#66d9ef">mut</span> result <span style="color:#f92672">=</span> HashMap::new();
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">let</span> root_path <span style="color:#f92672">=</span> Path::new(input_path);
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">let</span> py_str <span style="color:#f92672">=</span> OsStr::new(<span style="color:#e6db74">&#34;py&#34;</span>);
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span> entry <span style="color:#66d9ef">in</span> WalkDir::new(input_path)
+</span></span><span style="display:flex;"><span>        .into_iter()
+</span></span><span style="display:flex;"><span>        .filter_map(<span style="color:#f92672">|</span>e<span style="color:#f92672">|</span> e.ok())
+</span></span><span style="display:flex;"><span>        .filter(<span style="color:#f92672">|</span>e<span style="color:#f92672">|</span> e.metadata().unwrap().is_file())
+</span></span><span style="display:flex;"><span>        .filter(<span style="color:#f92672">|</span>e<span style="color:#f92672">|</span> e.path().extension().unwrap_or(OsStr::new(<span style="color:#e6db74">&#34;&#34;</span>)) <span style="color:#f92672">==</span> py_str)
+</span></span><span style="display:flex;"><span>    {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">let</span> path <span style="color:#f92672">=</span> entry.path();
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">let</span> (name, module) <span style="color:#f92672">=</span> attach_module(py, <span style="color:#f92672">&amp;</span>root_path, path)<span style="color:#f92672">?</span>;
+</span></span><span style="display:flex;"><span>        result.insert(name.into_string()<span style="color:#f92672">?</span>, module);
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    Ok(result)
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>This time our function takes a single path, where we are going to work from to find our python files. We create a HashMap (like a python dictionary) to use as the result then start using <code>WalkDir</code> First we filter out anything that the OS didn&rsquo;t let us read (permissions fun etc) then we filter for only files, then for paths which have the &ldquo;py&rdquo; extension. We then use the entries that gives us to call the <code>attach_module</code> function we created just now.</p>
+<p>So now we&rsquo;ve been able to create all our modules. However they aren&rsquo;t actually available to each other. They are just Module objects, they are not really part of the python &ldquo;class path&rdquo; to mix my language concepts. Python manages its modules by keeping a dictionary in the built in <code>sys</code> module called <code>modules</code> when ever you try to import something in your code it looks in that dictionary to find it and errors if its not there.</p>
+<p>We can do this in rust with a few modifications to the above function</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-rust" data-lang="rust"><span style="display:flex;"><span><span style="color:#66d9ef">fn</span> <span style="color:#a6e22e">attach_modules</span><span style="color:#f92672">&lt;</span><span style="color:#a6e22e">&#39;l</span><span style="color:#f92672">&gt;</span>(
+</span></span><span style="display:flex;"><span>    py: <span style="color:#a6e22e">Python</span><span style="color:#f92672">&lt;</span><span style="color:#a6e22e">&#39;l</span><span style="color:#f92672">&gt;</span>,
+</span></span><span style="display:flex;"><span>    input_path: <span style="color:#66d9ef">&amp;</span><span style="color:#66d9ef">str</span>,
+</span></span><span style="display:flex;"><span>) -&gt; <span style="color:#a6e22e">PyResult</span><span style="color:#f92672">&lt;</span>HashMap<span style="color:#f92672">&lt;</span>String, pyo3::Bound<span style="color:#f92672">&lt;</span><span style="color:#a6e22e">&#39;l</span>, pyo3::types::PyModule<span style="color:#f92672">&gt;&gt;&gt;</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">let</span> <span style="color:#66d9ef">mut</span> result <span style="color:#f92672">=</span> HashMap::new();
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">let</span> sys <span style="color:#f92672">=</span> PyModule::import(py, <span style="color:#e6db74">&#34;sys&#34;</span>)<span style="color:#f92672">?</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">let</span> py_modules: <span style="color:#a6e22e">Bound</span><span style="color:#f92672">&lt;</span><span style="color:#a6e22e">&#39;l</span>, PyDict<span style="color:#f92672">&gt;</span> <span style="color:#f92672">=</span> sys.getattr(<span style="color:#e6db74">&#34;modules&#34;</span>)<span style="color:#f92672">?</span>.cast_into()<span style="color:#f92672">?</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">let</span> root_path <span style="color:#f92672">=</span> Path::new(input_path);
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">let</span> py_str <span style="color:#f92672">=</span> OsStr::new(<span style="color:#e6db74">&#34;py&#34;</span>);
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span> entry <span style="color:#66d9ef">in</span> WalkDir::new(input_path)
+</span></span><span style="display:flex;"><span>        .into_iter()
+</span></span><span style="display:flex;"><span>        .filter_map(<span style="color:#f92672">|</span>e<span style="color:#f92672">|</span> e.ok())
+</span></span><span style="display:flex;"><span>        .filter(<span style="color:#f92672">|</span>e<span style="color:#f92672">|</span> e.metadata().unwrap().is_file())
+</span></span><span style="display:flex;"><span>        .filter(<span style="color:#f92672">|</span>e<span style="color:#f92672">|</span> e.path().extension().unwrap_or(OsStr::new(<span style="color:#e6db74">&#34;&#34;</span>)) <span style="color:#f92672">==</span> py_str)
+</span></span><span style="display:flex;"><span>    {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">let</span> path <span style="color:#f92672">=</span> entry.path();
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">let</span> (name, module) <span style="color:#f92672">=</span> attach_module(py, <span style="color:#f92672">&amp;</span>root_path, path)<span style="color:#f92672">?</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        py_modules.set_item(<span style="color:#f92672">&amp;</span>name, <span style="color:#f92672">&amp;</span>module)<span style="color:#f92672">?</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        result.insert(name.into_string()<span style="color:#f92672">?</span>, module);
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    Ok(result)
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>We import the &ldquo;sys&rdquo; module then get hold of the modules dictionary using the getattr method. We&rsquo;ll be using this a lot. It returns a <code>PyResult</code> that contains a reference to the python version of the value we asked for. This can be any attribute of the python object in question, in this case a global variable in the sys module. We can then call <code>py_modules.set_item</code> to insert the entry into the dictionary. Now all the modules should be able to find each other when we call them.</p>
+<p>We&rsquo;ve successfully loaded all the python files in the directory. So on to Step 2.</p>
+<h2 id="step-2-create-a-rust-config-struct-that-can-be-constructed-in-python">Step 2: Create a rust config struct that can be constructed in python.<a hidden class="anchor" aria-hidden="true" href="#step-2-create-a-rust-config-struct-that-can-be-constructed-in-python">#</a></h2>
+<p>What we want here is a rust struct that we can do something like this to</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">from</span> somewhere <span style="color:#f92672">import</span> Config
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">construct</span>():
+</span></span><span style="display:flex;"><span>    c <span style="color:#f92672">=</span> Config(name: <span style="color:#e6db74">&#34;foo&#34;</span>)
+</span></span><span style="display:flex;"><span>    c<span style="color:#f92672">.</span>something <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;a value&#34;</span>
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> c
+</span></span></code></pre></div><p>Unfortunately we can&rsquo;t just import a rust type and have it work. That would be too much magic. There are some hoops we need to jump though.</p>
+<p>The first is creating a new python module that we can import. I&rsquo;ve created a new rust file to put the config related stuff in. <code>config.rs</code> pyo3 has a macro to do this for us.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-rust" data-lang="rust"><span style="display:flex;"><span><span style="color:#66d9ef">use</span> pyo3::prelude::<span style="color:#f92672">*</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#[pymodule]</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">pub</span> <span style="color:#66d9ef">mod</span> pyconfigmod {
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>Though again, like with us loading the python code this doesn&rsquo;t add it to the python world so we have do that separately. This needs a line before we attach to python, back in the <code>main.rs</code> file.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-rust" data-lang="rust"><span style="display:flex;"><span><span style="color:#66d9ef">pub</span> <span style="color:#66d9ef">mod</span> config;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">use</span> config::pyconfigmod;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">fn</span> <span style="color:#a6e22e">main</span>() -&gt; <span style="color:#a6e22e">PyResult</span><span style="color:#f92672">&lt;</span>()<span style="color:#f92672">&gt;</span> {
+</span></span><span style="display:flex;"><span>    pyo3::append_to_inittab!(pyconfigmod);
+</span></span><span style="display:flex;"><span>    Python::attach(<span style="color:#f92672">|</span>py<span style="color:#f92672">|</span> {
+</span></span></code></pre></div><p>Now we can create the class, it looks like a normal rust struct but with some extra macros, back in the <code>config.rs</code> we can add the struct.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-rust" data-lang="rust"><span style="display:flex;"><span><span style="color:#66d9ef">use</span> pyo3::prelude::<span style="color:#f92672">*</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#[pymodule]</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">pub</span> <span style="color:#66d9ef">mod</span> pyconfigmod {
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">use</span> pyo3::prelude::<span style="color:#f92672">*</span>
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">#[pyclass(set_all, get_all)]</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">#[derive(Debug, Default, Clone)]</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">pub</span> <span style="color:#66d9ef">struct</span> <span style="color:#a6e22e">Config</span> {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">pub</span> name: String,
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>Note: We need to import the prelude again inside the module. (Don&rsquo;t ask me why, this is a bit of rust I&rsquo;ve not figured out yet, and don&rsquo;t really need to understand right now. This works.)</p>
+<p>By default pyo3 treats python classes as immutable. It makes it easier to reason about the thread safety of everything. However if you add the <code>set_all</code> and <code>get_all</code> parameters to the <code>pyclass</code> macro then you get generated getters and setters that take care of that synchronization mess for you. The final thing we need for this to work how we want is a constructor. Currently if we try to construct this thing in python it will tell us that it can&rsquo;t be constructed.</p>
+<p>This also shows us how to add custom methods to our python class.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-rust" data-lang="rust"><span style="display:flex;"><span><span style="color:#66d9ef">use</span> pyo3::prelude::<span style="color:#f92672">*</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#[pymodule]</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">pub</span> <span style="color:#66d9ef">mod</span> pyconfigmod {
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">use</span> pyo3::prelude::<span style="color:#f92672">*</span>
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">#[pyclass(set_all, get_all)]</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">#[derive(Debug, Default, Clone)]</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">pub</span> <span style="color:#66d9ef">struct</span> <span style="color:#a6e22e">Config</span> {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">pub</span> name: String,
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">#[pymethods]</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">impl</span> Config {
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">#[new]</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">fn</span> <span style="color:#a6e22e">__new__</span>(name: String) -&gt; <span style="color:#a6e22e">Config</span> {
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">let</span> result <span style="color:#f92672">=</span> Config{name: <span style="color:#a6e22e">name</span>};
+</span></span><span style="display:flex;"><span>                
+</span></span><span style="display:flex;"><span>            result
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>While this is a very simple function we need to define it our selves.</p>
+<p>As a result we are able to create a python file that looks like this</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">from</span> pyconfigmod <span style="color:#f92672">import</span> Config
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">something</span>():
+</span></span><span style="display:flex;"><span>    print(<span style="color:#e6db74">&#34;configuring something&#34;</span>)
+</span></span><span style="display:flex;"><span>    c <span style="color:#f92672">=</span> Config(<span style="color:#e6db74">&#34;my name&#34;</span>)
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># Eventually do some thing more complex to create this here.</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> c
+</span></span></code></pre></div><p>Back in main we should run this for the grand payoff of seeing it print out something from our Config class. Back in our <code>main.rs</code> file we&rsquo;ve got something like this.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-rust" data-lang="rust"><span style="display:flex;"><span><span style="color:#66d9ef">pub</span> <span style="color:#66d9ef">mod</span> config;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">use</span> config::pyconfigmod;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// ... module loading code here ...
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">fn</span> <span style="color:#a6e22e">main</span>() -&gt; <span style="color:#a6e22e">PyResult</span><span style="color:#f92672">&lt;</span>()<span style="color:#f92672">&gt;</span> {
+</span></span><span style="display:flex;"><span>    pyo3::append_to_inittab!(pyconfigmod);
+</span></span><span style="display:flex;"><span>    Python::attach(<span style="color:#f92672">|</span>py<span style="color:#f92672">|</span> {
+</span></span><span style="display:flex;"><span>        modules <span style="color:#f92672">=</span> attach_modules(<span style="color:#e6db74">&#34;/home/emily/Projects/my_config&#34;</span>);
+</span></span><span style="display:flex;"><span>    });
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>With the little python script in the previous code block in <code>/home/emily/Projects/my_config</code> we now have the module. So we can test this and see it working we will loop through each of the module and see if we can find an attribute called <code>something</code> and if its callable we will call it.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-rust" data-lang="rust"><span style="display:flex;"><span><span style="color:#66d9ef">pub</span> <span style="color:#66d9ef">mod</span> config;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">use</span> config::pyconfigmod;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// ... module loading code here ...
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">fn</span> <span style="color:#a6e22e">main</span>() -&gt; <span style="color:#a6e22e">PyResult</span><span style="color:#f92672">&lt;</span>()<span style="color:#f92672">&gt;</span> {
+</span></span><span style="display:flex;"><span>    pyo3::append_to_inittab!(pyconfigmod);
+</span></span><span style="display:flex;"><span>    Python::attach(<span style="color:#f92672">|</span>py<span style="color:#f92672">|</span> {
+</span></span><span style="display:flex;"><span>        modules <span style="color:#f92672">=</span> attach_modules(<span style="color:#e6db74">&#34;/home/emily/Projects/my_config&#34;</span>);
+</span></span><span style="display:flex;"><span>        
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">for</span> (module_name, module) <span style="color:#66d9ef">in</span> modules {
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">if</span> module.hasattr(<span style="color:#e6db74">&#34;something&#34;</span>)<span style="color:#f92672">?</span> {
+</span></span><span style="display:flex;"><span>                <span style="color:#66d9ef">let</span> func_something <span style="color:#f92672">=</span> module.getattr(<span style="color:#e6db74">&#34;something&#34;</span>)<span style="color:#f92672">?</span>;
+</span></span><span style="display:flex;"><span>                println!(<span style="color:#e6db74">&#34;Found something in </span><span style="color:#e6db74">{}</span><span style="color:#e6db74">&#34;</span>, module_name);
+</span></span><span style="display:flex;"><span>                <span style="color:#66d9ef">if</span> func_something.is_callable() {
+</span></span><span style="display:flex;"><span>                    <span style="color:#66d9ef">let</span> result: <span style="color:#a6e22e">Config</span> <span style="color:#f92672">=</span> func_something.call((), None)<span style="color:#f92672">?</span>.extract()<span style="color:#f92672">?</span>;
+</span></span><span style="display:flex;"><span>                    println!(<span style="color:#e6db74">&#34;Config received! Name: </span><span style="color:#e6db74">{}</span><span style="color:#e6db74">&#34;</span>, result.name);
+</span></span><span style="display:flex;"><span>                }
+</span></span><span style="display:flex;"><span>            }
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>    });
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>If we run this with <code>cargo run</code> we should see something like</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>emily@diamondslab:~/Projects/breezeblock$ cargo run
+</span></span><span style="display:flex;"><span>   Compiling breezeblock v0.1.0 <span style="color:#f92672">(</span>/home/emily/Projects/breezeblock<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>    Finished <span style="color:#e6db74">`</span>dev<span style="color:#e6db74">`</span> profile <span style="color:#f92672">[</span>unoptimized + debuginfo<span style="color:#f92672">]</span> target<span style="color:#f92672">(</span>s<span style="color:#f92672">)</span> in 0.44s
+</span></span><span style="display:flex;"><span>     Running <span style="color:#e6db74">`</span>target/debug/breezeblock<span style="color:#e6db74">`</span>
+</span></span><span style="display:flex;"><span>Found something in something
+</span></span><span style="display:flex;"><span>configuring something
+</span></span><span style="display:flex;"><span>Config received! Name: my name
+</span></span></code></pre></div><p>This is a good start. We&rsquo;ve got the ability to load a folder full of python files into rust. Create a rust class in python, and call functions in python from rust and get back a rust class. Next time we will work on finding python functions with a custom decorator and then working out what parameters those functions take.</p>
+
+
+  </div>
+
+  <footer class="post-footer">
+    <ul class="post-tags">
+      <li><a href="https://parsecsreach.org/tags/rust/">rust</a></li>
+      <li><a href="https://parsecsreach.org/tags/python/">python</a></li>
+      <li><a href="https://parsecsreach.org/tags/pyo3/">pyo3</a></li>
+    </ul>
+<nav class="paginav">
+  <a class="next" href="https://parsecsreach.org/post/polygonical_and_esvg/">
+    <span class="title">Next »</span>
+    <br>
+    <span>An introduction to Polygonical and ESVG</span>
+  </a>
+</nav>
+
+  </footer>
+</article>
+    </main>
+    
+<footer class="footer">
+    <span>All rights reserved - 2022</span>
+    <span>
+        Powered by
+        <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
+        <path d="M12 6H0l6-6z" />
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu')
+    if (menu) {
+        menu.scrollLeft = localStorage.getItem("menu-scroll-position");
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var mybutton = document.getElementById("top-link");
+    window.onscroll = function () {
+        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
+            mybutton.style.visibility = "visible";
+            mybutton.style.opacity = "1";
+        } else {
+            mybutton.style.visibility = "hidden";
+            mybutton.style.opacity = "0";
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        if (document.body.className.includes("dark")) {
+            document.body.classList.remove('dark');
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            document.body.classList.add('dark');
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+</body>
+
+</html>

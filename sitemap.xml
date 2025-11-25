@@ -2,28 +2,37 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
+    <loc>https://parsecsreach.org/</loc>
+    <lastmod>2025-11-24T21:02:00+00:00</lastmod>
+  </url><url>
+    <loc>https://parsecsreach.org/post/</loc>
+    <lastmod>2025-11-24T21:02:00+00:00</lastmod>
+  </url><url>
+    <loc>https://parsecsreach.org/tags/pyo3/</loc>
+    <lastmod>2025-11-24T21:02:00+00:00</lastmod>
+  </url><url>
+    <loc>https://parsecsreach.org/tags/python/</loc>
+    <lastmod>2025-11-24T21:02:00+00:00</lastmod>
+  </url><url>
+    <loc>https://parsecsreach.org/tags/rust/</loc>
+    <lastmod>2025-11-24T21:02:00+00:00</lastmod>
+  </url><url>
+    <loc>https://parsecsreach.org/tags/</loc>
+    <lastmod>2025-11-24T21:02:00+00:00</lastmod>
+  </url><url>
+    <loc>https://parsecsreach.org/post/pyo3_config_part_1/</loc>
+    <lastmod>2025-11-24T21:02:00+00:00</lastmod>
+  </url><url>
     <loc>https://parsecsreach.org/post/polygonical_and_esvg/</loc>
     <lastmod>2025-06-07T12:11:00+00:00</lastmod>
   </url><url>
     <loc>https://parsecsreach.org/tags/esvg/</loc>
     <lastmod>2025-06-07T12:11:00+00:00</lastmod>
   </url><url>
-    <loc>https://parsecsreach.org/</loc>
-    <lastmod>2025-06-07T12:11:00+00:00</lastmod>
-  </url><url>
     <loc>https://parsecsreach.org/tags/polygonical/</loc>
     <lastmod>2025-06-07T12:11:00+00:00</lastmod>
   </url><url>
-    <loc>https://parsecsreach.org/post/</loc>
-    <lastmod>2025-06-07T12:11:00+00:00</lastmod>
-  </url><url>
-    <loc>https://parsecsreach.org/tags/rust/</loc>
-    <lastmod>2025-06-07T12:11:00+00:00</lastmod>
-  </url><url>
     <loc>https://parsecsreach.org/tags/svg/</loc>
-    <lastmod>2025-06-07T12:11:00+00:00</lastmod>
-  </url><url>
-    <loc>https://parsecsreach.org/tags/</loc>
     <lastmod>2025-06-07T12:11:00+00:00</lastmod>
   </url><url>
     <loc>https://parsecsreach.org/post/rust_mastodon_search/</loc>
