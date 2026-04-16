@@ -156,6 +156,19 @@
 
 <article class="post-entry tag-entry"> 
   <header class="entry-header">
+    <h2>Rust workspaces and docker
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>Recently I’ve been working on a multi workspace rust project. It’s a client and server with some shared libraries and tools. I’ve managed to get it to build bits of its self in docker, with dependency caching, and a very minimal container image.
+Rust workspaces are a way to have a monorepo with several sub projects. You can define dependency versions globally across all the sub projects to make things consistent, you can keep slowly changing builds cached, and not have to build some bits if you are not working on them....</p>
+  </div>
+  <footer class="entry-footer"><span title='2026-04-16 21:02:00 +0000 +0000'>2026 April 16</span>&nbsp;·&nbsp;Emily Selwood</footer>
+  <a class="entry-link" aria-label="post link to Rust workspaces and docker" href="https://parsecsreach.org/post/rust_workspaces_docker/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
     <h2>Using python to configure rust Part 2
     </h2>
   </header>
@@ -270,21 +283,6 @@ First of all, lets quickly go over what a GeoTiff is. A tiff file is a type of i
   </div>
   <footer class="entry-footer"><span title='2022-11-22 06:45:00 +0000 GMT'>2022 November 22</span>&nbsp;·&nbsp;Emily Selwood</footer>
   <a class="entry-link" aria-label="post link to COG - Cloud Optimized Geotiffs" href="https://parsecsreach.org/post/cogs/"></a>
-</article>
-
-<article class="post-entry"> 
-  <header class="entry-header">
-    <h2>Big O for geospatial people
-    </h2>
-  </header>
-  <div class="entry-content">
-    <p>Today’s topic is Algorithmic complexity for #geospatial people.
-Or what the heck is Big O any way.
-If you’ve been around programmers for any length of time you’ve probably heard of Big O. (settle down nsfw folk, this is about algorithms and programming not that)
-The short version is its a way of describing the worst case runtime of an algorithm with regards to the amount of data. Given n bits of information what’s the order of magnitude of the worst possible run time....</p>
-  </div>
-  <footer class="entry-footer"><span title='2022-11-18 08:17:00 +0100 +0100'>2022 November 18</span>&nbsp;·&nbsp;Emily Selwood</footer>
-  <a class="entry-link" aria-label="post link to Big O for geospatial people" href="https://parsecsreach.org/post/bigo/"></a>
 </article>
 <footer class="page-footer">
   <nav class="pagination">

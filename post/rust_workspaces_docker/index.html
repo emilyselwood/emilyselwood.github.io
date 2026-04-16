@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto">
+
+<head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>Rust workspaces and docker | Parsecs Reach</title>
+
+<meta name="keywords" content="rust, docker, workspaces">
+<meta name="description" content="Recently I&rsquo;ve been working on a multi workspace rust project. It&rsquo;s a client and server with some shared libraries and tools. I&rsquo;ve managed to get it to build bits of its self in docker, with dependency caching, and a very minimal container image.
+Rust workspaces are a way to have a monorepo with several sub projects. You can define dependency versions globally across all the sub projects to make things consistent, you can keep slowly changing builds cached, and not have to build some bits if you are not working on them.">
+<meta name="author" content="Emily Selwood">
+<link rel="canonical"
+  href="https://parsecsreach.org/post/rust_workspaces_docker/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.1e30187891c1a74b0a861f29820ac2e756a5467bdee153d55036cc35fa6102ab.css" integrity="sha256-HjAYeJHBp0sKhh8pggrC51alRnve4VPVUDbMNfphAqs="
+  rel="preload stylesheet" as="style">
+<script defer crossorigin="anonymous" src="/assets/js/highlight.f413e19d0714851f6474e7ee9632408e58ac146fbdbe62747134bea2fa3415e0.js" integrity="sha256-9BPhnQcUhR9kdOfuljJAjlisFG&#43;9vmJ0cTS&#43;ovo0FeA="
+  onload="hljs.initHighlightingOnLoad();"></script>
+<link rel="icon" href="https://parsecsreach.org/%20favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="https://parsecsreach.org/%20favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://parsecsreach.org/%20favicon-32x32.png">
+<link rel="apple-touch-icon" href="https://parsecsreach.org/%20apple-touch-icon.png">
+<link rel="mask-icon" href="https://parsecsreach.org/%20safari-pinned-tab.svg">
+<meta name="theme-color" content=" #2e2e33">
+<meta name="msapplication-TileColor" content=" #2e2e33">
+<link rel="human-json" href="/human.json">
+
+<noscript>
+  <style>
+    #theme-toggle,
+    .top-link {
+      display: none;
+    }
+  </style>
+  <style>
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --theme: rgb(29, 30, 32);
+        --entry: rgb(46, 46, 51);
+        --primary: rgb(218, 218, 219);
+        --secondary: rgb(155, 156, 157);
+        --tertiary: rgb(65, 66, 68);
+        --content: rgb(196, 196, 197);
+        --hljs-bg: rgb(46, 46, 51);
+        --code-bg: rgb(55, 56, 62);
+        --border: rgb(51, 51, 51);
+      }
+
+      .list {
+        background: var(--theme);
+      }
+
+      .list:not(.dark)::-webkit-scrollbar-track {
+        background: 0 0;
+      }
+
+      .list:not(.dark)::-webkit-scrollbar-thumb {
+        border-color: var(--theme);
+      }
+    }
+  </style>
+</noscript><meta property="og:title" content="Rust workspaces and docker" />
+<meta property="og:description"
+  content="Recently I&rsquo;ve been working on a multi workspace rust project. It&rsquo;s a client and server with some shared libraries and tools. I&rsquo;ve managed to get it to build bits of its self in docker, with dependency caching, and a very minimal container image.
+Rust workspaces are a way to have a monorepo with several sub projects. You can define dependency versions globally across all the sub projects to make things consistent, you can keep slowly changing builds cached, and not have to build some bits if you are not working on them." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://parsecsreach.org/post/rust_workspaces_docker/" />
+<meta name="fediverse:creator" content="@emily_s@mastodon.me.uk"><meta property="article:section" content="post" />
+
+<meta property="article:published_time" content="2026-04-16T21:02:00+00:00" />
+
+<meta property="article:modified_time" content="2026-04-16T21:02:00+00:00" />
+
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Rust workspaces and docker"/>
+<meta name="twitter:description" content="Recently I&rsquo;ve been working on a multi workspace rust project. It&rsquo;s a client and server with some shared libraries and tools. I&rsquo;ve managed to get it to build bits of its self in docker, with dependency caching, and a very minimal container image.
+Rust workspaces are a way to have a monorepo with several sub projects. You can define dependency versions globally across all the sub projects to make things consistent, you can keep slowly changing builds cached, and not have to build some bits if you are not working on them."/>
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "Posts",
+      "item": "https://parsecsreach.org/post/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  3 ,
+      "name": "Rust workspaces and docker",
+      "item": "https://parsecsreach.org/post/rust_workspaces_docker/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "Rust workspaces and docker",
+  "name": "Rust workspaces and docker",
+  "description": "Recently I\u0026rsquo;ve been working on a multi workspace rust project. It\u0026rsquo;s a client and server with some shared libraries and tools. I\u0026rsquo;ve managed to get it to build bits of its self in docker, with dependency caching, and a very minimal container image.\nRust workspaces are a way to have a monorepo with several sub projects. You can define dependency versions globally across all the sub projects to make things consistent, you can keep slowly changing builds cached, and not have to build some bits if you are not working on them.",
+  "keywords": [
+    "rust", "docker", "workspaces"
+  ],
+  "articleBody": "Recently I’ve been working on a multi workspace rust project. It’s a client and server with some shared libraries and tools. I’ve managed to get it to build bits of its self in docker, with dependency caching, and a very minimal container image.\nRust workspaces are a way to have a monorepo with several sub projects. You can define dependency versions globally across all the sub projects to make things consistent, you can keep slowly changing builds cached, and not have to build some bits if you are not working on them.\nMy project is a multiplayer game. The game or client side is using bevy which is a very large dependency and one of the largest libraries that I’ve used with rust. The server is an actix-web and diesel based project. Which are also quite large. I really don’t want to be building bevy every time I change the web server, and vise versa. Also bevy is big enough my laptop with 16Gb of ram struggles to build it, some times it takes a couple of goes.\nThe server needs to run in docker, to make deployments easier. But I don’t want to have to wait for the entire project to build every time I deploy it.\nWorkspaces have a layout like this in rust\n|- Cargo.toml # top level workspace config. |- Cargo.lock # global lock file of dependencies |- data/ # a workspace folder (Shared library of data types to share between backend and front end) | |- Cargo.toml # a workspace config | |- src/ | |- lib.rs | |- ... # rust code here |- game/ # The game client workspace | |- Cargo.toml # bevy is defined here | |- src/ | |- main.rs | |- ... # rest of game here |- server/ |- Cargo.toml # server workspace config (defines actix-web and diesel) |- Diesel.toml |- src/ |- main.rs |- ... rest of server code Cargo defaults to building the entire thing when running cargo build or cargo test. To run a single application you use cargo run --bin game or cargo run --bin server There are plenty of guides on line on setting up workspaces, including in the rust book.\nBuilding a basic docker container was pretty easy. First I started off with a two stage build\nFROM rust:1.94 AS build WORKDIR /parsecsreach COPY ./* . RUN cargo build --bin server --release FROM debian:bookworm-slim # install postgres system library RUN apt-get update \u0026\u0026 apt-get install libpq-dev -y \u0026\u0026 rm -rf /var/cache/apt/archives /var/lib/apt/lists/* # copy the build artifact from the build stage COPY --from=build /parsecsreach/target/release/server . # set the startup command to run your binary CMD [\"./server\"] A small wrinkle in there to get the postgres library into the bookworm-slim image but that’s not too much of a problem. Fairly standard approach to installing a package and then nuking the archives and lists.\nThe issue with this is that every time you build the container you will rebuild all of the dependencies for the server. Which can take a few minutes on my laptop, which sucks from a iteration time point of view, no hot reload of the server as it needs compiling means we are stuck waiting for that every time we change a line of code. bleh\nSo what we want is to have the dependencies compiled in one layer while our code compiles in a later layer.\nIf we just copy the Cargo.toml files from each workspace over we will get an error saying that the workspace doesn’t contain a main or lib file. For the library code we can just create an empty lib.rs in a src directory next to the Cargo.toml and it’ll let us past with no real code.\nFor the binary workspaces we need a main function too. For that we can include a dummy rust main file somewhere and copy that in. Then we do a cargo build --bin server --release and we have all our dependencies compiled and cached, and we can copy our real code over the top and run the build again.\nBut …\nIf we do that and our dummy lib.rs and main.rs files are newer than the real ones (which if we touch the lib files to create them, is guaranteed) One of cargo or docker are “smart” enough to use that to think it doesn’t need to copy over and rebuild our library and the binary for the server.\nSo we need to trick it into rebuilding the library and the binary.\nThe simplest I found was to remove the built artifacts for the library. I also tried changing the Cargo.toml files to point to a different main, which worked but seems a little more hacky.\nFROM rust:1.94 AS build WORKDIR /parsecsreach # Copy cargo files COPY ./Cargo.toml ./Cargo.toml COPY ./Cargo.lock ./Cargo.lock # copy and create wireframe of the project so we can build only the dependencies. COPY ./data/Cargo.toml ./data/Cargo.toml RUN mkdir -p ./data/src \u0026\u0026 touch ./data/src/lib.rs COPY ./server/Cargo.toml ./server/Cargo.toml COPY ./docker/template.main.rs ./server/src/dummy.rs COPY ./game/Cargo.toml ./game/Cargo.toml COPY ./docker/template.main.rs ./game/src/main.rs # this should only build the dependencies RUN sed -i 's#src/main.rs#src/dummy.rs#' server/Cargo.toml RUN cargo build --bin server --release RUN sed -i 's#src/dummy.rs#src/main.rs#' server/Cargo.toml # Clean out the library stub builds so they get built properly in a second. # These build files are newer than the ones in the source tree so cargo # doesn't think it needs rebuilding. RUN rm ./data/src/lib.rs \u0026\u0026 \\ rm ./data/Cargo.toml \u0026\u0026 \\ rm ./target/release/deps/libdata* # Copy workspaces that we need COPY ./data ./data COPY ./server ./server RUN cargo build --bin server --release # our final base FROM debian:bookworm-slim # install postgres system library RUN apt-get update \u0026\u0026 apt-get install libpq-dev -y \u0026\u0026 rm -rf /var/cache/apt/archives /var/lib/apt/lists/* # copy the build artifact from the build stage COPY --from=build /parsecsreach/target/release/server . # set the startup command to run your binary CMD [\"./server\"] Now the dependencies will only re-compile if we change the Cargo.toml files which is reasonable, and we have a nice tiny container image to actually run the thing.\n",
+  "wordCount" : "1004",
+  "inLanguage": "en",
+  "datePublished": "2026-04-16T21:02:00Z",
+  "dateModified": "2026-04-16T21:02:00Z",
+  "author":{
+    "@type": "Person",
+    "name": "Emily Selwood"
+  },
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://parsecsreach.org/post/rust_workspaces_docker/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Parsecs Reach",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://parsecsreach.org/favicon.ico"
+    }
+  }
+}
+</script>
+</head>
+
+<body class="" id="top">
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.body.classList.add('dark');
+    } else if (localStorage.getItem("pref-theme") === "light") {
+        document.body.classList.remove('dark')
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.body.classList.add('dark');
+    }
+
+</script>
+
+<header class="header">
+    <nav class="nav">
+        <div class="logo">
+            <a href="https://parsecsreach.org" accesskey="h" title="Parsecs Reach (Alt + H)">Parsecs Reach</a>
+            <div class="logo-switches">
+                <button id="theme-toggle">
+                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round" aria-hidden="true" focusable="false">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round" aria-hidden="true" focusable="false">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                    <span class="visually-hidden">Toggle light/dark mode</span>
+                </button>
+            </div>
+        </div>
+        <ul id="menu">
+            <li>
+                <a rel="me" href="https://mastodon.me.uk/@emily_s"  target="_blank" title="">
+                    <span><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 417.8 512" class="logo-social" width="18" height="18"><path d="M417.8 179.1c0-97.2-63.7-125.7-63.7-125.7-62.5-28.7-228.5-28.4-290.4 0 0 0-63.7 28.5-63.7 125.7 0 115.7-6.6 259.4 105.6 289.1 40.5 10.7 75.3 13 103.3 11.4 50.8-2.8 79.3-18.1 79.3-18.1l-1.7-36.9s-36.3 11.4-77.1 10.1c-40.4-1.4-83-4.4-89.6-54-.6-4.4-.9-9-.9-13.9 85.6 20.9 158.6 9.1 178.7 6.7 56.1-6.7 105-41.3 111.2-72.9 9.8-49.8 9-121.5 9-121.5zm-75.1 125.2h-46.6V190.1c0-49.7-64-51.6-64 6.9v62.5h-46.3V197c0-58.5-64-56.6-64-6.9v114.2H75.1c0-122.1-5.2-147.9 18.4-175 25.9-28.9 79.8-30.8 103.8 6.1l11.6 19.5 11.6-19.5c24.1-37.1 78.1-34.8 103.8-6.1 23.7 27.3 18.4 53 18.4 175z"/></svg></span>
+                    
+                </a>
+            </li>
+            <li>
+                <a rel="" href="https://github.com/emilyselwood"  target="_blank" title="">
+                    <span><svg width="18" height="18" class="logo-social" stroke="none" viewBox="0 0 11.493062 11.209467" xmlns="http://www.w3.org/2000/svg"><path d="M 5.746044,0 C 2.572808,0 0,2.572808 0,5.74675 c 0,2.538941 1.646414,4.69265 3.929944,5.452886 0.287514,0.05256 0.392289,-0.124883 0.392289,-0.277283 0,-0.136173 -0.0049,-0.49777 -0.0078,-0.977195 C 2.715997,10.292291 2.378741,9.174691 2.378741,9.174691 2.117333,8.511116 1.740566,8.334375 1.740566,8.334375 1.218808,7.977716 1.780076,7.984772 1.780076,7.984772 2.356868,8.025692 2.660257,8.577086 2.660257,8.577086 3.172843,9.45515 4.005398,9.201503 4.332776,9.054747 4.384986,8.683272 4.533154,8.429978 4.697548,8.286397 3.421551,8.141405 2.079937,7.648222 2.079937,5.446183 c 0,-0.627239 0.224014,-1.140178 0.591609,-1.541991 -0.05927,-0.145345 -0.25647,-0.729545 0.05609,-1.520825 0,0 0.4826,-0.154517 1.580445,0.589138 C 4.766339,2.845153 5.258111,2.7813 5.746709,2.779183 6.2346,2.781283 6.726372,2.845153 7.185336,2.972505 8.282475,2.22885 8.764017,2.383367 8.764017,2.383367 c 0.313619,0.79128 0.116416,1.37548 0.05715,1.520825 0.3683,0.401813 0.590903,0.914752 0.590903,1.541991 0,2.207683 -1.343731,2.693458 -2.623961,2.835628 0.206375,0.177447 0.390172,0.528108 0.390172,1.06433 0,0.767998 -0.0071,1.387828 -0.0071,1.576212 0,0.153811 0.103364,0.332669 0.395111,0.276577 2.281767,-0.761647 3.92677,-2.913944 3.92677,-5.45218 C 11.493062,2.572808 8.919901,0 5.745959,0"/></svg></span>
+                    
+                </a>
+            </li>
+            <li>
+                <a rel="" href="https://parsecsreach.org/projects"  target="_self" title="Projects">
+                    <span>Projects</span>
+                    
+                </a>
+            </li>
+            <li>
+                <a rel="" href="https://parsecsreach.org/"  target="_self" title="Home">
+                    <span>Home</span>
+                    
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    
+    <h1 class="post-title">
+      Rust workspaces and docker
+    </h1>
+    <div class="post-meta"><span title='2026-04-16 21:02:00 +0000 +0000'>2026 April 16</span>&nbsp;·&nbsp;Emily Selwood
+
+</div>
+  </header> 
+  <div class="post-content"><p>Recently I&rsquo;ve been working on a multi workspace rust project. It&rsquo;s a client and server with some shared libraries and tools. I&rsquo;ve managed to get it to build bits of its self in docker, with dependency caching, and a very minimal container image.</p>
+<p>Rust workspaces are a way to have a monorepo with several sub projects. You can define dependency versions globally across all the sub projects to make things consistent, you can keep slowly changing builds cached, and not have to build some bits if you are not working on them.</p>
+<p>My project is a multiplayer game. The game or client side is using <a href="https://bevy.org/">bevy</a> which is a very large dependency and one of the largest libraries that I&rsquo;ve used with rust. The server is an <a href="https://actix.rs/">actix-web</a> and <a href="https://diesel.rs/">diesel</a> based project. Which are also quite large. I really don&rsquo;t want to be building bevy every time I change the web server, and vise versa. Also bevy is big enough my laptop with 16Gb of ram struggles to build it, some times it takes a couple of goes.</p>
+<p>The server needs to run in docker, to make deployments easier. But I don&rsquo;t want to have to wait for the entire project to build every time I deploy it.</p>
+<p>Workspaces have a layout like this in rust</p>
+<pre tabindex="0"><code>|- Cargo.toml # top level workspace config.
+|- Cargo.lock # global lock file of dependencies
+|- data/  # a workspace folder (Shared library of data types to share between backend and front end)
+| |- Cargo.toml # a workspace config
+| |- src/
+|   |- lib.rs 
+|   |- ... # rust code here
+|- game/ # The game client workspace
+| |- Cargo.toml # bevy is defined here
+| |- src/
+|   |- main.rs
+|   |- ... # rest of game here
+|- server/
+  |- Cargo.toml # server workspace config (defines actix-web and diesel)
+  |- Diesel.toml
+  |- src/
+    |- main.rs
+    |- ... rest of server code
+</code></pre><p>Cargo defaults to building the entire thing when running <code>cargo build</code> or <code>cargo test</code>. To run a single application you use <code>cargo run --bin game</code> or <code>cargo run --bin server</code> There are plenty of guides on line on setting up workspaces, including in the rust book.</p>
+<p>Building a basic docker container was pretty easy. First I started off with a two stage build</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-Dockerfile" data-lang="Dockerfile"><span style="display:flex;"><span><span style="color:#66d9ef">FROM</span><span style="color:#e6db74"> rust:1.94 AS build</span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#66d9ef">WORKDIR</span><span style="color:#e6db74"> /parsecsreach</span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#66d9ef">COPY</span> ./* .<span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#66d9ef">RUN</span> cargo build --bin server --release<span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#66d9ef">FROM</span><span style="color:#e6db74"> debian:bookworm-slim</span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#75715e"># install postgres system library</span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#66d9ef">RUN</span> apt-get update <span style="color:#f92672">&amp;&amp;</span> apt-get install libpq-dev -y <span style="color:#f92672">&amp;&amp;</span> rm -rf /var/cache/apt/archives /var/lib/apt/lists/*<span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#75715e"># copy the build artifact from the build stage</span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#66d9ef">COPY</span> --from<span style="color:#f92672">=</span>build /parsecsreach/target/release/server .<span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#75715e"># set the startup command to run your binary</span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#66d9ef">CMD</span> [<span style="color:#e6db74">&#34;./server&#34;</span>]<span style="color:#960050;background-color:#1e0010">
+</span></span></span></code></pre></div><p>A small wrinkle in there to get the postgres library into the bookworm-slim image but that&rsquo;s not too much of a problem. Fairly standard approach to installing a package and then nuking the archives and lists.</p>
+<p>The issue with this is that every time you build the container you will rebuild all of the dependencies for the server. Which can take a few minutes on my laptop, which sucks from a iteration time point of view, no hot reload of the server as it needs compiling means we are stuck waiting for that every time we change a line of code. bleh</p>
+<p>So what we want is to have the dependencies compiled in one layer while our code compiles in a later layer.</p>
+<p>If we just copy the <code>Cargo.toml</code> files from each workspace over we will get an error saying that the workspace doesn&rsquo;t contain a main or lib file. For the library code we can just create an empty <code>lib.rs</code> in a <code>src</code> directory next to the <code>Cargo.toml</code> and it&rsquo;ll let us past with no real code.</p>
+<p>For the binary workspaces we need a main function too. For that we can include a dummy rust main file somewhere and copy that in. Then we do a <code>cargo build --bin server --release</code> and we have all our dependencies compiled and cached, and we can copy our real code over the top and run the build again.</p>
+<p>But &hellip;</p>
+<p>If we do that and our dummy <code>lib.rs</code> and <code>main.rs</code> files are newer than the real ones (which if we touch the lib files to create them, is guaranteed) One of cargo or docker are &ldquo;smart&rdquo; enough to use that to think it doesn&rsquo;t need to copy over and rebuild our library and the binary for the server.</p>
+<p>So we need to trick it into rebuilding the library and the binary.</p>
+<p>The simplest I found was to remove the built artifacts for the library. I also tried changing the <code>Cargo.toml</code> files to point to a different main, which worked but seems a little more hacky.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-Dockerfile" data-lang="Dockerfile"><span style="display:flex;"><span><span style="color:#66d9ef">FROM</span><span style="color:#e6db74"> rust:1.94 AS build</span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#66d9ef">WORKDIR</span><span style="color:#e6db74"> /parsecsreach</span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#75715e"># Copy cargo files</span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#66d9ef">COPY</span> ./Cargo.toml ./Cargo.toml<span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#66d9ef">COPY</span> ./Cargo.lock ./Cargo.lock<span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#75715e"># copy and create wireframe of the project so we can build only the dependencies.</span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#66d9ef">COPY</span> ./data/Cargo.toml ./data/Cargo.toml<span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#66d9ef">RUN</span> mkdir -p ./data/src <span style="color:#f92672">&amp;&amp;</span> touch ./data/src/lib.rs<span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#66d9ef">COPY</span> ./server/Cargo.toml ./server/Cargo.toml<span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#66d9ef">COPY</span> ./docker/template.main.rs ./server/src/dummy.rs<span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#66d9ef">COPY</span> ./game/Cargo.toml ./game/Cargo.toml<span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#66d9ef">COPY</span> ./docker/template.main.rs ./game/src/main.rs<span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#75715e"># this should only build the dependencies</span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#66d9ef">RUN</span> sed -i <span style="color:#e6db74">&#39;s#src/main.rs#src/dummy.rs#&#39;</span> server/Cargo.toml<span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#66d9ef">RUN</span> cargo build --bin server --release<span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#66d9ef">RUN</span> sed -i <span style="color:#e6db74">&#39;s#src/dummy.rs#src/main.rs#&#39;</span> server/Cargo.toml<span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#75715e"># Clean out the library stub builds so they get built properly in a second.</span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#75715e"># These build files are newer than the ones in the source tree so cargo</span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#75715e"># doesn&#39;t think it needs rebuilding.</span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#66d9ef">RUN</span> rm ./data/src/lib.rs <span style="color:#f92672">&amp;&amp;</span> <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>rm ./data/Cargo.toml <span style="color:#f92672">&amp;&amp;</span> <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>rm ./target/release/deps/libdata*<span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#75715e"># Copy workspaces that we need</span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#66d9ef">COPY</span> ./data ./data<span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#66d9ef">COPY</span> ./server ./server<span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#66d9ef">RUN</span> cargo build --bin server --release<span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#75715e"># our final base</span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#66d9ef">FROM</span><span style="color:#e6db74"> debian:bookworm-slim</span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#75715e"># install postgres system library</span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#66d9ef">RUN</span> apt-get update <span style="color:#f92672">&amp;&amp;</span> apt-get install libpq-dev -y <span style="color:#f92672">&amp;&amp;</span> rm -rf /var/cache/apt/archives /var/lib/apt/lists/*<span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#75715e"># copy the build artifact from the build stage</span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#66d9ef">COPY</span> --from<span style="color:#f92672">=</span>build /parsecsreach/target/release/server .<span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#75715e"># set the startup command to run your binary</span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#66d9ef">CMD</span> [<span style="color:#e6db74">&#34;./server&#34;</span>]<span style="color:#960050;background-color:#1e0010">
+</span></span></span></code></pre></div><p>Now the dependencies will only re-compile if we change the <code>Cargo.toml</code> files which is reasonable, and we have a nice tiny container image to actually run the thing.</p>
+
+
+  </div>
+
+  <footer class="post-footer">
+    <ul class="post-tags">
+      <li><a href="https://parsecsreach.org/tags/rust/">rust</a></li>
+      <li><a href="https://parsecsreach.org/tags/docker/">docker</a></li>
+      <li><a href="https://parsecsreach.org/tags/workspaces/">workspaces</a></li>
+    </ul>
+<nav class="paginav">
+  <a class="next" href="https://parsecsreach.org/post/pyo3_config_part_2/">
+    <span class="title">Next »</span>
+    <br>
+    <span>Using python to configure rust Part 2</span>
+  </a>
+</nav>
+
+  </footer>
+</article>
+    </main>
+    
+<footer class="footer">
+    <span>All rights reserved - 2022</span>
+    <span>
+        Powered by
+        <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
+        <path d="M12 6H0l6-6z" />
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu')
+    if (menu) {
+        menu.scrollLeft = localStorage.getItem("menu-scroll-position");
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var mybutton = document.getElementById("top-link");
+    window.onscroll = function () {
+        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
+            mybutton.style.visibility = "visible";
+            mybutton.style.opacity = "1";
+        } else {
+            mybutton.style.visibility = "hidden";
+            mybutton.style.opacity = "0";
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        if (document.body.className.includes("dark")) {
+            document.body.classList.remove('dark');
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            document.body.classList.add('dark');
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+</body>
+
+</html>

@@ -148,6 +148,19 @@
 
 <article class="post-entry tag-entry"> 
   <header class="entry-header">
+    <h2>Rust workspaces and docker
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>Recently I’ve been working on a multi workspace rust project. It’s a client and server with some shared libraries and tools. I’ve managed to get it to build bits of its self in docker, with dependency caching, and a very minimal container image.
+Rust workspaces are a way to have a monorepo with several sub projects. You can define dependency versions globally across all the sub projects to make things consistent, you can keep slowly changing builds cached, and not have to build some bits if you are not working on them....</p>
+  </div>
+  <footer class="entry-footer"><span title='2026-04-16 21:02:00 +0000 +0000'>2026 April 16</span>&nbsp;·&nbsp;Emily Selwood</footer>
+  <a class="entry-link" aria-label="post link to Rust workspaces and docker" href="https://parsecsreach.org/post/rust_workspaces_docker/"></a>
+</article>
+
+<article class="post-entry tag-entry"> 
+  <header class="entry-header">
     <h2>Using python to configure rust Part 2
     </h2>
   </header>
