@@ -2,22 +2,34 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
-    <loc>https://parsecsreach.org/tags/docker/</loc>
-    <lastmod>2026-04-16T21:02:00+00:00</lastmod>
+    <loc>https://parsecsreach.org/tags/art/</loc>
+    <lastmod>2026-09-25T20:12:00+00:00</lastmod>
   </url><url>
     <loc>https://parsecsreach.org/</loc>
-    <lastmod>2026-04-16T21:02:00+00:00</lastmod>
+    <lastmod>2026-09-25T20:12:00+00:00</lastmod>
   </url><url>
     <loc>https://parsecsreach.org/post/</loc>
+    <lastmod>2026-09-25T20:12:00+00:00</lastmod>
+  </url><url>
+    <loc>https://parsecsreach.org/tags/procedual-generation/</loc>
+    <lastmod>2026-09-25T20:12:00+00:00</lastmod>
+  </url><url>
+    <loc>https://parsecsreach.org/tags/svg/</loc>
+    <lastmod>2026-09-25T20:12:00+00:00</lastmod>
+  </url><url>
+    <loc>https://parsecsreach.org/post/svg_mountains/</loc>
+    <lastmod>2026-09-25T20:12:00+00:00</lastmod>
+  </url><url>
+    <loc>https://parsecsreach.org/tags/</loc>
+    <lastmod>2026-09-25T20:12:00+00:00</lastmod>
+  </url><url>
+    <loc>https://parsecsreach.org/tags/docker/</loc>
     <lastmod>2026-04-16T21:02:00+00:00</lastmod>
   </url><url>
     <loc>https://parsecsreach.org/tags/rust/</loc>
     <lastmod>2026-04-16T21:02:00+00:00</lastmod>
   </url><url>
     <loc>https://parsecsreach.org/post/rust_workspaces_docker/</loc>
-    <lastmod>2026-04-16T21:02:00+00:00</lastmod>
-  </url><url>
-    <loc>https://parsecsreach.org/tags/</loc>
     <lastmod>2026-04-16T21:02:00+00:00</lastmod>
   </url><url>
     <loc>https://parsecsreach.org/tags/workspaces/</loc>
@@ -42,9 +54,6 @@
     <lastmod>2025-06-07T12:11:00+00:00</lastmod>
   </url><url>
     <loc>https://parsecsreach.org/tags/polygonical/</loc>
-    <lastmod>2025-06-07T12:11:00+00:00</lastmod>
-  </url><url>
-    <loc>https://parsecsreach.org/tags/svg/</loc>
     <lastmod>2025-06-07T12:11:00+00:00</lastmod>
   </url><url>
     <loc>https://parsecsreach.org/post/rust_mastodon_search/</loc>

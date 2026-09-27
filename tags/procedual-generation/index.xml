@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>procedual generation on Parsecs Reach</title>
+    <link>https://parsecsreach.org/tags/procedual-generation/</link>
+    <description>Recent content in procedual generation on Parsecs Reach</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>All rights reserved - 2022</copyright>
+    <lastBuildDate>Fri, 25 Sep 2026 20:12:00 +0000</lastBuildDate><atom:link href="https://parsecsreach.org/tags/procedual-generation/index.xml" rel="self" type="application/rss+xml" />
+    
+  </channel>
+</rss>
